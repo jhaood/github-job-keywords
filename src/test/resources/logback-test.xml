@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Target>System.out</Target>
+		<encoder>
+			<pattern>%d [%p] %c{1}:%L - %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="net.exacode.spring.logging" level="info" />
+
+    <logger name="org.springframework" level="INFO"/>
+	
+	<root level="none">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>
