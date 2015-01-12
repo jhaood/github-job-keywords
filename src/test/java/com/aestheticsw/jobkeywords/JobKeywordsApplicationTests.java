@@ -1,4 +1,4 @@
-package com.aestheticsw;
+package com.aestheticsw.jobkeywords;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,6 +1,7 @@
-package com.aestheticsw.config;
+package com.aestheticsw.jobkeywords.config;
 
-import org.springframework.logging.inject.LogInjector;
+import net.exacode.spring.logging.inject.LogInjector;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -3,13 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.aestheticsw</groupId>
+	<name>job-keywords</name>
+
 	<artifactId>job-keywords</artifactId>
+	<groupId>com.aestheticsw</groupId>
 	<version>0.0.1-SNAPSHOT</version>
+	<description>keyword extraction from job listings</description>
+
 	<packaging>jar</packaging>
 
-	<name>job-keywords</name>
-	<description>keyword extraction from job postings</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -20,8 +22,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>com.aestheticsw.JobKeywordsApplication</start-class>
+		<start-class>com.aestheticsw.jobkeywords.JobKeywordsApplication</start-class>
 		<java.version>1.8</java.version>
+		<version.exacode-spring-logging>1.0.0</version.exacode-spring-logging>
 	</properties>
 
 	<dependencies>
@@ -46,25 +49,49 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.exacode.spring.logging</groupId>
-			<artifactId>spring-inject</artifactId>
-			<version>${version.spring-logging}</version>
+			<artifactId>spring-logging-inject</artifactId>
+			<version>${version.exacode-spring-logging}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+<!-- 
+ 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-ws</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+ -->
+		
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-aop</artifactId> 
 			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
 			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-solr</artifactId> 
 			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-integration</artifactId> 
 			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-websocket</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-ws</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-rest</artifactId> 
 			</dependency> -->
 	</dependencies>
 
 	<build>
 		<filters>
-			<filter>application-filter.properties</filter>
+			<filter>src/main/resources/application-filter.properties</filter>
 		</filters>
 
 		<resources>
@@ -73,6 +100,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>**/*.xml</include>
+					<include>**/*.properties</include>
 				</includes>
 			</resource>
 		</resources>
