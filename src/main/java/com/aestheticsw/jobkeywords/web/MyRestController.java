@@ -16,13 +16,14 @@ public class MyRestController {
     private Logger log;
     
     private User user;
-
+    
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
     public User getUser(@PathVariable String userName) {
         log.error("/user endpoint");
         if (user == null) {
             user = new User();
             user.setName(userName);
+            user.setPassword(userName);
         }
 
         return user;
@@ -30,9 +31,8 @@ public class MyRestController {
 
     @RequestMapping(value = "/{userName}", method = RequestMethod.DELETE)
     public User deleteUser(@PathVariable Long userName) {
-        log.error("/user endpoint");
+        log.error("/user DELETE endpoint");
 
         return user;
     }
-
 }
