@@ -1,6 +1,6 @@
 package com.aestheticsw.jobkeywords.domain;
 
-public class Page {
+public class PivotalJsonPage {
 
     private String name;
     private String about;

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
+// Not required for tests... 
 @EnableAutoConfiguration
 public class JobKeywordsApplication {
 

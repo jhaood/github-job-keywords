@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsw.jobkeywords.client.rest.RestClient;
-import com.aestheticsw.jobkeywords.domain.Page;
+import com.aestheticsw.jobkeywords.domain.IndeedResponse;
+import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
 
 @RestController
 @RequestMapping(value = "/rest")
@@ -21,11 +22,19 @@ public class RestClientController {
     private RestClient restClient;
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public Page getPage() {
+    public PivotalJsonPage getPage() {
         log.error("/page endpoint");
 
-        Page page = restClient.execute();
+        PivotalJsonPage page = restClient.getPage();
         return page;
+    }
+
+    @RequestMapping(value = "/indeed", method = RequestMethod.GET)
+    public IndeedResponse getIndeed() {
+        log.error("/indeed endpoint");
+
+        IndeedResponse indeedResponse = restClient.getIndeed();
+        return indeedResponse;
     }
 
 }
