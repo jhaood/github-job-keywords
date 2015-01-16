@@ -1,40 +1,41 @@
 package com.aestheticsw.jobkeywords.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement(localName = "response")
-// @XmlAccessorType(XmlAccessType.FIELD)
 // @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-@JsonIgnoreProperties(ignoreUnknown = true)
+// @JsonIgnoreProperties(ignoreUnknown = true)
+@XmlRootElement(name = "response")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class IndeedResponse {
-    @JacksonXmlProperty
+    @XmlElement
     private String location;
 
-    @JacksonXmlProperty(localName = "dupefilter")
+    @XmlElement(name = "dupefilter")
     private Boolean dupeFilter;
-    @JacksonXmlProperty(localName = "totalresults")
-    private int totalResults;
-    @JacksonXmlProperty
+    
+    @XmlElement(name = "highlight")
+    private Boolean highlight;
+    
+    @XmlElement(name = "totalresults")
+    private Integer totalresults;
+    
+    @XmlElement
     private int start;
-    @JacksonXmlProperty
+    
+    @XmlElement
     private int end;
 
-    @JacksonXmlProperty(localName = "pagenumber")
+    @XmlElement(name = "pagenumber")
     private int pageNumber;
 
     // can't use Array or ArrayList as type = must use simple array or else whitespace isn't
     // ignored.
-    @JacksonXmlProperty(localName = "results")
-    @JacksonXmlElementWrapper(localName = "result", useWrapping = true)
-    // @XmlElementWrapper(name = "results")
-    // @XmlElement(name = "result")
-    private Result[] results;
+    @XmlElement(name = "results")
+    private ResultList results;
 
     public String getLocation() {
         return location;
@@ -45,7 +46,7 @@ public class IndeedResponse {
     }
 
     public int getTotalResults() {
-        return totalResults;
+        return totalresults;
     }
 
     public int getStart() {
@@ -60,7 +61,7 @@ public class IndeedResponse {
         return pageNumber;
     }
 
-    public Result[] getResults() {
+    public ResultList getResults() {
         return results;
     }
 
@@ -73,7 +74,7 @@ public class IndeedResponse {
     }
 
     public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
+        this.totalresults = totalResults;
     }
 
     public void setStart(int start) {
@@ -88,7 +89,7 @@ public class IndeedResponse {
         this.pageNumber = pageNumber;
     }
 
-    public void setResults(Result[] results) {
+    public void setResults(ResultList results) {
         this.results = results;
     }
 
