@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.aestheticsw.jobkeywords.config.TestBase;
 
 /*
+ * Use TestBase instead of annotating every class. 
+ * 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
 @WebAppConfiguration

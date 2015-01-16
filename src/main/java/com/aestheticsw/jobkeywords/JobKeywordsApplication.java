@@ -9,20 +9,18 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 @ComponentScan
-// Not required for tests... 
+// Not required for tests...
 @EnableAutoConfiguration
 public class JobKeywordsApplication {
 
     @Log
     private Logger log;
-    
+
     @Value("${app.name}")
     private String appName;
-    
-    
+
     public static void main(String[] args) {
         SpringApplication.run(JobKeywordsApplication.class, args);
     }

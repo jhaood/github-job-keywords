@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyRestController {
     @Log
     private Logger log;
-    
+
     private User user;
-    
-    @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/{userName}", method = RequestMethod.GET, produces = "application/json")
     public User getUser(@PathVariable String userName) {
         log.error("/user endpoint");
         if (user == null) {
@@ -29,7 +29,7 @@ public class MyRestController {
         return user;
     }
 
-    @RequestMapping(value = "/{userName}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{userName}", method = RequestMethod.DELETE, produces = "application/json")
     public User deleteUser(@PathVariable Long userName) {
         log.error("/user DELETE endpoint");
 

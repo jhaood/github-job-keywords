@@ -21,7 +21,7 @@ public class RestClientController {
     @Autowired
     private RestClient restClient;
 
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @RequestMapping(value = "/page", method = RequestMethod.GET, produces = "application/json")
     public PivotalJsonPage getPage() {
         log.error("/page endpoint");
 
@@ -29,7 +29,7 @@ public class RestClientController {
         return page;
     }
 
-    @RequestMapping(value = "/indeed", method = RequestMethod.GET)
+    @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = "application/json")
     public IndeedResponse getIndeed() {
         log.error("/indeed endpoint");
 
