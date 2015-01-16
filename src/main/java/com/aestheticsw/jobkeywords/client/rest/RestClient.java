@@ -2,6 +2,9 @@ package com.aestheticsw.jobkeywords.client.rest;
 
 import java.util.List;
 
+import net.exacode.spring.logging.inject.Log;
+
+import org.slf4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -17,6 +20,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 @Component
 public class RestClient {
 
+    @Log
+    private Logger log;
+
     // TODO use HttpComponentsClientHttpRequestFactory to create the RestTemplate
     // HttpClient httpClient = HttpClientBuilder.create().build();
     // ClientHttpRequestFactory requestFactory = new
@@ -25,6 +31,8 @@ public class RestClient {
     private RestTemplate restTemplate;
 
     public RestClient() {
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        restTemplate = new RestTemplate(factory);
     }
 
     public PivotalJsonPage getPage() {
@@ -44,27 +52,26 @@ public class RestClient {
     // &st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=us&chnl=&userip=1.2.3.4
     // &useragent=Mozilla/%2F4.0%28Firefox%29&v=2
     public IndeedResponse getIndeed() {
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        restTemplate = new RestTemplate(factory);
-
+        /*
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         for (HttpMessageConverter<?> converter : messageConverters) {
             if (converter.canRead(IndeedResponse.class, MediaType.APPLICATION_XML)) {
                 if (converter instanceof MappingJackson2XmlHttpMessageConverter
                         || converter instanceof MappingJackson2HttpMessageConverter) {
                     MappingJackson2XmlHttpMessageConverter xmlConverter = (MappingJackson2XmlHttpMessageConverter) converter;
-                    /*
+                    *
                     xmlConverter.getObjectMapper()
                             .configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
-                            */
+                    xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
                     xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,
                             true);
-                    xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+                    *
                     
                     // xmlConverter.getObjectMapper().registerModule(new XmlWhitespaceModule());
                 }
             }
         }
+        */
 
         IndeedResponse indeedResponse = restTemplate
                 .getForObject("http://api.indeed.com/ads/apisearch?publisher=1652353865637104&q=java&l=austin%2C+tx"
@@ -72,7 +79,7 @@ public class RestClient {
                         + "&useragent=Mozilla/%2F4.0%28Firefox%29&v=2",
                         IndeedResponse.class);
 
-        System.out.println("Response: " + indeedResponse);
+        log.debug("Response: " + indeedResponse);
 
         return indeedResponse;
     }
