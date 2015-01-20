@@ -1,7 +1,7 @@
-package com.aestheticsw.jobkeywords.client.rest;
+package com.aestheticsw.jobkeywords.service.rest;
 
 import java.io.IOException;
-import org.springframework.http.HttpHeaders;
+
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -21,7 +21,7 @@ public class XUserAgentInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
             throws IOException {
 
-        HttpHeaders headers = request.getHeaders();
+        // HttpHeaders headers = request.getHeaders();
         // headers.add("Accept",
         // "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
         /*

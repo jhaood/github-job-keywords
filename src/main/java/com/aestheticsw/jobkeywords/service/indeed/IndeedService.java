@@ -1,15 +1,11 @@
-package com.aestheticsw.jobkeywords.client.rest;
+package com.aestheticsw.jobkeywords.service.indeed;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,11 +14,11 @@ import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConve
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.aestheticsw.jobkeywords.domain.IndeedResponse;
-import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
+import com.aestheticsw.jobkeywords.domain.indeed.IndeedResponse;
+import com.aestheticsw.jobkeywords.service.rest.XUserAgentInterceptor;
 
 @Component
-public class RestClient {
+public class IndeedService {
 
     @Log
     private Logger log;
@@ -34,21 +30,9 @@ public class RestClient {
 
     private RestTemplate restTemplate;
 
-    public RestClient() {
+    public IndeedService() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         restTemplate = new RestTemplate(factory);
-    }
-
-    public PivotalJsonPage getPage() {
-        PivotalJsonPage page = restTemplate.getForObject("http://graph.facebook.com/pivotalsoftware",
-                PivotalJsonPage.class);
-
-        System.out.println("Name:    " + page.getName());
-        System.out.println("About:   " + page.getAbout());
-        System.out.println("Phone:   " + page.getPhone());
-        System.out.println("Website: " + page.getWebsite());
-
-        return page;
     }
 
     // MappingJackson2XmlHttpMessageConverter

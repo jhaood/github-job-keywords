@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
+import com.aestheticsw.jobkeywords.service.rest.RestClient;
 
 /*
  * Use TestBase instead of annotating every class. 
@@ -26,11 +27,6 @@ public class RestClientTest extends TestBase {
     @Test
     public void getPage() {
         assertNotNull(restClient.getPage());
-    }
-
-    @Test
-    public void getIndeed() {
-        assertNotNull(restClient.getIndeed());
     }
 
 }

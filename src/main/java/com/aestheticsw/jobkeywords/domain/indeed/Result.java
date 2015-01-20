@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain;
+package com.aestheticsw.jobkeywords.domain.indeed;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
