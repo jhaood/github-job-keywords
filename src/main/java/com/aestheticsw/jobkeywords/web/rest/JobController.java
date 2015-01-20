@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
 import com.aestheticsw.jobkeywords.domain.indeed.IndeedResponse;
+import com.aestheticsw.jobkeywords.domain.indeed.Result;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.service.rest.RestClient;
 
@@ -34,13 +35,26 @@ public class JobController {
         return page;
     }
 
-    @RequestMapping(value = "/indeed", method = RequestMethod.GET)
+    @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
             // MediaType.APPLICATION_XML_VALUE })
-    public IndeedResponse getIndeed() {
+    public IndeedResponse getIndeedJobList() {
         log.info("/indeed endpoint");
 
-        IndeedResponse indeedResponse = indeedService.getIndeed();
+        IndeedResponse indeedResponse = indeedService.getIndeedJobList();
+        return indeedResponse;
+    }
+
+    @RequestMapping(value = "/job", method = RequestMethod.GET)
+    // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
+            // MediaType.APPLICATION_XML_VALUE })
+    public String getIndeedJobDetails() {
+        log.info("/job endpoint");
+        
+        IndeedResponse jobListResponse = getIndeedJobList();
+        Result job = jobListResponse.getResults().getResults().get(0);
+
+        String indeedResponse = indeedService.getIndeedJobDetails(job.getUrl());
         return indeedResponse;
     }
 

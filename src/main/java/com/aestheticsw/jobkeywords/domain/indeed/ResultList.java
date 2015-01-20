@@ -13,5 +13,9 @@ public class ResultList {
 
     @XmlElement(name = "result")
     private List<Result> results;
+
+    public List<Result> getResults() {
+        return results;
+    }
     
 }

@@ -76,7 +76,12 @@
 			<div class="row">
 				<div class="span7 clearfix header-contents">
 					<h1>Term Extraction <span style="color: #999; font-size: .5em;"> 1.0</span></h1>
-					<!-- OLD: <form class="form-horizontal" method="POST" action="http://term-extraction.appspot.com/terms" id="form"> -->
+					<!-- OLD FiveFilters: 
+					<form class="form-horizontal" method="POST" action="http://term-extraction.appspot.com/terms" id="form"> 
+					-->
+					<!--  original FiveFilters
+					<form class="form-horizontal" method="POST" action="http://termextract.fivefilters.org/extract.php" id="form">
+					 -->
 					<form class="form-horizontal" method="POST" action="http://termextract.fivefilters.org/extract.php" id="form">
 						<label for="text_or_url">Enter or paste text or a website address</label>
 						<textarea id="text_or_url" name="text_or_url" rows="7" class="dim span6">Inevitably, then, corporations do not restrict themselves merely to the arena of economics. Rather, as John Dewey observed, &quot;politics is the shadow cast on society by big business&quot;. Over decades, corporations have worked together to ensure that the choices offered by 'representative democracy' all represent their greed for maximised profits.
@@ -688,6 +693,10 @@ This is a sensitive task. We do not live in a totalitarian society - the public 
 		$('.field-help').hide();
 		$('.feat-media').show();
 		//$(e.target).next('.field-help').hide();
+	}
+	
+	function jsonReply(var response) {
+		alert(response);
 	}
 	</script>
 	
