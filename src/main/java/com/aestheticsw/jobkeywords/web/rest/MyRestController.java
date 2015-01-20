@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.web;
+package com.aestheticsw.jobkeywords.web.rest;
 
 import net.exacode.spring.logging.inject.Log;
 

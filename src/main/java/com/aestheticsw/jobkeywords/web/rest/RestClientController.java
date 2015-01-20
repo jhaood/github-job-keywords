@@ -1,9 +1,10 @@
-package com.aestheticsw.jobkeywords.web;
+package com.aestheticsw.jobkeywords.web.rest;
 
 import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
 public class RestClientController {
     @Log
     private Logger log;
-        
+
     @Autowired
     private RestClient restClient;
 
@@ -29,7 +30,9 @@ public class RestClientController {
         return page;
     }
 
-    @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/indeed", method = RequestMethod.GET)
+    // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
+            // MediaType.APPLICATION_XML_VALUE })
     public IndeedResponse getIndeed() {
         log.error("/indeed endpoint");
 

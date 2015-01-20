@@ -10,7 +10,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<description>keyword extraction from job listings</description>
 
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -24,6 +24,7 @@
 		<start-class>com.aestheticsw.jobkeywords.JobKeywordsApplication</start-class>
 		<java.version>1.8</java.version>
 		<version.exacode-spring-logging>1.0.0</version.exacode-spring-logging>
+		<m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
 	</properties>
 
 	<build>
@@ -57,6 +58,14 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
@@ -64,6 +73,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
