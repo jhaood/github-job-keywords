@@ -1,5 +1,7 @@
 package com.aestheticsw.jobkeywords.web.rest;
 
+import java.io.IOException;
+
 import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import com.aestheticsw.jobkeywords.domain.indeed.IndeedResponse;
 import com.aestheticsw.jobkeywords.domain.indeed.Result;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.service.rest.RestClient;
+import com.aestheticsw.jobkeywords.service.termextractor.FiveFiltersService;
 
 @RestController
 @RequestMapping(value = "/job")
@@ -22,6 +25,9 @@ public class JobController {
 
     @Autowired
     private IndeedService indeedService;
+    
+    @Autowired
+    private FiveFiltersService fiveFiltersService;
     
     @Autowired
     private RestClient restClient;
@@ -48,14 +54,16 @@ public class JobController {
     @RequestMapping(value = "/job", method = RequestMethod.GET)
     // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
             // MediaType.APPLICATION_XML_VALUE })
-    public String getIndeedJobDetails() {
+    public String getIndeedJobDetails() throws IOException {
         log.info("/job endpoint");
         
         IndeedResponse jobListResponse = getIndeedJobList();
         Result job = jobListResponse.getResults().getResults().get(0);
 
-        String indeedResponse = indeedService.getIndeedJobDetails(job.getUrl());
-        return indeedResponse;
+        String jobDetails = indeedService.getIndeedJobDetails(job.getUrl());
+        
+        String keywordJson = fiveFiltersService.getKeywords(jobDetails);
+        return keywordJson;
     }
 
 }

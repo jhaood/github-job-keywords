@@ -2,6 +2,7 @@ package com.aestheticsw.jobkeywords.service.indeed;
 
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,12 +16,14 @@ import javax.xml.transform.Source;
 
 import net.exacode.spring.logging.inject.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -39,68 +42,39 @@ public class IndeedService {
     @Log
     private Logger log;
 
-    // TODO use HttpComponentsClientHttpRequestFactory to create the RestTemplate
-    // HttpClient httpClient = HttpClientBuilder.create().build();
-    // ClientHttpRequestFactory requestFactory = new
-    // HttpComponentsClientHttpRequestFactory(httpClient);
-
+    @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
     private XPathOperations xpathTemplate;
 
-    /*
-     * public FlickrClient(RestOperations restTemplate, XPathOperations xpathTemplate) {
-     * this.restTemplate = restTemplate;
-     * this.xpathTemplate = xpathTemplate;
-     * }
-     */
-
     public IndeedService() {
+        /*
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         restTemplate = new RestTemplate(factory);
-
-        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        for (HttpMessageConverter<?> converter : messageConverters) {
-            if (converter.canRead(Source.class, MediaType.APPLICATION_XML)) {
-                // converter.canRead(Source.class, MediaType.TEXT_HTML);
-                if (! (converter instanceof SourceHttpMessageConverter<?>)) {
-                    throw new RuntimeException("Unknown XML Converter type: " + converter.getClass().getName());
-                }
-
-                SourceHttpMessageConverter<?> xmlConverter = (SourceHttpMessageConverter<?>) converter;
-                List<MediaType> mediaTypes = new ArrayList<MediaType>(xmlConverter.getSupportedMediaTypes());
-                mediaTypes.add(MediaType.TEXT_HTML);
-                xmlConverter.setSupportedMediaTypes(mediaTypes);
-            }
-        }
+        */
+        // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+        // for (HttpMessageConverter<?> converter : messageConverters) {
+        // if (converter.canRead(Source.class, MediaType.APPLICATION_XML)) {
+        // // converter.canRead(Source.class, MediaType.TEXT_HTML);
+        // if (! (converter instanceof SourceHttpMessageConverter<?>)) {
+        // throw new RuntimeException("Unknown XML Converter type: " +
+        // converter.getClass().getName());
+        // }
+        //
+        // SourceHttpMessageConverter<?> xmlConverter = (SourceHttpMessageConverter<?>) converter;
+        // List<MediaType> mediaTypes = new
+        // ArrayList<MediaType>(xmlConverter.getSupportedMediaTypes());
+        // mediaTypes.add(MediaType.TEXT_HTML);
+        // xmlConverter.setSupportedMediaTypes(mediaTypes);
+        // }
+        // }
 
         // restTemplate.setMessageConverters(messageConverters);
     }
 
     // Commented out the MappingJackson2XmlHttpMessageConverter stuff...
     public IndeedResponse getIndeedJobList() {
-        /*
-         * List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-         * for (HttpMessageConverter<?> converter : messageConverters) {
-         * if (converter.canRead(IndeedResponse.class, MediaType.APPLICATION_XML)) {
-         * if (converter instanceof MappingJackson2XmlHttpMessageConverter || converter instanceof
-         * MappingJackson2HttpMessageConverter) {
-         * MappingJackson2XmlHttpMessageConverter xmlConverter =
-         * (MappingJackson2XmlHttpMessageConverter) converter;
-         * xmlConverter.getObjectMapper()
-         * .configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
-         * xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY
-         * , true);
-         * xmlConverter.getObjectMapper().configure(DeserializationFeature.
-         * ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,
-         * true);
-         * // xmlConverter.getObjectMapper().registerModule(new XmlWhitespaceModule());
-         * }
-         * }
-         * }
-         */
-
         /*
          * More search parameters...
          * String query =
@@ -130,77 +104,14 @@ public class IndeedService {
         return indeedResponse;
     }
 
-    public void doIt(String apiKey, String searchTerm) {
-        List<BufferedImage> photos = searchPhotos(apiKey, searchTerm);
-        showPhotos(searchTerm, photos);
-    }
-
-    // http://api.indeed.com/ads/apigetjobs?publisher=1652353865637104&jobkeys=5e418a95a6a772c1&v=2&format=xml
-    public String getIndeedJobDetails(String url) {
-        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        for (HttpMessageConverter<?> converter : messageConverters) {
-            if (converter.canRead(Source.class, MediaType.APPLICATION_XML)
-                    && ! converter.canRead(Source.class, MediaType.TEXT_HTML)) {
-                if (! (converter instanceof SourceHttpMessageConverter<?>)) {
-                    continue;
-                    // throw new RuntimeException("Unknown XML HttPmessageConverter type: " + converter.getClass().getName());
-                }
-                
-                SourceHttpMessageConverter<?> xmlConverter = (SourceHttpMessageConverter<?>) converter;
-                List<MediaType> mediaTypes = new ArrayList<MediaType>(xmlConverter.getSupportedMediaTypes());
-                mediaTypes.add(MediaType.TEXT_HTML);
-                xmlConverter.setSupportedMediaTypes(mediaTypes);
-            }
-        }
-
-        Source photos = restTemplate.getForObject(url, Source.class);
-        
-        final String jobXPath = "/html/body/table[2]/tr/td[1]/div[@id=\"job_header\"]";
-        List<String> evaluate = xpathTemplate.evaluate(jobXPath, photos, new NodeMapper() {
-            public Object mapNode(Node node, int i) throws DOMException {
-                Element photo = (Element) node;
-
-                Map<String, String> variables = new HashMap<String, String>(3);
-                variables.put("server", photo.getAttribute("server"));
-                variables.put("id", photo.getAttribute("id"));
-                variables.put("secret", photo.getAttribute("secret"));
-
-                return restTemplate.getForObject(jobXPath, String.class, variables);
-            }
-        });
-
-        return evaluate.get(0);
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<BufferedImage> searchPhotos(String apiKey, String searchTerm) {
-        String photoSearchUrl = "http://www.flickr.com/services/rest?method=flickr.photos.search&api+key={api-key}&tags={tag}&per_page=10";
-        Source photos = restTemplate.getForObject(photoSearchUrl, Source.class, apiKey, searchTerm);
-
-        final String photoUrl = "http://static.flickr.com/{server}/{id}_{secret}_m.jpg";
-        return (List<BufferedImage>) xpathTemplate.evaluate("//photo", photos, new NodeMapper() {
-            public Object mapNode(Node node, int i) throws DOMException {
-                Element photo = (Element) node;
-
-                Map<String, String> variables = new HashMap<String, String>(3);
-                variables.put("server", photo.getAttribute("server"));
-                variables.put("id", photo.getAttribute("id"));
-                variables.put("secret", photo.getAttribute("secret"));
-
-                return restTemplate.getForObject(photoUrl, BufferedImage.class, variables);
-            }
-        });
-    }
-
-    private void showPhotos(String searchTerm, List<BufferedImage> imageList) {
-        JFrame frame = new JFrame(searchTerm + " photos");
-        frame.setLayout(new GridLayout(2, imageList.size() / 2));
-        for (BufferedImage image : imageList) {
-            frame.add(new JLabel(new ImageIcon(image)));
-        }
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    public String getIndeedJobDetails(String url) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        Elements jobHeader = doc.select("#job_header > b > font");
+        Elements jobSummary = doc.select("#job_summary");
+        StringBuilder sb = new StringBuilder();
+        sb.append(jobHeader.toString().replace("<br>", " ")).append("\n");
+        sb.append(jobSummary.toString().replace("<br>", " "));
+        return sb.toString();
     }
 
 }

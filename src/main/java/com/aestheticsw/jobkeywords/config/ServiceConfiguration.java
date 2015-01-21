@@ -9,6 +9,8 @@ import net.exacode.spring.logging.inject.Log;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.MyJaxp13XPathTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 import org.xml.sax.ErrorHandler;
@@ -26,6 +28,12 @@ public class ServiceConfiguration {
     @Bean(name = "xpathTempate")
     public XPathOperations getXPathTemplate() {
         return new MyJaxp13XPathTemplate(); 
+    }
+    
+    @Bean(name = "restTemplate")
+    public RestTemplate getRestTemplate() {
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        return new RestTemplate(factory);
     }
 
     @SuppressWarnings("restriction")
