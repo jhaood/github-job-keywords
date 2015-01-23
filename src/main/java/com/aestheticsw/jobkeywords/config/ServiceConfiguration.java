@@ -8,7 +8,6 @@ import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -28,13 +27,37 @@ public class ServiceConfiguration {
      */
     @Bean(name = "xpathTempate")
     public XPathOperations getXPathTemplate() {
-        return new MyJaxp13XPathTemplate(); 
+        return new MyJaxp13XPathTemplate();
     }
-    
+
     @Bean(name = "restTemplate")
     public RestTemplate getRestTemplate() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        return new RestTemplate(factory);
+        RestTemplate restTemplate = new RestTemplate(factory);
+
+        // KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET CONFIGURED. 
+        // 
+        // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+        // for (HttpMessageConverter<?> converter : messageConverters) {
+        //
+        // if (converter.canRead(IndeedResponse.class, MediaType.APPLICATION_XML)) {
+        // if (converter instanceof AbstractJackson2HttpMessageConverter) {
+        // AbstractJackson2HttpMessageConverter xmlConverter =
+        // (AbstractJackson2HttpMessageConverter) converter;
+        // *
+        // xmlConverter.getObjectMapper()
+        // .configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
+        // xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+        // true);
+        // xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,
+        // true);
+        // *
+        //
+        // // xmlConverter.getObjectMapper().registerModule(new XmlWhitespaceModule());
+        // }
+        // }
+
+        return restTemplate;
     }
 
     @SuppressWarnings("restriction")
@@ -62,7 +85,7 @@ public class ServiceConfiguration {
                     public void fatalError(SAXParseException exception) throws SAXException {
                         log.error("WARNING parsing exception ignored", exception);
                     }
-                    
+
                 });
                 return builder;
             }

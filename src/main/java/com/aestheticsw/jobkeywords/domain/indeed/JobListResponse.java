@@ -5,11 +5,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 // @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 // @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "response")
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class JobListResponse {
     @XmlElement
     private String location;

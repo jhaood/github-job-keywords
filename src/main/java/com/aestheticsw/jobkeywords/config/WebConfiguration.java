@@ -41,7 +41,9 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * @see http://stackoverflow.com/questions/27789277/how-to-handle-html-page-using-contentnegotiation-but-not-through-jsp-internalvi
+     * @see http
+     *      ://stackoverflow.com/questions/27789277/how-to-handle-html-page-using-contentnegotiation
+     *      -but-not-through-jsp-internalvi
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -70,8 +72,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(true)
-                .defaultContentType(MediaType.APPLICATION_JSON).useJaf(false).mediaType("xml", MediaType.APPLICATION_XML)
-                .mediaType("json", MediaType.APPLICATION_JSON)
+                .defaultContentType(MediaType.APPLICATION_JSON).useJaf(false)
+                .mediaType("xml", MediaType.APPLICATION_XML).mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("html", MediaType.TEXT_HTML);
     }
 
@@ -85,5 +87,27 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
      *           configurer.ignoreAcceptHeader(true).defaultContentType(MediaType.TEXT_HTML);
      *           }
      */
+
+    /**
+     * Don't need special configuration of the MessageConverter for the REST controllers. 
+     * 
+     * KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET TWEAKED. 
+     * 
+     * Chrome json plugin strips the quotes off attribute-names. Have to pull JSON response from
+     * source or from Dev-Tools.
+     */
+    // @Override
+    // public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    // final MappingJackson2HttpMessageConverter converter = new
+    // MappingJackson2HttpMessageConverter();
+    //
+    // final ObjectMapper objectMapper = new ObjectMapper();
+    // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    // // objectMapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    //
+    // converter.setObjectMapper(objectMapper);
+    // converters.add(converter);
+    // super.configureMessageConverters(converters);
+    // }
 
 }
