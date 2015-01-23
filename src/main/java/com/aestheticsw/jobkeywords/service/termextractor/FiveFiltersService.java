@@ -39,7 +39,12 @@ public class FiveFiltersService {
 
     Map<Pattern, String> regExMap = initRegExMap();
 
-    private String blacklistRegEx = "experience|work|team|software engineer|services|systems|data|design|ability|development|candidate|knowledge|customers|applications|software|computer science|products|building|technologies|qualifications|projects|requirements|position|support|solutions|ceo|expertise|cloud|employment|world|platform|company|understanding|skills|software development|environment|infrastructure|opportunity|applicants|people|engineers|part|today|capital|practices|architecture|role|leadership|field|years|manner|service|thousands|generation|teams|code|research|candidates|responsibilities|leader|models|day|developers|billions|color|problems|approach|industry|machine|tools|features|religion|race|risk|implementation|quality|ssg|technology|analysis|software community|customer relationship management|bain capital ventures|subject matter experts|software development experience|software development projects|development|engineering|engineer|environment";
+    // english blacklist
+    private String blacklistRegEx = "experience|work|team|software engineer|services|systems|data|design|ability|candidate|knowledge|customers|applications|software|computer science|products|building|technologies|qualifications|projects|requirements|position|support|solutions|ceo|expertise|cloud|employment|world|platform|company|understanding|skills|software development experience|software development projects|software development|environment|infrastructure|opportunity|applicants|people|engineers|part|today|capital|practices|architecture|role|leadership|field|years|manner|service|thousands|generation|teams|code|research|candidates|responsibilities|leader|models|day|developers|billions|color|problems|approach|industry|machine|tools|features|religion|race|risk|implementation|quality|ssg|technology|analysis|software community|customer relationship management|bain capital ventures|subject matter experts|environment";
+
+    // french blacklist - but FiveFilters doesn't do well with French. 
+    // blacklistRegEx += "|sein|conception|missions|maitrise|poste|charge|production|afin|environnement|avez|equipe|realisation|mise|logiciels|groupe|informatique|gestion|conseil|rediger|nos clients|ajoutee|formation|votre mission|signalisation ferroviaire|des connaissances|accompagnons nos clients|cadre du developpement|'industrie|developpement logiciel|l offre yourcegid|des expertises metier|fonde son savoir-faire|performance des entreprises|integrer l 'equipe|venez relever ce|des conditions egales|votre mission consiste|groupe cegid compte|sommes partenaires des|assistance technique bureau|premier editeur francais|renforcons nos equipes|competences techniques plurielles|analyses fonctionnelles organiques|standards du client|un|une|le|la|les|l";
+
     private Pattern blacklistPattern;
 
     public TermList getKeywords(String content, Locale locale) {
@@ -142,6 +147,8 @@ public class FiveFiltersService {
         regExMap.put(Pattern.compile("- ·"), " ");
         regExMap.put(Pattern.compile("·"), " ");
         regExMap.put(Pattern.compile("®"), "");
+        regExMap.put(Pattern.compile("«"), "");
+        regExMap.put(Pattern.compile("»"), "");
 
         // remove accent characters that were stripped by Normalize.normalize()
         regExMap.put(Pattern.compile("\\p{M}"), "");
