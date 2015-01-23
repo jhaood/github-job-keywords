@@ -5,5 +5,7 @@
     <logger name="org.springframework" level="INFO"/>
     
     <logger name="org.springframework.web.servlet" level="DEBUG"/>
+
+    <logger name="com.aestheticsw" level="DEBUG"/>
     
 </configuration>

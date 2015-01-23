@@ -1,18 +1,8 @@
 package com.aestheticsw.jobkeywords.service.indeed;
 
-import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.xml.transform.Source;
+import java.util.Locale;
 
 import net.exacode.spring.logging.inject.Log;
 
@@ -21,17 +11,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.xml.xpath.NodeMapper;
 import org.springframework.xml.xpath.XPathOperations;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import com.aestheticsw.jobkeywords.domain.indeed.IndeedResponse;
 import com.aestheticsw.jobkeywords.service.rest.XUserAgentInterceptor;
@@ -50,9 +32,10 @@ public class IndeedService {
 
     public IndeedService() {
         /*
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        restTemplate = new RestTemplate(factory);
-        */
+         * HttpComponentsClientHttpRequestFactory factory = new
+         * HttpComponentsClientHttpRequestFactory();
+         * restTemplate = new RestTemplate(factory);
+         */
         // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         // for (HttpMessageConverter<?> converter : messageConverters) {
         // if (converter.canRead(Source.class, MediaType.APPLICATION_XML)) {
@@ -73,17 +56,35 @@ public class IndeedService {
         // restTemplate.setMessageConverters(messageConverters);
     }
 
-    // Commented out the MappingJackson2XmlHttpMessageConverter stuff...
-    public IndeedResponse getIndeedJobList() {
+    public IndeedResponse
+            getIndeedJobList(String query, int jobCount, int start, Locale locale, String city, int radius, String sort) {
         /*
          * More search parameters...
          * String query =
-         * "http://api.indeed.com/ads/apisearch?publisher=1652353865637104&q=java&l=austin%2C+tx"
-         * +
+         * "http://api.indeed.com/ads/apisearch?publisher=1652353865637104&q=java&l=austin%2C+tx" +
          * "&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=us&chnl=&userip=1.2.3.4"
          * + "&useragent=Mozilla/%2F4.0%28Firefox%29&v=2";
          */
-        String query = "http://api.indeed.com/ads/apisearch?publisher=1652353865637104&q=java&v=2";
+        StringBuilder queryUrl = new StringBuilder();
+        query = encodeIndeedQuery(query);
+
+        queryUrl.append("http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=").append(query);
+        queryUrl.append("&limit=").append(jobCount);
+        queryUrl.append("&start=").append(start);
+        if (locale != null) {
+            queryUrl.append("&co=").append(locale.getCountry());
+        }
+        if (city != null) {
+            queryUrl.append("&l=").append(city);
+        }
+        if (radius > 0) {
+            queryUrl.append("&radius=").append(radius);
+        }
+        if (sort != null) {
+            queryUrl.append("&sort=").append(sort);
+        }
+
+        log.debug("Indeed job-list query: " + queryUrl);
 
         restTemplate.setInterceptors(Collections.singletonList(new XUserAgentInterceptor()));
 
@@ -94,23 +95,39 @@ public class IndeedService {
          * HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
          * String stringResponse = restTemplate.exchange(query, HttpMethod.GET, entity,
          * String.class).getBody();
+         * String stringResponse = restTemplate.getForObject(queryUrl, String.class);
          */
-        String stringResponse = restTemplate.getForObject(query, String.class);
 
-        IndeedResponse indeedResponse = restTemplate.getForObject(query, IndeedResponse.class);
-
+        /*
+         * http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=senior+java+%28engineering+or+developer+or+engineer%29&limit=2&start=0&co=US&l=San Francisco
+         */
+        IndeedResponse indeedResponse = restTemplate.getForObject(queryUrl.toString(), IndeedResponse.class);
         log.debug("Response: " + indeedResponse);
+
+        if (indeedResponse.getTotalResults() == 0) {
+            throw new IllegalArgumentException("Query retrieved no results from Indeed: " + queryUrl);
+        }
 
         return indeedResponse;
     }
 
+    private String encodeIndeedQuery(String query) {
+        /*
+        query = query.replaceAll(" ", "+");
+        query = query.replaceAll("\\(", "%28");
+        query = query.replaceAll("\\)", "%29");
+        */
+        return query;
+    }
+
     public String getIndeedJobDetails(String url) throws IOException {
+        log.debug("Indeed job-details query: " + url);
         Document doc = Jsoup.connect(url).get();
         Elements jobHeader = doc.select("#job_header > b > font");
         Elements jobSummary = doc.select("#job_summary");
         StringBuilder sb = new StringBuilder();
-        sb.append(jobHeader.toString().replace("<br>", " ")).append("\n");
-        sb.append(jobSummary.toString().replace("<br>", " "));
+        sb.append(jobHeader.toString()).append("\n");
+        sb.append(jobSummary.toString());
         return sb.toString();
     }
 
