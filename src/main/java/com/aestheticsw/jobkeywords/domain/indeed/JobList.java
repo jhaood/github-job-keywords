@@ -8,14 +8,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "results")
-public class ResultList {
+@XmlRootElement(name = "jobSummaries")
+public class JobList {
 
     @XmlElement(name = "result")
-    private List<Result> results;
+    private List<JobSummary> jobSummaries;
 
-    public List<Result> getResults() {
-        return results;
+    public List<JobSummary> getResults() {
+        return jobSummaries;
     }
     
 }

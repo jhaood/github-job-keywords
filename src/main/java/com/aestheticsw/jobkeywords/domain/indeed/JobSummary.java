@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 // @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Result {
+public class JobSummary {
     private String jobTitle;
     private String company;
     private String city;

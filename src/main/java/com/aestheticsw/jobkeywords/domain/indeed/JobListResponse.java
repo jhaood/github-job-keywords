@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 // @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "response")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IndeedResponse {
+public class JobListResponse {
     @XmlElement
     private String location;
 
@@ -35,7 +35,7 @@ public class IndeedResponse {
     // can't use Array or ArrayList as type = must use simple array or else whitespace isn't
     // ignored.
     @XmlElement(name = "results")
-    private ResultList results;
+    private JobList results;
 
     public String getLocation() {
         return location;
@@ -61,7 +61,7 @@ public class IndeedResponse {
         return pageNumber;
     }
 
-    public ResultList getResults() {
+    public JobList getResults() {
         return results;
     }
 
@@ -89,7 +89,7 @@ public class IndeedResponse {
         this.pageNumber = pageNumber;
     }
 
-    public void setResults(ResultList results) {
+    public void setResults(JobList results) {
         this.results = results;
     }
 

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
 import com.aestheticsw.jobkeywords.domain.fivefilters.TermList;
-import com.aestheticsw.jobkeywords.domain.indeed.IndeedResponse;
-import com.aestheticsw.jobkeywords.domain.indeed.Result;
+import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.service.rest.RestClient;
 import com.aestheticsw.jobkeywords.service.termextractor.FiveFiltersService;
@@ -49,10 +49,10 @@ public class JobController {
     // MediaType.APPLICATION_JSON_VALUE,
     // MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
-    public IndeedResponse
+    public JobListResponse
             getIndeedJobList(@RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
                     required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
-                    defaultValue = "0") int start, @RequestParam(required = false, defaultValue = "us") String country,
+                    defaultValue = "0") int start, @RequestParam(required = false, defaultValue = "US") String country,
                     @RequestParam(required = false) String city,
                     @RequestParam(required = false, defaultValue = "0") int radius,
                     @RequestParam(required = false) String sort) {
@@ -63,19 +63,19 @@ public class JobController {
             locale = StringUtils.lookupLocaleByCountry(country);
         }
         
-        IndeedResponse indeedResponse = indeedService.getIndeedJobList(query, jobCount, start, locale, city, radius, sort);
-        return indeedResponse;
+        JobListResponse jobListResponse = indeedService.getIndeedJobList(query, jobCount, start, locale, city, radius, sort);
+        return jobListResponse;
     }
 
     // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = {
     // MediaType.APPLICATION_JSON_VALUE,
     // MediaType.APPLICATION_XML_VALUE })
-    @RequestMapping(value = "/job", method = RequestMethod.GET)
+    @RequestMapping(value = "/terms", method = RequestMethod.GET)
     public TermList
             getIndeedJobDetails(@RequestParam(required = false, defaultValue = "Java Spring") String query,
                     @RequestParam(required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
                             defaultValue = "0") int start,
-                    @RequestParam(required = false, defaultValue = "us") String country,
+                    @RequestParam(required = false, defaultValue = "US") String country,
                     @RequestParam(required = false) String city,
                     @RequestParam(required = false, defaultValue = "0") int radius,
                     @RequestParam(required = false) String sort) throws IOException {
@@ -86,14 +86,14 @@ public class JobController {
             locale = StringUtils.lookupLocaleByCountry(country);
         }
 
-        IndeedResponse indeedResponse = indeedService.getIndeedJobList(query, jobCount, start, locale, city, radius, sort);
+        JobListResponse jobListResponse = indeedService.getIndeedJobList(query, jobCount, start, locale, city, radius, sort);
 
-        List<Result> results = indeedResponse.getResults().getResults();
-        log.info("Indeed returned jobCount=" + results.size());
+        List<JobSummary> jobSummaries = jobListResponse.getResults().getResults();
+        log.info("Indeed returned jobCount=" + jobSummaries.size());
         
         StringBuilder combinedJobDetails = new StringBuilder();
-        for (int index = 0; index < jobCount && index < results.size(); index++) {
-            Result job = results.get(index);
+        for (int index = 0; index < jobCount && index < jobSummaries.size(); index++) {
+            JobSummary job = jobSummaries.get(index);
             String jobDetails = indeedService.getIndeedJobDetails(job.getUrl());
             combinedJobDetails.append(jobDetails);
             combinedJobDetails.append("\n ");

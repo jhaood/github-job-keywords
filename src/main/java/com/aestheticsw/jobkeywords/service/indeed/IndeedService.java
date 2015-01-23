@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
-import com.aestheticsw.jobkeywords.domain.indeed.IndeedResponse;
+import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.service.rest.XUserAgentInterceptor;
 
 @Component
@@ -56,7 +56,7 @@ public class IndeedService {
         // restTemplate.setMessageConverters(messageConverters);
     }
 
-    public IndeedResponse
+    public JobListResponse
             getIndeedJobList(String query, int jobCount, int start, Locale locale, String city, int radius, String sort) {
         /*
          * More search parameters...
@@ -101,14 +101,14 @@ public class IndeedService {
         /*
          * http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=senior+java+%28engineering+or+developer+or+engineer%29&limit=2&start=0&co=US&l=San Francisco
          */
-        IndeedResponse indeedResponse = restTemplate.getForObject(queryUrl.toString(), IndeedResponse.class);
-        log.debug("Response: " + indeedResponse);
+        JobListResponse jobListResponse = restTemplate.getForObject(queryUrl.toString(), JobListResponse.class);
+        log.debug("Response: " + jobListResponse);
 
-        if (indeedResponse.getTotalResults() == 0) {
+        if (jobListResponse.getTotalResults() == 0) {
             throw new IllegalArgumentException("Query retrieved no results from Indeed: " + queryUrl);
         }
 
-        return indeedResponse;
+        return jobListResponse;
     }
 
     private String encodeIndeedQuery(String query) {
