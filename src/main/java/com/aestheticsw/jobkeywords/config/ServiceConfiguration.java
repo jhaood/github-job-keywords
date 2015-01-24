@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.xml.xpath.MyJaxp13XPathTemplate;
+import org.springframework.xml.xpath.Jaxp13XPathTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -27,7 +27,7 @@ public class ServiceConfiguration {
      */
     @Bean(name = "xpathTempate")
     public XPathOperations getXPathTemplate() {
-        return new MyJaxp13XPathTemplate();
+        return new Jaxp13XPathTemplate();
     }
 
     @Bean(name = "restTemplate")
@@ -35,8 +35,8 @@ public class ServiceConfiguration {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate(factory);
 
-        // KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET CONFIGURED. 
-        // 
+        // KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET CONFIGURED.
+        //
         // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         // for (HttpMessageConverter<?> converter : messageConverters) {
         //
