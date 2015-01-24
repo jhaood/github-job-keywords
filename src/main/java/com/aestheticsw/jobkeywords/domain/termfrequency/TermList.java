@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.fivefilters;
+package com.aestheticsw.jobkeywords.domain.termfrequency;
 
 import java.util.Comparator;
 import java.util.Iterator;

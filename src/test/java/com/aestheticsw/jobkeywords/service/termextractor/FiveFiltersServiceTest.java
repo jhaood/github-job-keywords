@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.domain.fivefilters.TermList;
+import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
 public class FiveFiltersServiceTest extends TestBase {

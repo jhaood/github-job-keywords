@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
-import com.aestheticsw.jobkeywords.domain.fivefilters.TermList;
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
+import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.service.rest.RestClient;
 import com.aestheticsw.jobkeywords.service.termextractor.FiveFiltersService;

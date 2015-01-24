@@ -25,8 +25,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.aestheticsw.jobkeywords.domain.fivefilters.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.fivefilters.TermList;
+import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 
 @Component
 public class FiveFiltersService {
