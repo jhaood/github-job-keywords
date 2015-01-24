@@ -47,7 +47,7 @@ public class FiveFiltersService {
 
     private Pattern blacklistPattern;
 
-    public TermList getKeywords(String content, Locale locale) {
+    public TermList getTermList(String content, Locale locale) {
 
         content = replaceHtmlTagsWithTerminators(content, locale);
 

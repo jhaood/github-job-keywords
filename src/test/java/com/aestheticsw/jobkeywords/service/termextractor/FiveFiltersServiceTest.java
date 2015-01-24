@@ -25,7 +25,7 @@ public class FiveFiltersServiceTest extends TestBase {
     @Test
     public void termExtractorDeserialization() throws FileNotFoundException {
         String content = FileUtils.getResourceAsString("simple-content.html", this);
-        TermList terms = service.getKeywords(content, Locale.US);
+        TermList terms = service.getTermList(content, Locale.US);
         
         assertNotNull(terms);
     }
@@ -33,7 +33,7 @@ public class FiveFiltersServiceTest extends TestBase {
     @Test
     public void realJobTerms() throws FileNotFoundException {
         String content = FileUtils.getResourceAsString("indeed-content.html", this);
-        TermList terms = service.getKeywords(content, Locale.US);
+        TermList terms = service.getTermList(content, Locale.US);
         
         assertNotNull(terms);
     }

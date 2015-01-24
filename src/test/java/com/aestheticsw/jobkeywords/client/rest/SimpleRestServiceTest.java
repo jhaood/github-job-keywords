@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.service.rest.RestClient;
+import com.aestheticsw.jobkeywords.service.rest.SimpleRestService;
 
 /*
  * Use TestBase instead of annotating every class. 
@@ -15,10 +15,10 @@ import com.aestheticsw.jobkeywords.service.rest.RestClient;
 @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
 @WebAppConfiguration
 */
-public class RestClientTest extends TestBase {
+public class SimpleRestServiceTest extends TestBase {
 
     @Autowired
-    private RestClient restClient;
+    private SimpleRestService simpleRestService;
     
     @Test
     public void contextLoads() {
@@ -26,7 +26,7 @@ public class RestClientTest extends TestBase {
 
     @Test
     public void getPage() {
-        assertNotNull(restClient.getPage());
+        assertNotNull(simpleRestService.getPage());
     }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
 
 @Component
-public class RestClient {
+public class SimpleRestService {
 
     @Log
     private Logger log;
@@ -22,7 +22,7 @@ public class RestClient {
 
     private RestTemplate restTemplate;
 
-    public RestClient() {
+    public SimpleRestService() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         restTemplate = new RestTemplate(factory);
     }
