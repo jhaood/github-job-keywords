@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-
 // @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 // @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "response")
@@ -19,16 +18,16 @@ public class JobListResponse {
 
     @XmlElement(name = "dupefilter")
     private Boolean dupeFilter;
-    
+
     @XmlElement(name = "highlight")
     private Boolean highlight;
-    
+
     @XmlElement(name = "totalresults")
     private Integer totalresults;
-    
+
     @XmlElement
     private int start;
-    
+
     @XmlElement
     private int end;
 
@@ -39,6 +38,13 @@ public class JobListResponse {
     // ignored.
     @XmlElement(name = "results")
     private JobList results;
+
+    public boolean hasResults() {
+        if (results == null || results.getResults() == null || results.getResults().size() == 0) {
+            return false;
+        }
+        return true;
+    }
 
     public String getLocation() {
         return location;

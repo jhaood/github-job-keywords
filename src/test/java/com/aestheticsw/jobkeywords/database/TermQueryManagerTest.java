@@ -46,9 +46,10 @@ public class TermQueryManagerTest extends TestBase {
         termQueryManager.accumulateTermFrequencyResults(param1, list1);
         termQueryManager.accumulateTermFrequencyResults(param1_2, list1);
 
-        TermFrequencyResults results = termQueryManager.getAccumulatedResults(param1);
+        TermFrequencyResults results = termQueryManager.getAccumulatedResults(param1.getQueryKey());
         assertNotNull(results);
-        assertNull(termQueryManager.getAccumulatedResults(param2));
+        assertFalse(termQueryManager.getAccumulatedResults(param2.getQueryKey()).hasResults());
+        assertEquals(0, termQueryManager.getAccumulatedResults(param2.getQueryKey()).getSortedList().size());
 
         List<TermFrequency> sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
         assertNotNull(sortedList);
@@ -60,8 +61,8 @@ public class TermQueryManagerTest extends TestBase {
 
         termQueryManager.accumulateTermFrequencyResults(param2, list2);
 
-        assertNotNull(termQueryManager.getAccumulatedResults(param1));
-        results = termQueryManager.getAccumulatedResults(param2);
+        assertNotNull(termQueryManager.getAccumulatedResults(param1.getQueryKey()));
+        results = termQueryManager.getAccumulatedResults(param2.getQueryKey());
         assertNotNull(results);
 
         sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());

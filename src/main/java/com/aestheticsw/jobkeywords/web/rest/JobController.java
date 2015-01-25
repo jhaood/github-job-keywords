@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
+import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
@@ -48,13 +51,9 @@ public class JobController {
             locale = StringUtils.lookupLocaleByCountry(country);
         }
 
-        JobListResponse jobListResponse = indeedService.getIndeedJobList(query,
-                jobCount,
-                start,
-                locale,
-                city,
-                radius,
-                sort);
+        SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
+
+        JobListResponse jobListResponse = indeedService.getIndeedJobList(params);
         return jobListResponse;
     }
 
@@ -63,7 +62,7 @@ public class JobController {
     // MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/terms", method = RequestMethod.GET)
     public TermList
-            getIndeedJobDetails(@RequestParam(required = false, defaultValue = "Java Spring") String query,
+            getTermListForSearchParameters(@RequestParam(required = false, defaultValue = "Java Spring") String query,
                     @RequestParam(required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
                             defaultValue = "0") int start,
                     @RequestParam(required = false, defaultValue = "US") String country,
@@ -76,10 +75,29 @@ public class JobController {
         if (country != null) {
             locale = StringUtils.lookupLocaleByCountry(country);
         }
+        SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
 
-        TermList terms = termExtractorService.extractTerms(query, jobCount, start, locale, city, radius, sort);
+        TermList terms = termExtractorService.extractTerms(params);
 
         return terms;
+    }
+
+    @RequestMapping(value = "/accumulatedterms", method = RequestMethod.GET)
+    public TermFrequencyResults getAccumulatedTermFrequencyResults(@RequestParam(required = false,
+            defaultValue = "Java Spring") String query,
+            @RequestParam(required = false, defaultValue = "US") String country,
+            @RequestParam(required = false) String city) throws IOException {
+        log.info("/job endpoint");
+
+        Locale locale = Locale.US;
+        if (country != null) {
+            locale = StringUtils.lookupLocaleByCountry(country);
+        }
+        QueryKey queryKey = new QueryKey(query, locale, city);
+
+        TermFrequencyResults results = termExtractorService.getAccumulatedTermFrequencyResults(queryKey);
+
+        return results;
     }
 
 }

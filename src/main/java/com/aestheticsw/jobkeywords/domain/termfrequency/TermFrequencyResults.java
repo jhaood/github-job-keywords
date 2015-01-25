@@ -9,12 +9,16 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TermFrequencyResults {
-    
+
     private static Logger log = LoggerFactory.getLogger(TermFrequencyResults.class);
 
-    private Map<String, TermFrequency> termFrequencyMap = new HashMap<>();
     private List<SearchParameters> searchParametersList = new ArrayList<>();
+
+    private Map<String, TermFrequency> termFrequencyMap = new HashMap<>();
 
     public void accumulateTermFrequencyList(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         synchronized (searchParametersList) {
@@ -35,11 +39,26 @@ public class TermFrequencyResults {
             }
         }
     }
-    
+
     public TermFrequency getForSearchParameters(SearchParameters searchParameters) {
         return termFrequencyMap.get(searchParameters);
     }
     
+    public boolean hasResults() {
+        if (termFrequencyMap.size() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<SearchParameters> getSearchParametersList() {
+        return searchParametersList;
+    }
+
+    public List<TermFrequency> getSortedList() {
+        return getSortedList(new TermFrequency.FrequencyComparator());
+    }
+
     public List<TermFrequency> getSortedList(Comparator comparator) {
         List<TermFrequency> list = new ArrayList<>(termFrequencyMap.values());
         list.sort(comparator);

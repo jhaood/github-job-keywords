@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.service.rest.XUserAgentInterceptor;
 
 @Component
@@ -56,8 +57,7 @@ public class IndeedService {
         // restTemplate.setMessageConverters(messageConverters);
     }
 
-    public JobListResponse
-            getIndeedJobList(String query, int jobCount, int start, Locale locale, String city, int radius, String sort) {
+    public JobListResponse getIndeedJobList(SearchParameters params) {
         /*
          * More search parameters...
          * String query =
@@ -66,22 +66,22 @@ public class IndeedService {
          * + "&useragent=Mozilla/%2F4.0%28Firefox%29&v=2";
          */
         StringBuilder queryUrl = new StringBuilder();
-        query = encodeIndeedQuery(query);
+        String query = encodeIndeedQuery(params.getQuery());
 
         queryUrl.append("http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=").append(query);
-        queryUrl.append("&limit=").append(jobCount);
-        queryUrl.append("&start=").append(start);
-        if (locale != null) {
-            queryUrl.append("&co=").append(locale.getCountry());
+        queryUrl.append("&limit=").append(params.getJobCount());
+        queryUrl.append("&start=").append(params.getStart());
+        if (params.getLocale() != null) {
+            queryUrl.append("&co=").append(params.getLocale().getCountry());
         }
-        if (city != null) {
-            queryUrl.append("&l=").append(city);
+        if (params.getCity() != null) {
+            queryUrl.append("&l=").append(params.getCity());
         }
-        if (radius > 0) {
-            queryUrl.append("&radius=").append(radius);
+        if (params.getRadius() > 0) {
+            queryUrl.append("&radius=").append(params.getRadius());
         }
-        if (sort != null) {
-            queryUrl.append("&sort=").append(sort);
+        if (params.getSort() != null) {
+            queryUrl.append("&sort=").append(params.getSort());
         }
 
         log.debug("Indeed job-list query: " + queryUrl);
@@ -99,7 +99,8 @@ public class IndeedService {
          */
 
         /*
-         * http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=senior+java+%28engineering+or+developer+or+engineer%29&limit=2&start=0&co=US&l=San Francisco
+         * http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=senior+java+%
+         * 28engineering+or+developer+or+engineer%29&limit=2&start=0&co=US&l=San Francisco
          */
         JobListResponse jobListResponse = restTemplate.getForObject(queryUrl.toString(), JobListResponse.class);
         log.debug("Response: " + jobListResponse);
@@ -113,10 +114,10 @@ public class IndeedService {
 
     private String encodeIndeedQuery(String query) {
         /*
-        query = query.replaceAll(" ", "+");
-        query = query.replaceAll("\\(", "%28");
-        query = query.replaceAll("\\)", "%29");
-        */
+         * query = query.replaceAll(" ", "+");
+         * query = query.replaceAll("\\(", "%28");
+         * query = query.replaceAll("\\)", "%29");
+         */
         return query;
     }
 

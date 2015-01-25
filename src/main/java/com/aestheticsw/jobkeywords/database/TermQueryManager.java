@@ -54,8 +54,11 @@ public class TermQueryManager {
         termFrequencyResults.accumulateTermFrequencyList(searchParameters, termFrequencyList);
     }
 
-    public TermFrequencyResults getAccumulatedResults(SearchParameters searchParameters) {
-        QueryKey queryKey = searchParameters.getQueryKey();
-        return termFrequencyResultsMap.get(queryKey);
+    public TermFrequencyResults getAccumulatedResults(QueryKey queryKey) {
+        TermFrequencyResults results = termFrequencyResultsMap.get(queryKey);
+        if (results == null) {
+            return new TermFrequencyResults();
+        }
+        return results;
     }
 }
