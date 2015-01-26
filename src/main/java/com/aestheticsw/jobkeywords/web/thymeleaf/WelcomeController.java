@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.aestheticsw.jobkeywords.web.jsp;
+package com.aestheticsw.jobkeywords.web.thymeleaf;
 
 import java.util.Date;
 import java.util.Map;
@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class WelcomeController {
 
-	@Value("${application.message:Hello World}")
+	@Value("${app.message:Hello World}")
 	private String message = "Hello World";
 
-	@RequestMapping("/")
+	@RequestMapping(value = {"/", "/welcome"})
 	public String welcome(Map<String, Object> model) {
 		model.put("time", new Date());
 		model.put("message", this.message);

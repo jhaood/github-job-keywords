@@ -10,6 +10,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.templateresolver.TemplateResolver;
 
 /**
  * This class isn't needed yet because Spring Boot enables MVC.
@@ -24,21 +28,47 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 // @EnableJpaRepositories(basePackages = "com.aestheticsw.jobkeywords.dao")
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
-    @Value("${spring.view.prefix:}")
-    private String prefix = "";
-
-    @Value("${spring.view.suffix:}")
-    private String suffix = "";
+    /* Manual configuraiton of Thymeleaf & JSPs breaks the correct default behavior... 
+     * I probably need to fix this later...
+     */
+//    @Bean
+//    public TemplateResolver templateResolver(){
+//        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
+//        templateResolver.setPrefix("classpath:/templates/");
+//        templateResolver.setSuffix(".html");
+//        // templateResolver.setTemplateMode("HTML5");
+// 
+//        return templateResolver;
+//    }
+//    @Bean
+//    public SpringTemplateEngine templateEngine(){
+//        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver());
+//        return templateEngine;
+//    }
+//    @Bean
+//    public ViewResolver viewResolver(){
+//        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver() ;
+//        viewResolver.setTemplateEngine(templateEngine());
+//        viewResolver.setOrder(1);
+// 
+//        return viewResolver;
+//    }
 
     // Will map to the JSP page: "WEB-INF/views/accounts/list.jsp"
-    @Bean(name = "jspViewResolver")
-    public ViewResolver getJspViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix(prefix);
-        resolver.setSuffix(suffix);
-        resolver.setOrder(2);
-        return resolver;
-    }
+    // Disable JSPs completely... can't use JSPs with device-specific view resolver in spring autoconfiguraiton...  
+//    @Value("${spring.view.prefix:}")
+//    private String prefix = "";
+//    @Value("${spring.view.suffix:}")
+//    private String suffix = "";
+//    @Bean(name = "jspViewResolver")
+//    public ViewResolver getJspViewResolver() {
+//        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//        viewResolver.setPrefix(prefix);
+//        viewResolver.setSuffix(suffix);
+//        viewResolver.setOrder(100);
+//        return viewResolver;
+//    }
 
     /**
      * @see http
@@ -51,7 +81,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/static/script/**").addResourceLocations("/static/script/");
         registry.addResourceHandler("/static/image/**").addResourceLocations("/static/image/");
-        registry.addResourceHandler("/**/*.html").addResourceLocations("/");
+        // disabling top-level HTML - replacing with Thymeleaf templates
+        // registry.addResourceHandler("/**/*.html").addResourceLocations("/");
     }
 
     /**
@@ -66,27 +97,14 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
      * clients are actually web-browsers (typically making REST calls via AJAX).
      * 
      * - Don't use the JAF, instead specify the media type mappings manually - we wish to
-     * support HTML, JSON and XML.
-     * 
+     * support JSON and XML - and HTML (via Thymeleaf templates).
      */
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(true)
                 .defaultContentType(MediaType.APPLICATION_JSON).useJaf(false)
-                .mediaType("xml", MediaType.APPLICATION_XML).mediaType("json", MediaType.APPLICATION_JSON)
-                .mediaType("html", MediaType.TEXT_HTML);
+                .mediaType("xml", MediaType.APPLICATION_XML).mediaType("json", MediaType.APPLICATION_JSON);
     }
-
-    /**
-     * Setup a simple content negotiating strategy:
-     * 1. Only path extension is taken into account, Accept headers are ignored.
-     * 2. Return HTML by default when not sure.
-     * 
-     * @Override
-     *           public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-     *           configurer.ignoreAcceptHeader(true).defaultContentType(MediaType.TEXT_HTML);
-     *           }
-     */
 
     /**
      * Don't need special configuration of the MessageConverter for the REST controllers. 
