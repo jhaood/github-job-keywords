@@ -45,10 +45,7 @@ public class TermFrequencyResults {
     }
     
     public boolean hasResults() {
-        if (termFrequencyMap.size() == 0) {
-            return false;
-        }
-        return true;
+        return (termFrequencyMap.size() > 0);
     }
 
     public List<SearchParameters> getSearchParametersList() {

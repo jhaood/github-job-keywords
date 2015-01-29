@@ -1,0 +1,77 @@
+package com.aestheticsw.jobkeywords.web.thymeleaf;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class SearchFormBean {
+    @NotEmpty(message = "Message is required.")
+    private String query;
+
+    private int jobCount;
+    
+    private int start;
+
+    private String country;
+
+    private String city;
+
+    private int radius;
+
+    private String sort;
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public int getJobCount() {
+        return jobCount;
+    }
+
+    public void setJobCount(int jobCount) {
+        this.jobCount = jobCount;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+}

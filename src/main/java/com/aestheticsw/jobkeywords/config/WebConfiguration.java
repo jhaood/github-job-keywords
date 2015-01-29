@@ -1,19 +1,14 @@
 package com.aestheticsw.jobkeywords.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-import org.thymeleaf.templateresolver.TemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafView;
+import org.thymeleaf.standard.fragment.StandardDOMSelectorFragmentSpec;
 
 /**
  * This class isn't needed yet because Spring Boot enables MVC.
@@ -28,47 +23,66 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 // @EnableJpaRepositories(basePackages = "com.aestheticsw.jobkeywords.dao")
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
-    /* Manual configuraiton of Thymeleaf & JSPs breaks the correct default behavior... 
+    /**
+<bean name="query-results-fragment" class="org.thymeleaf.spring4.view.ThymeleafView">
+  <property name="templateName" value="index" />
+  <property name="fragmentSpec">
+    <bean class="org.thymeleaf.standard.fragment.StandardDOMSelectorFragmentSpec"
+          c:selectorExpression="content" />
+  </property>
+</bean>
+
+    @Bean(name = "query-results-fragment")
+    public ThymeleafView getContentPartThymeleafView() {
+        ThymeleafView view = new ThymeleafView();
+        
+        new StandardDOMSelectorFragmentSpec("content-fragment"));
+    }
+     */
+    
+    /*
+     * Manual configuraiton of Thymeleaf & JSPs breaks the correct default behavior...
      * I probably need to fix this later...
      */
-//    @Bean
-//    public TemplateResolver templateResolver(){
-//        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
-//        templateResolver.setPrefix("classpath:/templates/");
-//        templateResolver.setSuffix(".html");
-//        // templateResolver.setTemplateMode("HTML5");
-// 
-//        return templateResolver;
-//    }
-//    @Bean
-//    public SpringTemplateEngine templateEngine(){
-//        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-//        templateEngine.setTemplateResolver(templateResolver());
-//        return templateEngine;
-//    }
-//    @Bean
-//    public ViewResolver viewResolver(){
-//        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver() ;
-//        viewResolver.setTemplateEngine(templateEngine());
-//        viewResolver.setOrder(1);
-// 
-//        return viewResolver;
-//    }
+    // @Bean
+    // public TemplateResolver templateResolver(){
+    // ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
+    // templateResolver.setPrefix("classpath:/templates/");
+    // templateResolver.setSuffix(".html");
+    // // templateResolver.setTemplateMode("HTML5");
+    //
+    // return templateResolver;
+    // }
+    // @Bean
+    // public SpringTemplateEngine templateEngine(){
+    // SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+    // templateEngine.setTemplateResolver(templateResolver());
+    // return templateEngine;
+    // }
+    // @Bean
+    // public ViewResolver viewResolver(){
+    // ThymeleafViewResolver viewResolver = new ThymeleafViewResolver() ;
+    // viewResolver.setTemplateEngine(templateEngine());
+    // viewResolver.setOrder(1);
+    //
+    // return viewResolver;
+    // }
 
     // Will map to the JSP page: "WEB-INF/views/accounts/list.jsp"
-    // Disable JSPs completely... can't use JSPs with device-specific view resolver in spring autoconfiguraiton...  
-//    @Value("${spring.view.prefix:}")
-//    private String prefix = "";
-//    @Value("${spring.view.suffix:}")
-//    private String suffix = "";
-//    @Bean(name = "jspViewResolver")
-//    public ViewResolver getJspViewResolver() {
-//        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-//        viewResolver.setPrefix(prefix);
-//        viewResolver.setSuffix(suffix);
-//        viewResolver.setOrder(100);
-//        return viewResolver;
-//    }
+    // Disable JSPs completely... can't use JSPs with device-specific view resolver in spring
+    // autoconfiguraiton...
+    // @Value("${spring.view.prefix:}")
+    // private String prefix = "";
+    // @Value("${spring.view.suffix:}")
+    // private String suffix = "";
+    // @Bean(name = "jspViewResolver")
+    // public ViewResolver getJspViewResolver() {
+    // InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+    // viewResolver.setPrefix(prefix);
+    // viewResolver.setSuffix(suffix);
+    // viewResolver.setOrder(100);
+    // return viewResolver;
+    // }
 
     /**
      * @see http
@@ -78,9 +92,9 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.setOrder(0);
-        registry.addResourceHandler("/static/css/**").addResourceLocations("/static/css/");
-        registry.addResourceHandler("/static/script/**").addResourceLocations("/static/script/");
-        registry.addResourceHandler("/static/image/**").addResourceLocations("/static/image/");
+        registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/script/**").addResourceLocations("classpath:/static/script/");
+        registry.addResourceHandler("/image/**").addResourceLocations("/static/image/");
         // disabling top-level HTML - replacing with Thymeleaf templates
         // registry.addResourceHandler("/**/*.html").addResourceLocations("/");
     }
@@ -107,9 +121,9 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * Don't need special configuration of the MessageConverter for the REST controllers. 
+     * Don't need special configuration of the MessageConverter for the REST controllers.
      * 
-     * KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET TWEAKED. 
+     * KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET TWEAKED.
      * 
      * Chrome json plugin strips the quotes off attribute-names. Have to pull JSON response from
      * source or from Dev-Tools.

@@ -7,6 +7,7 @@ import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,11 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
-import com.aestheticsw.jobkeywords.utils.StringUtils;
+import com.aestheticsw.jobkeywords.utils.SearchUtils;
 
 @RestController
-@RequestMapping(value = "/job")
-public class JobController {
+@RequestMapping(value = "/rest/job")
+public class JobRestController {
     @Log
     private Logger log;
 
@@ -33,9 +34,8 @@ public class JobController {
     @Autowired
     private TermExtractorService termExtractorService;
 
-    // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = {
-    // MediaType.APPLICATION_JSON_VALUE,
-    // MediaType.APPLICATION_XML_VALUE })
+    // produces = {MediaType.APPLICATION_JSON_VALUE,
+    // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     public JobListResponse
             getIndeedJobList(@RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
@@ -48,7 +48,7 @@ public class JobController {
 
         Locale locale = Locale.US;
         if (country != null) {
-            locale = StringUtils.lookupLocaleByCountry(country);
+            locale = SearchUtils.lookupLocaleByCountry(country);
         }
 
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
@@ -57,9 +57,8 @@ public class JobController {
         return jobListResponse;
     }
 
-    // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = {
-    // MediaType.APPLICATION_JSON_VALUE,
-    // MediaType.APPLICATION_XML_VALUE })
+    // produces = {MediaType.APPLICATION_JSON_VALUE,
+    // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/terms", method = RequestMethod.GET)
     public TermList
             getTermListForSearchParameters(@RequestParam(required = false, defaultValue = "Java Spring") String query,
@@ -73,7 +72,7 @@ public class JobController {
 
         Locale locale = Locale.US;
         if (country != null) {
-            locale = StringUtils.lookupLocaleByCountry(country);
+            locale = SearchUtils.lookupLocaleByCountry(country);
         }
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
 
@@ -91,7 +90,7 @@ public class JobController {
 
         Locale locale = Locale.US;
         if (country != null) {
-            locale = StringUtils.lookupLocaleByCountry(country);
+            locale = SearchUtils.lookupLocaleByCountry(country);
         }
         QueryKey queryKey = new QueryKey(query, locale, city);
 

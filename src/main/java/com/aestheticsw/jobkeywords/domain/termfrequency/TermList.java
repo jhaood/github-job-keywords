@@ -34,6 +34,10 @@ public class TermList {
         }
         return builder.toString();
     }
+    
+    public boolean hasResults() {
+        return (terms != null && terms.size() > 0);
+    }
 
     public List<TermFrequency> getTerms() {
         return terms;

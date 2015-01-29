@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import org.apache.commons.lang3.LocaleUtils;
 
-public class StringUtils {
+public class SearchUtils {
     
     public static Locale lookupLocaleByCountry(String country) {
         List<Locale> localeList = LocaleUtils.languagesByCountry(country);

@@ -15,6 +15,7 @@ public class SearchParameters {
     private String sort;
 
     private QueryKey queryKeyCache;
+    
     private HashCodeBuilder hashCodeBuilder;
     private String toStringCache;
 

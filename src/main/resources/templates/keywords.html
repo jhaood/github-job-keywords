@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+    layout:decorator="layout">
+<head>
+<title>Keyword extracted from current Job query</title>
+</head>
+<body>
+    <h1 layout:fragment="header">Keywords</h1>
+    <div layout:fragment="content" class="container">
+
+        <div layout:fragment="query-form" class="pull-left">
+            <!--    -->
+            <form id="messageForm" th:action="@{/job/keywords}" th:object="${searchFormBean}" action="#" method="post">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+                    <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
+                </div>
+
+                <label for="query">Indeed Query Expression</label>
+                <input type="text" th:field="*{query}" th:class="${#fields.hasErrors('query')} ? 'field-error'" />
+
+                <label for="jobCount"># Jobs</label>
+                <input type="text" th:field="*{jobCount}" th:class="${#fields.hasErrors('jobCount')} ? 'field-error'" />
+
+                <label for="start">Starting Job Index</label>
+                <input type="text" th:field="*{start}" th:class="${#fields.hasErrors('start')} ? 'field-error'" />
+
+                <label for="country">Country</label>
+                <input type="text" th:field="*{country}" th:class="${#fields.hasErrors('country')} ? 'field-error'" />
+
+                <label for="city">City</label>
+                <input type="text" th:field="*{city}" th:class="${#fields.hasErrors('city')} ? 'field-error'" />
+
+                <div class="form-actions">
+                    <input type="submit" value="Search" />
+                </div>
+            </form>
+        </div>
+
+        <div th:fragment="query-results (results)" class="pull-right">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <td>Term</td>
+                        <td>Frequency</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${results == null or ! results.hasResults()}">
+                        <td colspan="3">No results</td>
+                    </tr>
+                    <th:block th:if="${results != null and results.hasResults()}">
+                        <tr th:each="result : ${results.getTerms()}">
+                            <td th:text="${result.term}">1</td>
+                            <td th:text="${result.frequency}" />
+                            <td></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -40,10 +40,7 @@ public class JobListResponse {
     private JobList results;
 
     public boolean hasResults() {
-        if (results == null || results.getResults() == null || results.getResults().size() == 0) {
-            return false;
-        }
-        return true;
+        return (results != null && results.hasResults());
     }
 
     public String getLocation() {

@@ -13,6 +13,10 @@ public class JobList {
 
     @XmlElement(name = "result")
     private List<JobSummary> jobSummaries;
+    
+    public boolean hasResults() {
+        return (jobSummaries != null && jobSummaries.size() > 0);
+    }
 
     public List<JobSummary> getResults() {
         return jobSummaries;

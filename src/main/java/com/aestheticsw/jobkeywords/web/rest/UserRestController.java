@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/user")
-public class UserController {
+@RequestMapping(value = "/rest/user")
+public class UserRestController {
     @Log
     private Logger log;
 

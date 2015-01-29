@@ -10,29 +10,29 @@ public class StringUtilsTest {
     @Test
     public void locale() {
         
-        assertNotNull(StringUtils.lookupLocaleByCountry("US"));
-        assertEquals("US", StringUtils.lookupLocaleByCountry("US").getCountry());
-        assertEquals("en", StringUtils.lookupLocaleByCountry("US").getLanguage());
+        assertNotNull(SearchUtils.lookupLocaleByCountry("US"));
+        assertEquals("US", SearchUtils.lookupLocaleByCountry("US").getCountry());
+        assertEquals("en", SearchUtils.lookupLocaleByCountry("US").getLanguage());
 
-        assertNotNull(StringUtils.lookupLocaleByCountry("FR"));
-        assertEquals("FR", StringUtils.lookupLocaleByCountry("FR").getCountry());
-        assertEquals("fr", StringUtils.lookupLocaleByCountry("FR").getLanguage());
+        assertNotNull(SearchUtils.lookupLocaleByCountry("FR"));
+        assertEquals("FR", SearchUtils.lookupLocaleByCountry("FR").getCountry());
+        assertEquals("fr", SearchUtils.lookupLocaleByCountry("FR").getLanguage());
 
-        assertNotNull(StringUtils.lookupLocaleByCountry("GB"));
-        assertEquals("GB", StringUtils.lookupLocaleByCountry("GB").getCountry());
-        assertEquals("en", StringUtils.lookupLocaleByCountry("GB").getLanguage());
+        assertNotNull(SearchUtils.lookupLocaleByCountry("GB"));
+        assertEquals("GB", SearchUtils.lookupLocaleByCountry("GB").getCountry());
+        assertEquals("en", SearchUtils.lookupLocaleByCountry("GB").getLanguage());
 
-        assertNotNull(StringUtils.lookupLocaleByCountry("IE"));
-        assertEquals("IE", StringUtils.lookupLocaleByCountry("IE").getCountry());
-        assertEquals("en", StringUtils.lookupLocaleByCountry("IE").getLanguage());
+        assertNotNull(SearchUtils.lookupLocaleByCountry("IE"));
+        assertEquals("IE", SearchUtils.lookupLocaleByCountry("IE").getCountry());
+        assertEquals("en", SearchUtils.lookupLocaleByCountry("IE").getLanguage());
 
-        assertNotNull(StringUtils.lookupLocaleByCountry("DE"));
-        assertEquals("DE", StringUtils.lookupLocaleByCountry("DE").getCountry());
-        assertEquals("de", StringUtils.lookupLocaleByCountry("DE").getLanguage());
+        assertNotNull(SearchUtils.lookupLocaleByCountry("DE"));
+        assertEquals("DE", SearchUtils.lookupLocaleByCountry("DE").getCountry());
+        assertEquals("de", SearchUtils.lookupLocaleByCountry("DE").getLanguage());
 
-        assertNotNull(StringUtils.lookupLocaleByCountry("CH"));
-        assertEquals("CH", StringUtils.lookupLocaleByCountry("CH").getCountry());
-        assertEquals("fr", StringUtils.lookupLocaleByCountry("CH").getLanguage());
+        assertNotNull(SearchUtils.lookupLocaleByCountry("CH"));
+        assertEquals("CH", SearchUtils.lookupLocaleByCountry("CH").getCountry());
+        assertEquals("fr", SearchUtils.lookupLocaleByCountry("CH").getLanguage());
 
     }
 
