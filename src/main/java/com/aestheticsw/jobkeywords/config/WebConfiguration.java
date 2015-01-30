@@ -93,7 +93,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.setOrder(0);
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
-        registry.addResourceHandler("/script/**").addResourceLocations("classpath:/static/script/");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/image/**").addResourceLocations("/static/image/");
         // disabling top-level HTML - replacing with Thymeleaf templates
         // registry.addResourceHandler("/**/*.html").addResourceLocations("/");

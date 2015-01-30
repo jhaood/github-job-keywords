@@ -3,14 +3,30 @@
     layout:decorator="layout">
 <head>
 <title>Keyword extracted from current Job query</title>
+<script>
+    $(document).ready(function() {
+
+        $('#query-form').submit(function(event) {
+            event.preventDefault();
+            $("#is-ajax-request").val("true");
+            var formValues = $(this).serialize();
+            $.post('/job/keywords', formValues, function(data) {
+                $('#query-results-id').html(data);
+            });
+        });
+
+    });
+</script>
 </head>
 <body>
     <h1 layout:fragment="header">Keywords</h1>
     <div layout:fragment="content" class="container">
 
-        <div layout:fragment="query-form" class="pull-left">
+        <div layout:fragment="query-form-fragment" class="pull-left">
             <!--    -->
-            <form id="messageForm" th:action="@{/job/keywords}" th:object="${searchFormBean}" action="#" method="post">
+            <form id="query-form" th:action="@{/job/keywords}" th:object="${searchFormBean}" action="#" method="post">
+                <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false"/>
+                
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
                     <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
                 </div>
@@ -36,7 +52,7 @@
             </form>
         </div>
 
-        <div th:fragment="query-results (results)" class="pull-right">
+        <div th:fragment="query-results (results)" id="query-results-id" class="pull-right">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>

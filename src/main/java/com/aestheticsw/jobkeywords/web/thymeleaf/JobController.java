@@ -77,8 +77,11 @@ public class JobController {
     public ModelAndView
             getTermListForSearchParameters(@Valid SearchFormBean searchFormBean, BindingResult result,
                     RedirectAttributes redirect,
-                    @RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
-                            required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
+                    @RequestParam(required = false) boolean isAjaxRequest,
+                    @RequestParam(required = false, defaultValue = "Java Spring") String query, 
+                    @RequestParam(
+                            required = false, defaultValue = "2") int jobCount, 
+                    @RequestParam(required = false,
                             defaultValue = "0") int start,
                     @RequestParam(required = false, defaultValue = "US") String country,
                     @RequestParam(required = false) String city,
@@ -96,8 +99,10 @@ public class JobController {
 
         TermList termList = termExtractorService.extractTerms(params);
 
-        // This only draws the inner fragment - doesn't replace without page reload
-        // return new ModelAndView("keywords :: query-results", "results", termList);
+        if (isAjaxRequest) {
+            // This only draws the inner fragment - doesn't replace without page reload
+            return new ModelAndView("keywords :: query-results", "results", termList);
+        }
         return new ModelAndView("keywords", "results", termList);
     }
 
