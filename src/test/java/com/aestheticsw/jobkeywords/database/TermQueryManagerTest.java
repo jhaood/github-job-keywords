@@ -45,11 +45,17 @@ public class TermQueryManagerTest extends TestBase {
 
         termQueryManager.accumulateTermFrequencyResults(param1, list1);
         termQueryManager.accumulateTermFrequencyResults(param1_2, list1);
-
+        
+        // confirm that adding an empty results-list ignores the params and list. 
+        termQueryManager.accumulateTermFrequencyResults(param2, new ArrayList<>());
+        
         TermFrequencyResults results = termQueryManager.getAccumulatedResults(param1.getQueryKey());
         assertNotNull(results);
         assertFalse(termQueryManager.getAccumulatedResults(param2.getQueryKey()).hasResults());
         assertEquals(0, termQueryManager.getAccumulatedResults(param2.getQueryKey()).getSortedList().size());
+        
+        // assert that the manager ignored param2's empty results
+        assertEquals(2, results.getSearchParametersList().size());
 
         List<TermFrequency> sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
         assertNotNull(sortedList);

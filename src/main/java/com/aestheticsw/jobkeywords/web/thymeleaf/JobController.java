@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
+import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
@@ -41,9 +42,6 @@ public class JobController {
     @Autowired
     private TermExtractorService termExtractorService;
 
-    // @RequestMapping(value = "/indeed", method = RequestMethod.GET, produces = {
-    // MediaType.APPLICATION_JSON_VALUE,
-    // MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     public String
             getIndeedJobList(Map<String, Object> model,
@@ -68,59 +66,82 @@ public class JobController {
         return "joblist";
     }
 
-    @RequestMapping(value = "/keywords", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String showKeywordsPage(@ModelAttribute SearchFormBean searchFormBean) {
+        initializeSearchFormBean(searchFormBean);
         return "keywords";
     }
 
-    @RequestMapping(value = "/keywords", method = RequestMethod.POST)
-    public ModelAndView
-            getTermListForSearchParameters(@Valid SearchFormBean searchFormBean, BindingResult result,
-                    RedirectAttributes redirect,
-                    @RequestParam(required = false) boolean isAjaxRequest,
-                    @RequestParam(required = false, defaultValue = "Java Spring") String query, 
-                    @RequestParam(
-                            required = false, defaultValue = "2") int jobCount, 
-                    @RequestParam(required = false,
-                            defaultValue = "0") int start,
-                    @RequestParam(required = false, defaultValue = "US") String country,
-                    @RequestParam(required = false) String city,
-                    @RequestParam(required = false, defaultValue = "0") int radius,
-                    @RequestParam(required = false) String sort) throws IOException {
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public ModelAndView getTermListForSearchParameters(@Valid SearchFormBean searchFormBean, BindingResult result,
+            RedirectAttributes redirect, @RequestParam(required = false) boolean isAjaxRequest) throws IOException {
         if (result.hasErrors()) {
             return new ModelAndView("keywords", "formErrors", result.getAllErrors());
         }
 
         Locale locale = Locale.US;
-        if (StringUtils.isNoneEmpty(country)) {
-            locale = SearchUtils.lookupLocaleByCountry(country);
+        if (StringUtils.isNoneEmpty(searchFormBean.getCountry())) {
+            locale = SearchUtils.lookupLocaleByCountry(searchFormBean.getCountry());
         }
-        SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
+        SearchParameters params = new SearchParameters(searchFormBean.getQuery(),
+                searchFormBean.getJobCount(),
+                searchFormBean.getStart(),
+                locale,
+                searchFormBean.getCity(),
+                searchFormBean.getRadius(),
+                searchFormBean.getSort());
 
         TermList termList = termExtractorService.extractTerms(params);
 
         if (isAjaxRequest) {
-            // This only draws the inner fragment - doesn't replace without page reload
             return new ModelAndView("keywords :: query-results", "results", termList);
         }
         return new ModelAndView("keywords", "results", termList);
     }
 
-    @RequestMapping(value = "/keywords-accumulated", method = RequestMethod.GET)
-    public String getAccumulatedTermFrequencyResults(Map<String, Object> model, @RequestParam(required = false,
-            defaultValue = "Java Spring") String query,
-            @RequestParam(required = false, defaultValue = "US") String country,
-            @RequestParam(required = false) String city) throws IOException {
+    @RequestMapping(value = "/accumulated", method = RequestMethod.GET)
+    public String showAccumulatedPage(@ModelAttribute SearchFormBean searchFormBean) {
+        // initialize the SearchFormBean because the UI would invoke the POST controller-method
+        // from the history-page in order to prefill the SearchFormBean.
+        initializeSearchFormBean(searchFormBean);
+        return "accumulated";
+    }
+
+    @RequestMapping(value = "/accumulated", method = RequestMethod.POST)
+    public ModelAndView getAccumulatedTermFrequencyResults(@Valid SearchFormBean searchFormBean, BindingResult result,
+            RedirectAttributes redirect, @RequestParam(required = false) boolean isAjaxRequest) throws IOException {
 
         Locale locale = Locale.US;
-        if (country != null) {
-            locale = SearchUtils.lookupLocaleByCountry(country);
+        if (searchFormBean.getCountry() != null) {
+            locale = SearchUtils.lookupLocaleByCountry(searchFormBean.getCountry());
         }
-        QueryKey queryKey = new QueryKey(query, locale, city);
+        QueryKey queryKey = new QueryKey(searchFormBean.getQuery(), locale, searchFormBean.getCity());
 
         TermFrequencyResults results = termExtractorService.getAccumulatedTermFrequencyResults(queryKey);
 
-        return "keywords-accumulated";
+        if (isAjaxRequest) {
+            return new ModelAndView("accumulated :: query-results", "results", results);
+        }
+        return new ModelAndView("accumulated", "results", results);
     }
 
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public ModelAndView getSearchHistory(@ModelAttribute SearchFormBean searchFormBean) {
+
+        QueryList results = termExtractorService.getSearchHistory();
+
+        return new ModelAndView("history", "results", results);
+    }
+
+    private void initializeSearchFormBean(SearchFormBean searchFormBean) {
+        if (StringUtils.isEmpty(searchFormBean.getQuery())) {
+            searchFormBean.setQuery("senior software (developer or engineer)");
+        }
+        if (searchFormBean.getJobCount() == 0) {
+            searchFormBean.setJobCount(1);
+        }
+        if (searchFormBean.getCountry() == null) {
+            searchFormBean.setCountry(Locale.US.getCountry());
+        }
+    }
 }

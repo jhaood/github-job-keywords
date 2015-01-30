@@ -13,6 +13,6 @@ import com.aestheticsw.jobkeywords.JobKeywordsApplication;
 @WebAppConfiguration
 public class TestBase {
     @Test
-    public void noopTest() {
+    public void noopTestIgnoreThis() {
     }
 }

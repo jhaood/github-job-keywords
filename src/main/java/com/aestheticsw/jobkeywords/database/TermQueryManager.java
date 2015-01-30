@@ -3,6 +3,7 @@ package com.aestheticsw.jobkeywords.database;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.exacode.spring.logging.inject.Log;
 
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
+import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
@@ -42,6 +44,10 @@ public class TermQueryManager {
 
     public void
             accumulateTermFrequencyResults(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
+        if (termFrequencyList.size() == 0) {
+            log.info("Ignoring search with ZERO results: " + searchParameters.toString());
+            return;
+        }
         QueryKey queryKey = searchParameters.getQueryKey();
         TermFrequencyResults termFrequencyResults;
         synchronized (termFrequencyResultsMap) {
@@ -60,5 +66,10 @@ public class TermQueryManager {
             return new TermFrequencyResults();
         }
         return results;
+    }
+
+    public QueryList getSearchHistory() {
+        Set<QueryKey> queryKeys = termFrequencyResultsMap.keySet();
+        return new QueryList(queryKeys, new QueryKey.QueryKeyComparator());
     }
 }

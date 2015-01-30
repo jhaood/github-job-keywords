@@ -1,8 +1,8 @@
 package com.aestheticsw.jobkeywords.domain.termfrequency;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
+import java.util.Comparator;
 import java.util.Locale;
 
 import org.junit.Test;
@@ -18,6 +18,27 @@ public class QueryKeyTest {
         assertEquals("query", param1.getQuery());
         assertEquals(Locale.FRANCE, param1.getLocale());
         assertEquals("Lyon", param1.getCity());
+    }
+    
+    @Test 
+    public void nullValues() {
+        QueryKey key = new QueryKey(null, null, null);
+        assertEquals(null, key.getQuery());
+        assertEquals(null, key.getLocale());
+        assertEquals(null, key.getCity());
+
+        // this hard-coded value looks brittle based on dependency on HashCodeBuilder.  
+        assertEquals(861101, key.hashCode());
+    }
+    
+    @Test
+    public void nullEquals() {
+        QueryKey key1 = new QueryKey(null, null, null);
+        QueryKey key2 = new QueryKey(null, null, null);
+        QueryKey key3 = new QueryKey(null, null, "Lyon");
+        
+        assertEquals(key1, key2);
+        assertFalse(key1.equals(key3));
     }
 
     @Test
@@ -52,6 +73,29 @@ public class QueryKeyTest {
         assertNotEquals(param1.hashCode(), param6.hashCode());
         QueryKey param7 = new QueryKey("query", Locale.FRANCE, "Lyo");
         assertNotEquals(param1.hashCode(), param7.hashCode());
+    }
+
+    @Test
+    public void comparator() {
+        Comparator<QueryKey> comp = new QueryKey.QueryKeyComparator();
+
+        QueryKey param1 = new QueryKey("query1", Locale.FRANCE, "Lyon");
+        QueryKey param2 = new QueryKey("query2", Locale.FRANCE, "Lyon");
+        assertTrue(comp.compare(param1, param2) < 0);
+
+        QueryKey param2_2 = new QueryKey("query2", Locale.FRANCE, "Lyon");
+        assertEquals(0, comp.compare(param2, param2_2));
+
+        QueryKey param3 = new QueryKey("Aquery", Locale.FRANCE, "Lyon");
+        QueryKey param6 = new QueryKey("Aquery", Locale.US, "Lyon");
+        assertTrue(comp.compare(param3, param6) < 0);
+
+        QueryKey param7 = new QueryKey("query", Locale.US, "San Francisco");
+        QueryKey param8 = new QueryKey("query", Locale.US, "A City");
+        assertTrue(comp.compare(param7, param8) > 0);
+
+        QueryKey param9 = new QueryKey("query", Locale.US, null);
+        assertTrue(comp.compare(param8, param9) > 0);
     }
 
 }

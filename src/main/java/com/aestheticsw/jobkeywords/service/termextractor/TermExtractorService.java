@@ -14,6 +14,7 @@ import com.aestheticsw.jobkeywords.database.TermQueryManager;
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
+import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
@@ -51,9 +52,6 @@ public class TermExtractorService {
         }
 
         TermList terms = fiveFiltersService.getTermList(combinedJobDetails.toString(), params.getLocale());
-        if (terms == null) {
-            return new TermList(new ArrayList<TermFrequency>());
-        }
 
         termQueryManager.accumulateTermFrequencyResults(params, terms.getTerms());
         
@@ -62,5 +60,9 @@ public class TermExtractorService {
     
     public TermFrequencyResults getAccumulatedTermFrequencyResults(QueryKey queryKey) {
         return termQueryManager.getAccumulatedResults(queryKey);
+    }
+
+    public QueryList getSearchHistory() {
+        return termQueryManager.getSearchHistory();
     }
 }

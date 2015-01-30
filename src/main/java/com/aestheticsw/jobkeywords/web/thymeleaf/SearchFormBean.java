@@ -23,7 +23,7 @@ public class SearchFormBean {
     }
 
     public void setQuery(String query) {
-        this.query = query;
+        this.query = (query != null) ? query.toLowerCase() : null;
     }
 
     public int getJobCount() {
@@ -47,7 +47,7 @@ public class SearchFormBean {
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        this.country = (country != null) ? country.toUpperCase() : null;
     }
 
     public String getCity() {
@@ -55,7 +55,7 @@ public class SearchFormBean {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = (city != null) ? city.toLowerCase() : null;
     }
 
     public int getRadius() {

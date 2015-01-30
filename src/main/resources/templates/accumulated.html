@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
     layout:decorator="layout">
 <head>
-<title>Job Keywords - Search &amp; Results</title>
+<title>Job Keywords - Accumulated Results From Prior Searches</title>
 <script>
     $(document).ready(function() {
 
@@ -10,7 +10,7 @@
             event.preventDefault();
             $("#is-ajax-request").val("true");
             var formValues = $(this).serialize();
-            $.post('/job/search', formValues, function(data) {
+            $.post('/job/accumulated', formValues, function(data) {
                 $('#query-results-id').html(data);
             });
         });
@@ -19,12 +19,12 @@
 </script>
 </head>
 <body>
-    <h1 layout:fragment="header">Job Keywords - Search &amp; Results</h1>
+    <h1 layout:fragment="header">Job Keywords - Accumulated Results From Prior Searches</h1>
     <div layout:fragment="content" class="container">
 
         <div layout:fragment="query-form-fragment" class="pull-left">
             <!--    -->
-            <form id="query-form" th:action="@{/job/search}" th:object="${searchFormBean}" action="#" method="post">
+            <form id="query-form" th:action="@{/job/accumulated}" th:object="${searchFormBean}" action="#" method="post">
                 <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false"/>
                 
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
@@ -39,12 +39,6 @@
 
                 <label for="city">City</label>
                 <input type="text" th:field="*{city}" th:class="${#fields.hasErrors('city')} ? 'field-error'" />
-
-                <label for="jobCount"># Jobs</label>
-                <input type="text" th:field="*{jobCount}" th:class="${#fields.hasErrors('jobCount')} ? 'field-error'" />
-
-                <label for="start">Starting Job Index</label>
-                <input type="text" th:field="*{start}" th:class="${#fields.hasErrors('start')} ? 'field-error'" />
 
                 <div class="form-actions">
                     <input type="submit" value="Search" />
@@ -62,11 +56,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:if="${results == null or ! results.hasResults()}">
+                    <tr th:if="${results == null or not results.hasResults()}">
                         <td colspan="3">No results</td>
                     </tr>
                     <th:block th:if="${results != null and results.hasResults()}">
-                        <tr th:each="result : ${results.getTerms()}">
+                        <tr th:each="result : ${results.getSortedList()}">
                             <td th:text="${result.term}">1</td>
                             <td th:text="${result.frequency}" />
                             <td></td>

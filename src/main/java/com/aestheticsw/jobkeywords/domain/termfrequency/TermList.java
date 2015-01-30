@@ -1,5 +1,6 @@
 package com.aestheticsw.jobkeywords.domain.termfrequency;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,9 @@ public class TermList {
     private List<TermFrequency> terms;
 
     public TermList(List<TermFrequency> terms) {
-        super();
+        if (terms == null) {
+            terms = new ArrayList<>();
+        }
         this.terms = terms;
     }
 
@@ -36,7 +39,7 @@ public class TermList {
     }
     
     public boolean hasResults() {
-        return (terms != null && terms.size() > 0);
+        return (terms.size() > 0);
     }
 
     public List<TermFrequency> getTerms() {

@@ -2,6 +2,8 @@ package com.aestheticsw.jobkeywords.domain.termfrequency;
 
 import java.util.Comparator;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
 public class TermFrequency {
     private String term;
     private int frequency;
@@ -44,32 +46,44 @@ public class TermFrequency {
     }
     
     /**
-     * A comparator that sorts in descending order. 
+     * Sort by descending term-frequency, word-count but ascending term-string
      */
     public static class FrequencyComparator implements Comparator<TermFrequency> {
-
         @Override
         public int compare(TermFrequency term1, TermFrequency term2) {
-            // compute negative for descending order
-            int frequencyComp = - Integer.compare(term1.getFrequency(), term2.getFrequency());
-            if (frequencyComp != 0) {
-                return frequencyComp;
-            }
-            // return negative for descending order
-            int wordComp = - Integer.compare(term1.getWordCount(), term2.getWordCount());
-            if (wordComp != 0) {
-                return wordComp;
-            }
-            // if still equal then order by term, alphabetically
+            // compute for descending frequency order
+            CompareToBuilder builder = new CompareToBuilder();
+            builder.append(term2.frequency, term1.frequency);
+
+            // compute for descending word-count order
+            builder.append(term2.wordCount, term1.wordCount);
+            
+            // and finally sort by the term, alphabetically, ascending. 
+            builder.append(term1.term, term2.term);
+            return builder.toComparison();
+        }
+    }
+
+    /**
+     * Sort by ascending term-name 
+     */
+    public static class TermAlphaComparator implements Comparator<TermFrequency> {
+        @Override
+        public int compare(TermFrequency term1, TermFrequency term2) {
             return term1.getTerm().compareTo(term2.getTerm());
         }
     }
 
-    public static class TermComparator implements Comparator<TermFrequency> {
-
+    /**
+     * Sort by descending word-count, then ascending term-name 
+     */
+    public static class TermComplexityComparator implements Comparator<TermFrequency> {
         @Override
         public int compare(TermFrequency term1, TermFrequency term2) {
-            return term1.getTerm().compareTo(term2.getTerm());
+            CompareToBuilder builder = new CompareToBuilder();
+            builder.append(term2.wordCount, term1.wordCount);
+            builder.append(term1.term, term2.term);
+            return builder.toComparison();
         }
     }
 
