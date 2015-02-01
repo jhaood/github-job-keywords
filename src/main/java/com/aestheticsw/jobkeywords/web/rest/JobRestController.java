@@ -7,7 +7,6 @@ import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +18,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
+import com.aestheticsw.jobkeywords.service.termextractor.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.utils.SearchUtils;
 
@@ -78,7 +78,12 @@ public class JobRestController {
         }
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
 
-        TermList terms = termExtractorService.extractTerms(params);
+        TermList terms;
+        try {
+            terms = termExtractorService.extractTerms(params);
+        } catch (IndeedQueryException e) {
+            throw new RuntimeException(e);
+        }
 
         return terms;
     }

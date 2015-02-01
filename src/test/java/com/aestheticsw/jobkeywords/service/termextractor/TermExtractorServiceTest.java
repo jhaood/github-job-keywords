@@ -87,11 +87,7 @@ public class TermExtractorServiceTest {
         // when(termQueryRepository.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class),
         // Mockito.any(List.class)))
 
-        try {
-            when(indeedService.getIndeedJobDetails(Mockito.any(String.class))).thenReturn(jobDetailsString);
-        } catch (IOException e) {
-            throw new RuntimeException("Mockito test configuraiton exception", e);
-        }
+        when(indeedService.getIndeedJobDetails(Mockito.any(String.class))).thenReturn(jobDetailsString);
 
         // given(service.extractTerms(Mockito.any(SearchParameters.class))).willReturn(termList);;
     }
@@ -106,7 +102,12 @@ public class TermExtractorServiceTest {
         // when(this.indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
 
         SearchParameters params1 = new SearchParameters("java", 1, 0, Locale.US, null, 0, null);
-        TermList extractedTermList = service.extractTerms(params1);
+        TermList extractedTermList;
+        try {
+            extractedTermList = service.extractTerms(params1);
+        } catch (IndeedQueryException e) {
+            throw new RuntimeException(e);
+        }
         assertNotNull(extractedTermList);
         List<TermFrequency> extractedTerms = extractedTermList.getTerms();
         assertNotNull(extractedTerms);
@@ -121,7 +122,11 @@ public class TermExtractorServiceTest {
 
         // extract a second time to make sure that the Repository accumulates twice as many terms.
         SearchParameters params2 = new SearchParameters("java", 1, 1, Locale.US, null, 0, null);
-        extractedTermList = service.extractTerms(params2);
+        try {
+            extractedTermList = service.extractTerms(params2);
+        } catch (IndeedQueryException e) {
+            throw new RuntimeException(e);
+        }
 
         TermFrequencyResults accumulatedResults = termQueryRepository.getAccumulatedResults(params2.getQueryKey());
         assertNotNull(accumulatedResults);

@@ -4,31 +4,41 @@
 <head>
 <title>Job Keywords - Search &amp; Results</title>
 <script>
-    $(document).ready(function() {
+	$(document).ready(function() {
 
-        $('#query-form').submit(function(event) {
-            event.preventDefault();
-            $("#is-ajax-request").val("true");
-            var formValues = $(this).serialize();
-            $.post('/job/search', formValues, function(data) {
-                $('#query-results-id').html(data);
-            });
-        });
+		$('#query-form-id').submit(function(event) {
+			event.preventDefault();
+			if ($('#had-form-errors').val() == 'true') {
+				$("#is-ajax-request").val("false");
+			} else {
+				$("#is-ajax-request").val("true");
+			}
+			var formValues = $(this).serialize();
+			$.post('/job/search', formValues, function(data) {
+				var containsWholePage = $(data).find("#content-id").length;
+				if (containsWholePage) {
+					$('#content-id').html($(data).find("#content-id").html());
+				} else {
+					$('#query-results-id').html(data);
+				}
+			});
+		});
 
-    });
+	});
 </script>
 </head>
 <body>
     <h1 layout:fragment="header">Job Keywords - Search &amp; Results</h1>
-    <div layout:fragment="content" class="container">
+    <div layout:fragment="content" id="content-id" class="container">
 
-        <div layout:fragment="query-form-fragment" class="pull-left">
+        <div th:fragment="query-form-div" id="query-form-div-id" class="pull-left">
             <!--    -->
-            <form id="query-form" th:action="@{/job/search}" th:object="${searchFormBean}" action="#" method="post">
-                <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false"/>
-                
+            <form id="query-form-id" th:action="@{/job/search}" th:object="${searchFormBean}" action="#" method="post">
+                <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false" />
+                <input type="hidden" id="had-form-errors" th:field="*{hadFormErrors}" />
+
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
-                    <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
+                    <p th:each="error : ${#fields.errors('*')}" th:text="${error}">default validation error message</p>
                 </div>
 
                 <label for="query">Indeed Query Expression</label>
@@ -53,7 +63,7 @@
         </div>
 
         <div th:fragment="query-results (results)" id="query-results-id" class="pull-right">
-            <table class="table table-bordered table-striped">
+            <table id="results-table" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <td>Term</td>
@@ -78,3 +88,4 @@
     </div>
 </body>
 </html>
+

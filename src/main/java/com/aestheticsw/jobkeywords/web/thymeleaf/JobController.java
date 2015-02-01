@@ -1,9 +1,11 @@
 package com.aestheticsw.jobkeywords.web.thymeleaf;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import net.exacode.spring.logging.inject.Log;
@@ -13,6 +15,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +31,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
+import com.aestheticsw.jobkeywords.service.termextractor.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.utils.SearchUtils;
 
@@ -45,6 +50,20 @@ public class JobController {
         super();
         this.indeedService = indeedService;
         this.termExtractorService = termExtractorService;
+    }
+
+    // Total control - setup a model and return the view name yourself. Or consider
+    // subclassing ExceptionHandlerExceptionResolver (see below).
+    @ExceptionHandler(Throwable.class)
+    public ModelAndView handleError(HttpServletRequest req, Throwable exception) {
+      log.error("Request: " + req.getRequestURL() + " raised " + exception, exception);
+
+      ModelAndView mav = new ModelAndView();
+      mav.addObject("message", exception.getMessage());
+      mav.addObject("exception", exception);
+      mav.addObject("url", req.getRequestURL());
+      mav.setViewName("exception");
+      return mav;
     }
 
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
@@ -76,9 +95,14 @@ public class JobController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ModelAndView getTermListForSearchParameters(@Valid SearchFormBean searchFormBean, BindingResult result,
-            RedirectAttributes redirect, @RequestParam(required = false) boolean isAjaxRequest) throws IOException {
+            RedirectAttributes redirect, @RequestParam(required = false) boolean isAjaxRequest) {
+
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("searchFormBean", searchFormBean);
         if (result.hasErrors()) {
-            return new ModelAndView("keywords", "formErrors", result.getAllErrors());
+            searchFormBean.setHadFormErrors(true);
+            modelMap.put("formErrors", result.getAllErrors());
+            return new ModelAndView("keywords", modelMap);
         }
 
         Locale locale = Locale.US;
@@ -89,12 +113,22 @@ public class JobController {
             new SearchParameters(searchFormBean.getQuery(), searchFormBean.getJobCount(), searchFormBean.getStart(),
                 locale, searchFormBean.getCity(), searchFormBean.getRadius(), searchFormBean.getSort());
 
-        TermList termList = termExtractorService.extractTerms(params);
-
-        if (isAjaxRequest) {
-            return new ModelAndView("keywords :: query-results", "results", termList);
+        TermList termList;
+        try {
+            termList = termExtractorService.extractTerms(params);
+        } catch (IndeedQueryException e) {
+            searchFormBean.setHadFormErrors(true);
+            result.addError(new FieldError("searchFormBean", "query", "No results found, check query expression: " + params));
+            modelMap.put("formErrors", result.getAllErrors());
+            return new ModelAndView("keywords", modelMap);
         }
-        return new ModelAndView("keywords", "results", termList);
+
+        searchFormBean.setHadFormErrors(false);
+        modelMap.put("results", termList);
+        if (isAjaxRequest) {
+            return new ModelAndView("keywords :: query-results", modelMap);
+        }
+        return new ModelAndView("keywords", modelMap);
     }
 
     @RequestMapping(value = "/accumulated", method = RequestMethod.GET)

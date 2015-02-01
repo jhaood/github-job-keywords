@@ -25,25 +25,16 @@ public class ServiceConfiguration {
 
         // KEEP THIS CODE FOR WHEN SOMETHING DOES NEED TO GET CONFIGURED.
         //
-        // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        // for (HttpMessageConverter<?> converter : messageConverters) {
-        //
-        // if (converter.canRead(IndeedResponse.class, MediaType.APPLICATION_XML)) {
-        // if (converter instanceof AbstractJackson2HttpMessageConverter) {
-        // AbstractJackson2HttpMessageConverter xmlConverter =
-        // (AbstractJackson2HttpMessageConverter) converter;
-        // *
-        // xmlConverter.getObjectMapper()
-        // .configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
-        // xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-        // true);
-        // xmlConverter.getObjectMapper().configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,
-        // true);
-        // *
-        //
-        // // xmlConverter.getObjectMapper().registerModule(new XmlWhitespaceModule());
-        // }
-        // }
+//        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+//        for (HttpMessageConverter<?> converter : messageConverters) {
+//
+//            if (converter.canRead(JobListResponse.class, MediaType.APPLICATION_XML)) {
+//                if (converter instanceof AbstractJaxb2HttpMessageConverter) {
+//                    AbstractJaxb2HttpMessageConverter xmlConverter = (AbstractJaxb2HttpMessageConverter) converter;
+//                    xmlConverter.canRead(JobListResponse.class, MediaType.APPLICATION_XML);
+//                }
+//            }
+//        }
 
         return restTemplate;
     }
@@ -51,35 +42,35 @@ public class ServiceConfiguration {
     /*
      * this was an attempt to bypass XHTML parsing exceptions from malformed HTML from Indeed.
      */
-    // @SuppressWarnings("restriction")
-    // @Bean(name = "documentBuilderFactory")
-    // public DocumentBuilderFactory getDocumentBuilderFactory() {
-    // DocumentBuilderFactory factory = new DocumentBuilderFactoryImpl() {
-    // @Override
-    // public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
-    // DocumentBuilder builder = super.newDocumentBuilder();
-    // builder.setErrorHandler(new ErrorHandler() {
-    // @Log
-    // private Logger log;
-    //
-    // @Override
-    // public void warning(SAXParseException exception) throws SAXException {
-    // log.warn("WARNING parsing exception ignored", exception);
-    // }
-    //
-    // @Override
-    // public void error(SAXParseException exception) throws SAXException {
-    // log.error("WARNING parsing exception ignored", exception);
-    // }
-    //
-    // @Override
-    // public void fatalError(SAXParseException exception) throws SAXException {
-    // log.error("WARNING parsing exception ignored", exception);
-    // }
-    // });
-    // return builder;
-    // }
-    // };
-    // return factory;
-    // }
+//    @SuppressWarnings("restriction")
+//    @Bean(name = "documentBuilderFactory")
+//    public DocumentBuilderFactory getDocumentBuilderFactory() {
+//        DocumentBuilderFactory factory = new DocumentBuilderFactoryImpl() {
+//            @Override
+//            public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
+//                DocumentBuilder builder = super.newDocumentBuilder();
+//                builder.setErrorHandler(new ErrorHandler() {
+//                    @Log
+//                    private Logger log;
+//
+//                    @Override
+//                    public void warning(SAXParseException exception) throws SAXException {
+//                        log.warn("WARNING parsing exception ignored", exception);
+//                    }
+//
+//                    @Override
+//                    public void error(SAXParseException exception) throws SAXException {
+//                        log.error("WARNING parsing exception ignored", exception);
+//                    }
+//
+//                    @Override
+//                    public void fatalError(SAXParseException exception) throws SAXException {
+//                        log.error("WARNING parsing exception ignored", exception);
+//                    }
+//                });
+//                return builder;
+//            }
+//        };
+//        return factory;
+//    }
 }

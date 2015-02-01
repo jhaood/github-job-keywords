@@ -3,7 +3,7 @@ package com.aestheticsw.jobkeywords.web.thymeleaf;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class SearchFormBean {
-    @NotEmpty(message = "Message is required.")
+    @NotEmpty(message = "Query expression is required.")
     private String query;
 
     private int jobCount;
@@ -17,6 +17,20 @@ public class SearchFormBean {
     private int radius;
 
     private String sort;
+
+    private boolean hadFormErrors;
+    
+    public boolean isHadFormErrors() {
+        return hadFormErrors;
+    }
+
+    public boolean getHadFormErrors() {
+        return isHadFormErrors();
+    }
+
+    public void setHadFormErrors(boolean hadFormErrors) {
+        this.hadFormErrors = hadFormErrors;
+    }
 
     public String getQuery() {
         return query;

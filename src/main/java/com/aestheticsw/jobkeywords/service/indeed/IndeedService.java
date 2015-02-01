@@ -128,9 +128,14 @@ public class IndeedService {
      * 
      * TODO convert JSoup to HtmlCleaner
      */
-    public String getIndeedJobDetails(String url) throws IOException {
+    public String getIndeedJobDetails(String url) {
         log.debug("Indeed job-details query: " + url);
-        Document doc = Jsoup.connect(url).get();
+        Document doc;
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            throw new RuntimeException("Indeed-search or JSoup response parser failed, URL: " + url, e);
+        }
         Elements jobHeader = doc.select("#job_header > b > font");
         Elements jobSummary = doc.select("#job_summary");
         StringBuilder sb = new StringBuilder();

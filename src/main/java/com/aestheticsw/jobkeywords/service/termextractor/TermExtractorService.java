@@ -1,6 +1,5 @@
 package com.aestheticsw.jobkeywords.service.termextractor;
 
-import java.io.IOException;
 import java.util.List;
 
 import net.exacode.spring.logging.inject.Log;
@@ -41,12 +40,16 @@ public class TermExtractorService {
         this.fiveFiltersService = fiveFiltersService;
     }
 
-    public TermList extractTerms(SearchParameters params) throws IOException {
+    public TermList extractTerms(SearchParameters params) throws IndeedQueryException {
 
         JobListResponse jobListResponse = getIndeedService().getIndeedJobList(params);
 
         List<JobSummary> jobSummaries = jobListResponse.getResults().getResults();
+        
         log.info("Indeed returned jobCount=" + ((jobSummaries != null) ? jobSummaries.size() : "0 (no results)"));
+        if (jobSummaries == null || jobSummaries.size() == 0) {
+            throw new IndeedQueryException("Query returned no results: " + params);
+        }
 
         StringBuilder combinedJobDetails = new StringBuilder();
         for (int index = 0; index < params.getJobCount() && index < jobSummaries.size(); index++) {
