@@ -42,7 +42,7 @@ public class TermExtractorService {
     }
 
     public TermList extractTerms(SearchParameters params) throws IOException {
-        
+
         JobListResponse jobListResponse = getIndeedService().getIndeedJobList(params);
 
         List<JobSummary> jobSummaries = jobListResponse.getResults().getResults();
@@ -59,10 +59,10 @@ public class TermExtractorService {
         TermList terms = getFiveFiltersService().getTermList(combinedJobDetails.toString(), params.getLocale());
 
         getTermQueryRepository().accumulateTermFrequencyResults(params, terms.getTerms());
-        
+
         return terms;
     }
-    
+
     public TermFrequencyResults getAccumulatedTermFrequencyResults(QueryKey queryKey) {
         return getTermQueryRepository().getAccumulatedResults(queryKey);
     }
@@ -82,6 +82,5 @@ public class TermExtractorService {
     private FiveFiltersService getFiveFiltersService() {
         return fiveFiltersService;
     }
-    
-    
+
 }

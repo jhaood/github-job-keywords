@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 // @SpringBootApplication annotation is not necessary
 
 @Configuration
-// @EnableAutoConfiguration is Not required for tests, but is required to launch app-JAR 
+// @EnableAutoConfiguration is Not required for tests, but is required to launch app-JAR
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.aestheticsw")
 public class JobKeywordsApplication {

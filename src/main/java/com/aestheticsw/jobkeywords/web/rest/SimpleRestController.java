@@ -19,13 +19,12 @@ public class SimpleRestController {
     private Logger log;
 
     private SimpleRestService simpleRestService;
-    
+
     @Autowired
     public SimpleRestController(SimpleRestService simpleRestService) {
         super();
         this.simpleRestService = simpleRestService;
     }
-
 
     @RequestMapping(value = "/pivotal", method = RequestMethod.GET, produces = "application/json")
     public PivotalJsonPage getPage() {

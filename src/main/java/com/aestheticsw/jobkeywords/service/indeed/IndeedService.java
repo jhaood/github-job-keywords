@@ -33,8 +33,9 @@ public class IndeedService {
         this.restTemplate = restTemplate;
         this.xpathTemplate = xpathTemplate;
 
-        // Not needed now that converters are working properly.. but might be useful later to tweak config
-        // 
+        // Not needed now that converters are working properly.. but might be useful later to tweak
+        // config
+        //
         // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         // for (HttpMessageConverter<?> converter : messageConverters) {
         // if (converter.canRead(Source.class, MediaType.APPLICATION_XML)) {
@@ -120,8 +121,8 @@ public class IndeedService {
     }
 
     /**
-     * This method is dependent upon the JSoup library which can consume malformed 
-     * HTML and XML with invalid syntax. 
+     * This method is dependent upon the JSoup library which can consume malformed
+     * HTML and XML with invalid syntax.
      * 
      * JSoup can't be tested easily.
      * 

@@ -37,7 +37,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 @Component
 public class TermQueryRepository {
 
-    // public access for tests to inject or mock a logger. 
+    // public access for tests to inject or mock a logger.
     @Log
     public Logger log;
 

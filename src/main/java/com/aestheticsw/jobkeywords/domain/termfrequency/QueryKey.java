@@ -49,9 +49,8 @@ public class QueryKey {
         }
         QueryKey otherSearchParameters = (QueryKey) other;
         EqualsBuilder builder = new EqualsBuilder();
-        builder.append(query, otherSearchParameters.query)
-                .append(locale, otherSearchParameters.locale)
-                .append(city, otherSearchParameters.city);
+        builder.append(query, otherSearchParameters.query).append(locale, otherSearchParameters.locale)
+            .append(city, otherSearchParameters.city);
         return builder.isEquals();
     }
 
@@ -78,10 +77,9 @@ public class QueryKey {
         public int compare(QueryKey key1, QueryKey key2) {
             CompareToBuilder builder = new CompareToBuilder();
             builder.append(key1.query, key2.query);
-            builder.append((key1.locale != null) ? key1.locale.getCountry() : null, 
-                    (key2.locale != null) ? key2.locale.getCountry() : null);
-            builder.append(key1.city, 
-                    key2.city);
+            builder.append((key1.locale != null) ? key1.locale.getCountry() : null,
+                (key2.locale != null) ? key2.locale.getCountry() : null);
+            builder.append(key1.city, key2.city);
             return builder.build();
         }
     }

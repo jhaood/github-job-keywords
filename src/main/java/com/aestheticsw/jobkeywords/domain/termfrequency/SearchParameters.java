@@ -15,7 +15,7 @@ public class SearchParameters {
     private String sort;
 
     private QueryKey queryKeyCache;
-    
+
     private HashCodeBuilder hashCodeBuilder;
     private String toStringCache;
 
@@ -30,8 +30,9 @@ public class SearchParameters {
         this.sort = sort;
 
         queryKeyCache = new QueryKey(query, locale, city);
-        hashCodeBuilder = new HashCodeBuilder(17, 37).append(query).append(jobCount).append(start).append(locale)
-                .append(city).append(radius).append(sort);
+        hashCodeBuilder =
+            new HashCodeBuilder(17, 37).append(query).append(jobCount).append(start).append(locale).append(city)
+                .append(radius).append(sort);
 
         StringBuilder builder = new StringBuilder("Search-params: ");
         builder.append(locale == null ? "" : locale + ", ");
@@ -63,10 +64,10 @@ public class SearchParameters {
         }
         SearchParameters otherSearchParameters = (SearchParameters) other;
         EqualsBuilder builder = new EqualsBuilder();
-        builder.append(query, otherSearchParameters.query)
-                .append(jobCount, otherSearchParameters.jobCount).append(start, otherSearchParameters.start)
-                .append(locale, otherSearchParameters.locale).append(city, otherSearchParameters.city)
-                .append(radius, otherSearchParameters.radius).append(sort, otherSearchParameters.sort);
+        builder.append(query, otherSearchParameters.query).append(jobCount, otherSearchParameters.jobCount)
+            .append(start, otherSearchParameters.start).append(locale, otherSearchParameters.locale)
+            .append(city, otherSearchParameters.city).append(radius, otherSearchParameters.radius)
+            .append(sort, otherSearchParameters.sort);
         return builder.isEquals();
     }
 

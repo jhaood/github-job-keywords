@@ -13,7 +13,7 @@ public class JobList {
 
     @XmlElement(name = "result")
     private List<JobSummary> jobSummaries;
-    
+
     public JobList() {
         super();
     }

@@ -50,33 +50,36 @@ public class ServiceConfiguration {
 
     /*
      * this was an attempt to bypass XHTML parsing exceptions from malformed HTML from Indeed.
-     * @SuppressWarnings("restriction")
-     * @Bean(name = "documentBuilderFactory")
-     * public DocumentBuilderFactory getDocumentBuilderFactory() {
-     * DocumentBuilderFactory factory = new DocumentBuilderFactoryImpl() {
-     * @Override
-     * public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
-     * DocumentBuilder builder = super.newDocumentBuilder();
-     * builder.setErrorHandler(new ErrorHandler() {
-     * @Log
-     * private Logger log;
-     * @Override
-     * public void warning(SAXParseException exception) throws SAXException {
-     * log.warn("WARNING parsing exception ignored", exception);
-     * }
-     * @Override
-     * public void error(SAXParseException exception) throws SAXException {
-     * log.error("WARNING parsing exception ignored", exception);
-     * }
-     * @Override
-     * public void fatalError(SAXParseException exception) throws SAXException {
-     * log.error("WARNING parsing exception ignored", exception);
-     * }
-     * });
-     * return builder;
-     * }
-     * };
-     * return factory;
-     * }
      */
+    // @SuppressWarnings("restriction")
+    // @Bean(name = "documentBuilderFactory")
+    // public DocumentBuilderFactory getDocumentBuilderFactory() {
+    // DocumentBuilderFactory factory = new DocumentBuilderFactoryImpl() {
+    // @Override
+    // public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
+    // DocumentBuilder builder = super.newDocumentBuilder();
+    // builder.setErrorHandler(new ErrorHandler() {
+    // @Log
+    // private Logger log;
+    //
+    // @Override
+    // public void warning(SAXParseException exception) throws SAXException {
+    // log.warn("WARNING parsing exception ignored", exception);
+    // }
+    //
+    // @Override
+    // public void error(SAXParseException exception) throws SAXException {
+    // log.error("WARNING parsing exception ignored", exception);
+    // }
+    //
+    // @Override
+    // public void fatalError(SAXParseException exception) throws SAXException {
+    // log.error("WARNING parsing exception ignored", exception);
+    // }
+    // });
+    // return builder;
+    // }
+    // };
+    // return factory;
+    // }
 }

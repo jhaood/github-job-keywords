@@ -19,24 +19,24 @@ public class QueryKeyTest {
         assertEquals(Locale.FRANCE, param1.getLocale());
         assertEquals("Lyon", param1.getCity());
     }
-    
-    @Test 
+
+    @Test
     public void nullValues() {
         QueryKey key = new QueryKey(null, null, null);
         assertEquals(null, key.getQuery());
         assertEquals(null, key.getLocale());
         assertEquals(null, key.getCity());
 
-        // this hard-coded value looks brittle based on dependency on HashCodeBuilder.  
+        // this hard-coded value looks brittle based on dependency on HashCodeBuilder.
         assertEquals(861101, key.hashCode());
     }
-    
+
     @Test
     public void nullEquals() {
         QueryKey key1 = new QueryKey(null, null, null);
         QueryKey key2 = new QueryKey(null, null, null);
         QueryKey key3 = new QueryKey(null, null, "Lyon");
-        
+
         assertEquals(key1, key2);
         assertFalse(key1.equals(key3));
     }

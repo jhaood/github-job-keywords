@@ -7,7 +7,7 @@ public class SearchFormBean {
     private String query;
 
     private int jobCount;
-    
+
     private int start;
 
     private String country;

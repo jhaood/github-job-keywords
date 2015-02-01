@@ -39,7 +39,8 @@ public class FiveFiltersService {
     Map<Pattern, String> regExMap = initRegExMap();
 
     // english blacklist
-    private String blacklistRegEx = "experience|work|team|software engineer|services|systems|data|design|ability|candidate|knowledge|customers|applications|software|computer science|products|building|technologies|qualifications|projects|requirements|position|support|solutions|ceo|expertise|cloud|employment|world|platform|company|understanding|skills|software development experience|software development projects|software development|environment|infrastructure|opportunity|applicants|people|engineers|part|today|capital|practices|architecture|role|leadership|field|years|manner|service|thousands|generation|teams|code|research|candidates|responsibilities|leader|models|day|developers|billions|color|problems|approach|industry|machine|tools|features|religion|race|risk|implementation|quality|technology|analysis|software community|customer relationship management|bain capital ventures|subject matter experts|environment";
+    private String blacklistRegEx =
+        "experience|work|team|software engineer|services|systems|data|design|ability|candidate|knowledge|customers|applications|software|computer science|products|building|technologies|qualifications|projects|requirements|position|support|solutions|ceo|expertise|cloud|employment|world|platform|company|understanding|skills|software development experience|software development projects|software development|environment|infrastructure|opportunity|applicants|people|engineers|part|today|capital|practices|architecture|role|leadership|field|years|manner|service|thousands|generation|teams|code|research|candidates|responsibilities|leader|models|day|developers|billions|color|problems|approach|industry|machine|tools|features|religion|race|risk|implementation|quality|technology|analysis|software community|customer relationship management|bain capital ventures|subject matter experts|environment";
 
     // french blacklist - but FiveFilters doesn't do well with French.
     // blacklistRegEx +=
@@ -72,7 +73,7 @@ public class FiveFiltersService {
         TermList termList = new TermList(terms);
         TermList sortedTermList = termList.sort(new TermFrequency.FrequencyComparator());
         log.debug("\n  RegEx expression for NEW terms: " + sortedTermList.createRegExpForNewTerms(blacklistRegEx));
-        
+
         return sortedTermList;
     }
 
@@ -86,12 +87,10 @@ public class FiveFiltersService {
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params,
-                requestHeaders);
-        ResponseEntity<String[][]> stringArrayEntty = restTemplate.exchange(query,
-                HttpMethod.POST,
-                requestEntity,
-                String[][].class);
+        HttpEntity<MultiValueMap<String, String>> requestEntity =
+            new HttpEntity<MultiValueMap<String, String>>(params, requestHeaders);
+        ResponseEntity<String[][]> stringArrayEntty =
+            restTemplate.exchange(query, HttpMethod.POST, requestEntity, String[][].class);
         String[][] stringArray = stringArrayEntty.getBody();
 
         return stringArray;

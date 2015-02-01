@@ -22,10 +22,10 @@ public class TermList {
         terms.sort(comparator);
         return this;
     }
-    
+
     public String createRegExpForNewTerms(String existingRegEx) {
         StringBuilder builder = new StringBuilder();
-        for (Iterator<TermFrequency> termIter = terms.iterator(); termIter.hasNext(); ) {
+        for (Iterator<TermFrequency> termIter = terms.iterator(); termIter.hasNext();) {
             TermFrequency term = termIter.next();
             if (existingRegEx.contains(term.getTerm())) {
                 continue;
@@ -37,7 +37,7 @@ public class TermList {
         }
         return builder.toString();
     }
-    
+
     public boolean hasResults() {
         return (terms.size() > 0);
     }

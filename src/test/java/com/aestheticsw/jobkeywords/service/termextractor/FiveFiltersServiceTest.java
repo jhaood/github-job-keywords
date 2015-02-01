@@ -26,7 +26,7 @@ public class FiveFiltersServiceTest extends TestBase {
     public void termExtractorDeserialization() throws FileNotFoundException {
         String content = FileUtils.getClassResourceAsString("simple-content.html", this);
         TermList terms = service.getTermList(content, Locale.US);
-        
+
         assertNotNull(terms);
     }
 
@@ -34,11 +34,11 @@ public class FiveFiltersServiceTest extends TestBase {
     public void realJobTerms() throws FileNotFoundException {
         String content = FileUtils.getClassResourceAsString("indeed-content.html", this);
         TermList terms = service.getTermList(content, Locale.US);
-        
+
         assertNotNull(terms);
     }
 
-    // disabled because I can't find any way to break the content - yet. 
+    // disabled because I can't find any way to break the content - yet.
     // @Test
     public void brokenJobTerms() throws FileNotFoundException {
         String content = FileUtils.getClassResourceAsString("broken-content.html", this);

@@ -20,7 +20,7 @@ public class IndeedServiceTest extends TestBase {
     public void loadContext() {
         assertNotNull(service);
     }
-    
+
     @Test
     public void getIndeedJobList() {
         SearchParameters params = new SearchParameters("java spring", 5, 0, Locale.US, null, 0, null);

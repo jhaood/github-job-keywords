@@ -29,7 +29,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
-public class TermExtractorServiceTest  {
+public class TermExtractorServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -57,7 +57,7 @@ public class TermExtractorServiceTest  {
     @Before
     public void initializeTests() {
         MockitoAnnotations.initMocks(this);
-        
+
         termQueryRepository = Mockito.spy(new TermQueryRepository());
         termQueryRepository.log = LoggerFactory.getLogger(termQueryRepository.getClass());
 
@@ -84,7 +84,8 @@ public class TermExtractorServiceTest  {
         when(indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
         when(fiveFiltersService.executeFiveFiltersPost(Mockito.any(String.class))).thenReturn(termListStringArray);
         when(fiveFiltersService.getTermList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(termList);
-        // when(termQueryRepository.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class), Mockito.any(List.class)))
+        // when(termQueryRepository.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class),
+        // Mockito.any(List.class)))
 
         try {
             when(indeedService.getIndeedJobDetails(Mockito.any(String.class))).thenReturn(jobDetailsString);
@@ -118,13 +119,13 @@ public class TermExtractorServiceTest  {
         assertEquals("term two", secondTerm.getTerm());
         assertEquals(2, secondTerm.getFrequency());
 
-        // extract a second time to make sure that the Repository accumulates twice as many terms. 
+        // extract a second time to make sure that the Repository accumulates twice as many terms.
         SearchParameters params2 = new SearchParameters("java", 1, 1, Locale.US, null, 0, null);
         extractedTermList = service.extractTerms(params2);
 
         TermFrequencyResults accumulatedResults = termQueryRepository.getAccumulatedResults(params2.getQueryKey());
         assertNotNull(accumulatedResults);
-        
+
         List<TermFrequency> sortedList = accumulatedResults.getSortedList();
         assertEquals(2, sortedList.size());
         assertEquals("term one", sortedList.get(0).getTerm());

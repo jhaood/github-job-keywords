@@ -24,22 +24,22 @@ import org.thymeleaf.standard.fragment.StandardDOMSelectorFragmentSpec;
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     /**
-<bean name="query-results-fragment" class="org.thymeleaf.spring4.view.ThymeleafView">
-  <property name="templateName" value="index" />
-  <property name="fragmentSpec">
-    <bean class="org.thymeleaf.standard.fragment.StandardDOMSelectorFragmentSpec"
-          c:selectorExpression="content" />
-  </property>
-</bean>
-
-    @Bean(name = "query-results-fragment")
-    public ThymeleafView getContentPartThymeleafView() {
-        ThymeleafView view = new ThymeleafView();
-        
-        new StandardDOMSelectorFragmentSpec("content-fragment"));
-    }
+     * <bean name="query-results-fragment" class="org.thymeleaf.spring4.view.ThymeleafView">
+     * <property name="templateName" value="index" />
+     * <property name="fragmentSpec">
+     * <bean class="org.thymeleaf.standard.fragment.StandardDOMSelectorFragmentSpec"
+     * c:selectorExpression="content" />
+     * </property>
+     * </bean>
+     * 
+     * @Bean(name = "query-results-fragment")
+     *            public ThymeleafView getContentPartThymeleafView() {
+     *            ThymeleafView view = new ThymeleafView();
+     * 
+     *            new StandardDOMSelectorFragmentSpec("content-fragment"));
+     *            }
      */
-    
+
     /*
      * Manual configuraiton of Thymeleaf & JSPs breaks the correct default behavior...
      * I probably need to fix this later...
@@ -116,8 +116,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(true)
-                .defaultContentType(MediaType.APPLICATION_JSON).useJaf(false)
-                .mediaType("xml", MediaType.APPLICATION_XML).mediaType("json", MediaType.APPLICATION_JSON);
+            .defaultContentType(MediaType.APPLICATION_JSON).useJaf(false).mediaType("xml", MediaType.APPLICATION_XML)
+            .mediaType("json", MediaType.APPLICATION_JSON);
     }
 
     /**

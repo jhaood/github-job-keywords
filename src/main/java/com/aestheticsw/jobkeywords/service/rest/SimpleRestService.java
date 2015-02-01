@@ -28,8 +28,8 @@ public class SimpleRestService {
     }
 
     public PivotalJsonPage getPage() {
-        PivotalJsonPage page = restTemplate.getForObject("http://graph.facebook.com/pivotalsoftware",
-                PivotalJsonPage.class);
+        PivotalJsonPage page =
+            restTemplate.getForObject("http://graph.facebook.com/pivotalsoftware", PivotalJsonPage.class);
 
         System.out.println("Name:    " + page.getName());
         System.out.println("About:   " + page.getAbout());

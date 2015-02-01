@@ -6,10 +6,10 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 public class SearchUtilsTest {
-    
+
     @Test
     public void locale() {
-        
+
         assertNotNull(SearchUtils.lookupLocaleByCountry("US"));
         assertEquals("US", SearchUtils.lookupLocaleByCountry("US").getCountry());
         assertEquals("en", SearchUtils.lookupLocaleByCountry("US").getLanguage());

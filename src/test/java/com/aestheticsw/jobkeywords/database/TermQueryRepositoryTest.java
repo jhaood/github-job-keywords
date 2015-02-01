@@ -46,15 +46,15 @@ public class TermQueryRepositoryTest extends TestBase {
 
         termQueryRepository.accumulateTermFrequencyResults(param1, list1);
         termQueryRepository.accumulateTermFrequencyResults(param1_2, list1);
-        
-        // confirm that adding an empty results-list ignores the params and list. 
+
+        // confirm that adding an empty results-list ignores the params and list.
         termQueryRepository.accumulateTermFrequencyResults(param2, new ArrayList<>());
-        
+
         TermFrequencyResults results = termQueryRepository.getAccumulatedResults(param1.getQueryKey());
         assertNotNull(results);
         assertFalse(termQueryRepository.getAccumulatedResults(param2.getQueryKey()).hasResults());
         assertEquals(0, termQueryRepository.getAccumulatedResults(param2.getQueryKey()).getSortedList().size());
-        
+
         // assert that the manager ignored param2's empty results
         assertEquals(2, results.getSortedList().size());
 

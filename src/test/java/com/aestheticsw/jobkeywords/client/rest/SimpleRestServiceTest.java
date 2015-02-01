@@ -9,12 +9,11 @@ import com.aestheticsw.jobkeywords.config.TestBase;
 import com.aestheticsw.jobkeywords.service.rest.SimpleRestService;
 
 /*
- * Use TestBase instead of annotating every class. 
- * 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
-@WebAppConfiguration
-*/
+ * Use TestBase instead of annotating every class.
+ * @RunWith(SpringJUnit4ClassRunner.class)
+ * @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
+ * @WebAppConfiguration
+ */
 public class SimpleRestServiceTest extends TestBase {
 
     @Autowired

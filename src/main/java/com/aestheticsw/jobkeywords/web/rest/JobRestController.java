@@ -42,13 +42,11 @@ public class JobRestController {
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
-    public JobListResponse
-            getIndeedJobList(@RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
-                    required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
-                    defaultValue = "0") int start, @RequestParam(required = false, defaultValue = "US") String country,
-                    @RequestParam(required = false) String city,
-                    @RequestParam(required = false, defaultValue = "0") int radius,
-                    @RequestParam(required = false) String sort) {
+    public JobListResponse getIndeedJobList(@RequestParam(required = false, defaultValue = "Java Spring") String query,
+            @RequestParam(required = false, defaultValue = "2") int jobCount, @RequestParam(
+                    required = false, defaultValue = "0") int start, @RequestParam(
+                    required = false, defaultValue = "US") String country, @RequestParam(required = false) String city,
+            @RequestParam(required = false, defaultValue = "0") int radius, @RequestParam(required = false) String sort) {
         log.info("/indeed endpoint");
 
         Locale locale = Locale.US;
@@ -65,14 +63,13 @@ public class JobRestController {
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/terms", method = RequestMethod.GET)
-    public TermList
-            getTermListForSearchParameters(@RequestParam(required = false, defaultValue = "Java Spring") String query,
-                    @RequestParam(required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
-                            defaultValue = "0") int start,
-                    @RequestParam(required = false, defaultValue = "US") String country,
-                    @RequestParam(required = false) String city,
-                    @RequestParam(required = false, defaultValue = "0") int radius,
-                    @RequestParam(required = false) String sort) throws IOException {
+    public TermList getTermListForSearchParameters(
+            @RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
+                    required = false, defaultValue = "2") int jobCount, @RequestParam(
+                    required = false, defaultValue = "0") int start, @RequestParam(
+                    required = false, defaultValue = "US") String country, @RequestParam(required = false) String city,
+            @RequestParam(required = false, defaultValue = "0") int radius, @RequestParam(required = false) String sort)
+            throws IOException {
         log.info("/job endpoint");
 
         Locale locale = Locale.US;
@@ -87,10 +84,10 @@ public class JobRestController {
     }
 
     @RequestMapping(value = "/accumulatedterms", method = RequestMethod.GET)
-    public TermFrequencyResults getAccumulatedTermFrequencyResults(@RequestParam(required = false,
-            defaultValue = "Java Spring") String query,
-            @RequestParam(required = false, defaultValue = "US") String country,
-            @RequestParam(required = false) String city) throws IOException {
+    public TermFrequencyResults getAccumulatedTermFrequencyResults(@RequestParam(
+            required = false, defaultValue = "Java Spring") String query, @RequestParam(
+            required = false, defaultValue = "US") String country, @RequestParam(required = false) String city)
+            throws IOException {
         log.info("/job endpoint");
 
         Locale locale = Locale.US;

@@ -10,15 +10,15 @@ public class TermFrequency {
     private int wordCount;
 
     /**
-     * This constructor is used in the data store to accumulate results. 
-     * The frequency gets set independently via addFrequency() . 
+     * This constructor is used in the data store to accumulate results.
+     * The frequency gets set independently via addFrequency() .
      */
     public TermFrequency(String term, int wordCount) {
         this.term = term;
         this.wordCount = wordCount;
         this.frequency = 0;
     }
-    
+
     public TermFrequency(String[] innerArray) {
         if (innerArray == null || innerArray.length != 3) {
             throw new RuntimeException("Invalid FiveFilters response structure: " + innerArray);
@@ -27,8 +27,8 @@ public class TermFrequency {
         frequency = Integer.parseInt(innerArray[1]);
         wordCount = Integer.parseInt(innerArray[2]);
     }
-    
-    @Override 
+
+    @Override
     public String toString() {
         return super.toString() + " term: " + term + ", freq: " + frequency;
     }
@@ -40,7 +40,7 @@ public class TermFrequency {
     public int getFrequency() {
         return frequency;
     }
-    
+
     public int addFrequency(int count) {
         frequency += count;
         return frequency;
@@ -49,7 +49,7 @@ public class TermFrequency {
     public int getWordCount() {
         return wordCount;
     }
-    
+
     /**
      * Sort by descending term-frequency, word-count but ascending term-string
      * 
@@ -64,15 +64,15 @@ public class TermFrequency {
 
             // compute for descending word-count order
             builder.append(term2.wordCount, term1.wordCount);
-            
-            // and finally sort by the term, alphabetically, ascending. 
+
+            // and finally sort by the term, alphabetically, ascending.
             builder.append(term1.term, term2.term);
             return builder.toComparison();
         }
     }
 
     /**
-     * Sort by ascending term-name 
+     * Sort by ascending term-name
      */
     public static class TermAlphaComparator implements Comparator<TermFrequency> {
         @Override
@@ -82,7 +82,7 @@ public class TermFrequency {
     }
 
     /**
-     * Sort by descending word-count, then ascending term-name 
+     * Sort by descending word-count, then ascending term-name
      */
     public static class TermComplexityComparator implements Comparator<TermFrequency> {
         @Override
@@ -93,6 +93,5 @@ public class TermFrequency {
             return builder.toComparison();
         }
     }
-
 
 }

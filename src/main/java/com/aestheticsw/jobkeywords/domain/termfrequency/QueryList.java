@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class QueryList {
     private List<QueryKey> queryKeyList;
-    
+
     public QueryList(Collection<QueryKey> queryKeys) {
         if (queryKeys == null) {
             queryKeys = new ArrayList<>();
@@ -22,11 +22,11 @@ public class QueryList {
         this(queryKeys);
         queryKeyList.sort(comparator);
     }
-    
+
     public boolean hasResults() {
         return queryKeyList.size() > 0;
     }
-    
+
     public List<QueryKey> getQueryKeyList() {
         return queryKeyList;
     }

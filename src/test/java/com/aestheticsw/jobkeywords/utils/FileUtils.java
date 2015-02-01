@@ -11,9 +11,8 @@ public class FileUtils {
         try (final InputStream is = clazz.getClass().getResourceAsStream(resourcePath)) {
             return IOUtils.toString(is);
         } catch (IOException e) {
-            throw new RuntimeException("Exception reading resource file: " + resourcePath
-                    + " for class: "
-                    + clazz.getClass().getName(), e);
+            throw new RuntimeException("Exception reading resource file: " + resourcePath + " for class: "
+                + clazz.getClass().getName(), e);
         }
     }
 

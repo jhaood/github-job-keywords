@@ -48,15 +48,12 @@ public class JobController {
     }
 
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
-    public String
-            getIndeedJobList(Map<String, Object> model,
-                    @RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
-                            required = false, defaultValue = "2") int jobCount, @RequestParam(required = false,
-                            defaultValue = "0") int start,
-                    @RequestParam(required = false, defaultValue = "US") String country,
-                    @RequestParam(required = false) String city,
-                    @RequestParam(required = false, defaultValue = "0") int radius,
-                    @RequestParam(required = false) String sort) {
+    public String getIndeedJobList(Map<String, Object> model, @RequestParam(
+            required = false, defaultValue = "Java Spring") String query, @RequestParam(
+            required = false, defaultValue = "2") int jobCount,
+            @RequestParam(required = false, defaultValue = "0") int start, @RequestParam(
+                    required = false, defaultValue = "US") String country, @RequestParam(required = false) String city,
+            @RequestParam(required = false, defaultValue = "0") int radius, @RequestParam(required = false) String sort) {
 
         Locale locale = Locale.US;
         if (country != null) {
@@ -88,13 +85,9 @@ public class JobController {
         if (StringUtils.isNoneEmpty(searchFormBean.getCountry())) {
             locale = SearchUtils.lookupLocaleByCountry(searchFormBean.getCountry());
         }
-        SearchParameters params = new SearchParameters(searchFormBean.getQuery(),
-                searchFormBean.getJobCount(),
-                searchFormBean.getStart(),
-                locale,
-                searchFormBean.getCity(),
-                searchFormBean.getRadius(),
-                searchFormBean.getSort());
+        SearchParameters params =
+            new SearchParameters(searchFormBean.getQuery(), searchFormBean.getJobCount(), searchFormBean.getStart(),
+                locale, searchFormBean.getCity(), searchFormBean.getRadius(), searchFormBean.getSort());
 
         TermList termList = termExtractorService.extractTerms(params);
 
