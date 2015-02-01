@@ -1,6 +1,8 @@
 package com.aestheticsw.jobkeywords.database;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +12,18 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.database.TermQueryManager;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 
-public class TermQueryManagerTest extends TestBase {
+public class TermQueryRepositoryTest extends TestBase {
 
     @Autowired
-    private TermQueryManager termQueryManager;
+    private TermQueryRepository termQueryRepository;
 
     @Test
     public void loadContext() {
-        assertNotNull(termQueryManager);
+        assertNotNull(termQueryRepository);
     }
 
     @Test
@@ -43,19 +44,19 @@ public class TermQueryManagerTest extends TestBase {
         list2.add(tf3);
         list2.add(tf4);
 
-        termQueryManager.accumulateTermFrequencyResults(param1, list1);
-        termQueryManager.accumulateTermFrequencyResults(param1_2, list1);
+        termQueryRepository.accumulateTermFrequencyResults(param1, list1);
+        termQueryRepository.accumulateTermFrequencyResults(param1_2, list1);
         
         // confirm that adding an empty results-list ignores the params and list. 
-        termQueryManager.accumulateTermFrequencyResults(param2, new ArrayList<>());
+        termQueryRepository.accumulateTermFrequencyResults(param2, new ArrayList<>());
         
-        TermFrequencyResults results = termQueryManager.getAccumulatedResults(param1.getQueryKey());
+        TermFrequencyResults results = termQueryRepository.getAccumulatedResults(param1.getQueryKey());
         assertNotNull(results);
-        assertFalse(termQueryManager.getAccumulatedResults(param2.getQueryKey()).hasResults());
-        assertEquals(0, termQueryManager.getAccumulatedResults(param2.getQueryKey()).getSortedList().size());
+        assertFalse(termQueryRepository.getAccumulatedResults(param2.getQueryKey()).hasResults());
+        assertEquals(0, termQueryRepository.getAccumulatedResults(param2.getQueryKey()).getSortedList().size());
         
         // assert that the manager ignored param2's empty results
-        assertEquals(2, results.getSearchParametersList().size());
+        assertEquals(2, results.getSortedList().size());
 
         List<TermFrequency> sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
         assertNotNull(sortedList);
@@ -65,10 +66,10 @@ public class TermQueryManagerTest extends TestBase {
         assertEquals(4, sortedList.get(1).getFrequency());
         assertEquals("spring", sortedList.get(1).getTerm());
 
-        termQueryManager.accumulateTermFrequencyResults(param2, list2);
+        termQueryRepository.accumulateTermFrequencyResults(param2, list2);
 
-        assertNotNull(termQueryManager.getAccumulatedResults(param1.getQueryKey()));
-        results = termQueryManager.getAccumulatedResults(param2.getQueryKey());
+        assertNotNull(termQueryRepository.getAccumulatedResults(param1.getQueryKey()));
+        results = termQueryRepository.getAccumulatedResults(param2.getQueryKey());
         assertNotNull(results);
 
         sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());

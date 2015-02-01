@@ -19,7 +19,7 @@ public class SimpleRestServiceTest extends TestBase {
 
     @Autowired
     private SimpleRestService simpleRestService;
-    
+
     @Test
     public void contextLoads() {
     }

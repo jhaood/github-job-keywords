@@ -28,11 +28,16 @@ public class JobRestController {
     @Log
     private Logger log;
 
-    @Autowired
     private IndeedService indeedService;
 
-    @Autowired
     private TermExtractorService termExtractorService;
+
+    @Autowired
+    public JobRestController(IndeedService indeedService, TermExtractorService termExtractorService) {
+        super();
+        this.indeedService = indeedService;
+        this.termExtractorService = termExtractorService;
+    }
 
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })

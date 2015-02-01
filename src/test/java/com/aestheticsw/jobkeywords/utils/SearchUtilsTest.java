@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class StringUtilsTest {
+public class SearchUtilsTest {
     
     @Test
     public void locale() {

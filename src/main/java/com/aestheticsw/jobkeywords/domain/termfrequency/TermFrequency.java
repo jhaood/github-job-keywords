@@ -8,10 +8,15 @@ public class TermFrequency {
     private String term;
     private int frequency;
     private int wordCount;
-    
+
+    /**
+     * This constructor is used in the data store to accumulate results. 
+     * The frequency gets set independently via addFrequency() . 
+     */
     public TermFrequency(String term, int wordCount) {
         this.term = term;
         this.wordCount = wordCount;
+        this.frequency = 0;
     }
     
     public TermFrequency(String[] innerArray) {
@@ -47,6 +52,8 @@ public class TermFrequency {
     
     /**
      * Sort by descending term-frequency, word-count but ascending term-string
+     * 
+     * TODO: cache the CompareToBuilder and update in addFrequency()
      */
     public static class FrequencyComparator implements Comparator<TermFrequency> {
         @Override

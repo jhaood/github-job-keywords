@@ -39,6 +39,23 @@ public class JobListResponse {
     @XmlElement(name = "results")
     private JobList results;
 
+    public JobListResponse() {
+        super();
+    }
+
+    public JobListResponse(String location, Boolean dupeFilter, Boolean highlight, Integer totalresults, int start,
+            int end, int pageNumber, JobList results) {
+        super();
+        this.location = location;
+        this.dupeFilter = dupeFilter;
+        this.highlight = highlight;
+        this.totalresults = totalresults;
+        this.start = start;
+        this.end = end;
+        this.pageNumber = pageNumber;
+        this.results = results;
+    }
+
     public boolean hasResults() {
         return (results != null && results.hasResults());
     }

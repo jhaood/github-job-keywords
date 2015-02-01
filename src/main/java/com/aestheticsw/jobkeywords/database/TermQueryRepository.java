@@ -18,7 +18,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 
 /**
  * <pre>
- * TermQueryManager - manages the accumulation of search results. 
+ * TermQueryRepository - manages the accumulation of search results. 
  *              For each unique query-key, holds 1 TermFrequencyResults object
  *              A "unique query-key is a subset of the full search parameters that uniquely identifies
  *              a TermFrequencyResults that will accumulate results from subsequent searches.  
@@ -35,15 +35,15 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Component
-public class TermQueryManager {
+public class TermQueryRepository {
 
+    // public access for tests to inject or mock a logger. 
     @Log
-    private Logger log;
+    public Logger log;
 
     private Map<QueryKey, TermFrequencyResults> termFrequencyResultsMap = new HashMap<>();
 
-    public void
-            accumulateTermFrequencyResults(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
+    public void accumulateTermFrequencyResults(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         if (termFrequencyList.size() == 0) {
             log.info("Ignoring search with ZERO results: " + searchParameters.toString());
             return;

@@ -1,6 +1,6 @@
 package com.aestheticsw.jobkeywords.service.termextractor;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.util.Locale;
@@ -24,7 +24,7 @@ public class FiveFiltersServiceTest extends TestBase {
 
     @Test
     public void termExtractorDeserialization() throws FileNotFoundException {
-        String content = FileUtils.getResourceAsString("simple-content.html", this);
+        String content = FileUtils.getClassResourceAsString("simple-content.html", this);
         TermList terms = service.getTermList(content, Locale.US);
         
         assertNotNull(terms);
@@ -32,9 +32,23 @@ public class FiveFiltersServiceTest extends TestBase {
 
     @Test
     public void realJobTerms() throws FileNotFoundException {
-        String content = FileUtils.getResourceAsString("indeed-content.html", this);
+        String content = FileUtils.getClassResourceAsString("indeed-content.html", this);
         TermList terms = service.getTermList(content, Locale.US);
         
         assertNotNull(terms);
+    }
+
+    // disabled because I can't find any way to break the content - yet. 
+    // @Test
+    public void brokenJobTerms() throws FileNotFoundException {
+        String content = FileUtils.getClassResourceAsString("broken-content.html", this);
+        try {
+            TermList terms = service.getTermList(content, Locale.US);
+            fail("Expected FiveFilters to throw exception");
+        } catch (RuntimeException expected) {
+            assertNotNull(expected);
+            assertTrue(expected.getMessage().contains("invalid content"));
+            assertTrue(expected.getMessage().contains("index="));
+        }
     }
 }

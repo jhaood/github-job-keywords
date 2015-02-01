@@ -14,6 +14,15 @@ public class JobList {
     @XmlElement(name = "result")
     private List<JobSummary> jobSummaries;
     
+    public JobList() {
+        super();
+    }
+
+    public JobList(List<JobSummary> jobSummaries) {
+        super();
+        this.jobSummaries = jobSummaries;
+    }
+
     public boolean hasResults() {
         return (jobSummaries != null && jobSummaries.size() > 0);
     }
@@ -21,5 +30,5 @@ public class JobList {
     public List<JobSummary> getResults() {
         return jobSummaries;
     }
-    
+
 }

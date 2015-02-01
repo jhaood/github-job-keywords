@@ -20,6 +20,25 @@ public class JobSummary {
     private String jobkey;
     private Boolean sponsored;
 
+    public JobSummary() {
+        super();
+    }
+
+    public JobSummary(String jobTitle, String company, String city, String state, String source, String date,
+            String snippet, String url, String jobkey, Boolean sponsored) {
+        super();
+        this.jobTitle = jobTitle;
+        this.company = company;
+        this.city = city;
+        this.state = state;
+        this.source = source;
+        this.date = date;
+        this.snippet = snippet;
+        this.url = url;
+        this.jobkey = jobkey;
+        this.sponsored = sponsored;
+    }
+
     public String getJobTitle() {
         return jobTitle;
     }

@@ -2,7 +2,6 @@ package com.aestheticsw.jobkeywords.service.indeed;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Locale;
 
 import net.exacode.spring.logging.inject.Log;
 
@@ -25,18 +24,17 @@ public class IndeedService {
     @Log
     private Logger log;
 
-    @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
     private XPathOperations xpathTemplate;
 
-    public IndeedService() {
-        /*
-         * HttpComponentsClientHttpRequestFactory factory = new
-         * HttpComponentsClientHttpRequestFactory();
-         * restTemplate = new RestTemplate(factory);
-         */
+    @Autowired
+    public IndeedService(RestTemplate restTemplate, XPathOperations xpathTemplate) {
+        this.restTemplate = restTemplate;
+        this.xpathTemplate = xpathTemplate;
+
+        // Not needed now that converters are working properly.. but might be useful later to tweak config
+        // 
         // List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         // for (HttpMessageConverter<?> converter : messageConverters) {
         // if (converter.canRead(Source.class, MediaType.APPLICATION_XML)) {
@@ -121,6 +119,14 @@ public class IndeedService {
         return query;
     }
 
+    /**
+     * This method is dependent upon the JSoup library which can consume malformed 
+     * HTML and XML with invalid syntax. 
+     * 
+     * JSoup can't be tested easily.
+     * 
+     * TODO convert JSoup to HtmlCleaner
+     */
     public String getIndeedJobDetails(String url) throws IOException {
         log.debug("Indeed job-details query: " + url);
         Document doc = Jsoup.connect(url).get();

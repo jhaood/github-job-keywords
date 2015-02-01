@@ -25,7 +25,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 
@@ -35,7 +34,6 @@ public class FiveFiltersService {
     @Log
     private Logger log;
 
-    @Autowired
     private RestTemplate restTemplate;
 
     Map<Pattern, String> regExMap = initRegExMap();
@@ -49,9 +47,14 @@ public class FiveFiltersService {
 
     private Pattern blacklistPattern;
 
+    @Autowired
+    public FiveFiltersService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     public TermList getTermList(String content, Locale locale) {
 
-        content = replaceHtmlTagsWithTerminators(content, locale);
+        content = removeHtmlTagsAndOtherBogusContent(content, locale);
 
         content = removeBlacklistTerms(content);
 
@@ -73,7 +76,7 @@ public class FiveFiltersService {
         return sortedTermList;
     }
 
-    private String[][] executeFiveFiltersPost(String content) {
+    String[][] executeFiveFiltersPost(String content) {
         String query = "http://termextract.fivefilters.org/extract.php";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
@@ -102,7 +105,7 @@ public class FiveFiltersService {
         return content;
     }
 
-    private String replaceHtmlTagsWithTerminators(String content, Locale locale) {
+    private String removeHtmlTagsAndOtherBogusContent(String content, Locale locale) {
 
         content = content.toLowerCase(locale);
         // remote accented characters

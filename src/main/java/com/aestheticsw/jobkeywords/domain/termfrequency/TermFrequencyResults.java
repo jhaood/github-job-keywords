@@ -40,16 +40,8 @@ public class TermFrequencyResults {
         }
     }
 
-    public TermFrequency getForSearchParameters(SearchParameters searchParameters) {
-        return termFrequencyMap.get(searchParameters);
-    }
-    
     public boolean hasResults() {
         return (termFrequencyMap.size() > 0);
-    }
-
-    public List<SearchParameters> getSearchParametersList() {
-        return searchParametersList;
     }
 
     public List<TermFrequency> getSortedList() {

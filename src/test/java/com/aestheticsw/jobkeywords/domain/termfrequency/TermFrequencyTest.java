@@ -1,6 +1,7 @@
 package com.aestheticsw.jobkeywords.domain.termfrequency;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Comparator;
 
@@ -21,16 +22,14 @@ public class TermFrequencyTest {
         TermFrequency tf1 = new TermFrequency(new String[] {"one", "1"});
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = NumberFormatException.class)
     public void constructorFailure2() {
         TermFrequency tf1 = new TermFrequency(new String[] {"one", "one", "1"});
-        
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = NumberFormatException.class)
     public void constructorFailure3() {
         TermFrequency tf1 = new TermFrequency(new String[] {"one", "1", "two"});
-        
     }
 
     @Test

@@ -7,7 +7,7 @@ import org.apache.commons.io.IOUtils;
 
 public class FileUtils {
 
-    public static <T> String getResourceAsString(String resourcePath, T clazz) {
+    public static <T> String getClassResourceAsString(String resourcePath, T clazz) {
         try (final InputStream is = clazz.getClass().getResourceAsStream(resourcePath)) {
             return IOUtils.toString(is);
         } catch (IOException e) {

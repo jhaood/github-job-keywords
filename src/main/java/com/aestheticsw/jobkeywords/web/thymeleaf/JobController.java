@@ -36,11 +36,16 @@ public class JobController {
     @Log
     private Logger log;
 
-    @Autowired
     private IndeedService indeedService;
 
-    @Autowired
     private TermExtractorService termExtractorService;
+
+    @Autowired
+    public JobController(IndeedService indeedService, TermExtractorService termExtractorService) {
+        super();
+        this.indeedService = indeedService;
+        this.termExtractorService = termExtractorService;
+    }
 
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     public String
