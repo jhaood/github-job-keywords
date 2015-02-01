@@ -10,7 +10,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<description>keyword extraction from job listings</description>
 
-	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

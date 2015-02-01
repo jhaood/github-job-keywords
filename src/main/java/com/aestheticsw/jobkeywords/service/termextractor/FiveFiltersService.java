@@ -150,15 +150,21 @@ public class FiveFiltersService {
         regExMap.put(Pattern.compile("&[^;]*;"), " ");
         regExMap.put(Pattern.compile("- ·"), " ");
         regExMap.put(Pattern.compile("·"), " ");
-        regExMap.put(Pattern.compile("®"), "");
-        regExMap.put(Pattern.compile("«"), "");
-        regExMap.put(Pattern.compile("»"), "");
+
+        // <U+0091> and other characters... 
+        regExMap.put(Pattern.compile("[\\u0091\\u0092]"), "'");
+
+        regExMap.put(Pattern.compile("[®«»\\u0095]"), "");
+        // regExMap.put(Pattern.compile("®"), "");
+        // regExMap.put(Pattern.compile("«"), "");
+        // regExMap.put(Pattern.compile("»"), "");
 
         // remove accent characters that were stripped by Normalize.normalize()
         regExMap.put(Pattern.compile("\\p{M}"), "");
 
         // Non-printable characters don't appear to be a problem.
         // regExMap.put(Pattern.compile("[\\x00\\x08\\x0B\\x0C\\x0E-\\x1F]"), "");
+
 
         return regExMap;
     }
