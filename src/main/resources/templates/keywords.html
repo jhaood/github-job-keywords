@@ -5,8 +5,22 @@
 <title>Job Keywords - Search &amp; Results</title>
 <script>
 	$(document).ready(function() {
+		function globalAjaxCursorChange() {
+			$(document).ajaxStart(function() {
+				$('body').addClass('waiting');
+				$('#query-form-div-id input[type="text"]').addClass('uneditable-input uneditable-bg')
+				$('#query-form-div-id input[type="submit"]').attr('disabled',true);
+			});
+			$(document).ajaxComplete(function() {
+				$('body').removeClass('waiting');
+				$('#query-form-div-id input[type="text"]').removeClass('uneditable-input uneditable-bg')
+				$('#query-form-div-id input[type="submit"]').attr('disabled',false);
+			});
+		}
+		globalAjaxCursorChange();
 
 		$('#query-form-id').submit(function(event) {
+
 			event.preventDefault();
 			if ($('#had-form-errors').val() == 'true') {
 				$("#is-ajax-request").val("false");
@@ -14,13 +28,16 @@
 				$("#is-ajax-request").val("true");
 			}
 			var formValues = $(this).serialize();
-			$.post('/job/search', formValues, function(data) {
+			var jqxhr = $.post('/job/search', formValues, function(data) {
+
 				var containsWholePage = $(data).find("#content-id").length;
 				if (containsWholePage) {
 					$('#content-id').html($(data).find("#content-id").html());
 				} else {
 					$('#query-results-id').html(data);
 				}
+			}).fail(function(message) {
+				alert("Ajax HTTP error: " + message);
 			});
 		});
 

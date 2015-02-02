@@ -18,3 +18,11 @@
 }
 
 #footer a {color: #999;}
+
+.waiting, html.busy, html.busy * {  
+  cursor: wait !important;  
+} 
+
+.uneditable-bg {
+	background-color: LightGray !important;
+}
