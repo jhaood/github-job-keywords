@@ -1,12 +1,11 @@
 package com.aestheticsw.jobkeywords.domain.termfrequency;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Locale;
 
 import org.junit.Test;
-
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 
 public class SearchParametersTest {
 
@@ -18,7 +17,8 @@ public class SearchParametersTest {
         assertEquals(20, param1.getJobCount());
         assertEquals(1, param1.getStart());
         assertEquals(Locale.FRANCE, param1.getLocale());
-        assertEquals("Lyon", param1.getCity());
+        // note that Lyon should have been converted to lower case
+        assertEquals("lyon", param1.getCity());
         assertEquals(0, param1.getRadius());
         assertEquals("date", param1.getSort());
     }
