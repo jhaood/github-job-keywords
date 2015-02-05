@@ -17,22 +17,21 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 
 /**
- * The TermQueryResponsitory is keeps an in-memory data store of the results that
- * have been accumulated since the server began running.
+ * The TermQueryResponsitory keeps an in-memory data store of the results that
+ * have been accumulated since the server began running. <p/>
  * 
  * The TermQueryRepository class maintains a Map that differentiates results based
- * on the unique search parameters. A unique search is for a given query-expression and location.
+ * on the unique search parameters. A unique search is for a given query-expression and location. <p/>
  * 
- * The need to accumulate results across multiple searches comes from a limitation of Indeed.com. 
- * Indeed.com will return a maximum of 25 jobs at a time. The user can query multiple times in 
- * order to accumulate results across 50, 100 or 200 job descriptions. 
+ * The need to accumulate results across multiple searches comes from a limitation of Indeed.com.
+ * Indeed.com will return a maximum of 25 jobs at a time. The user can query multiple times in
+ * order to accumulate results across 50, 100 or 200 job descriptions. <p/>
  * 
- * Please see the TermFrequencyResults class for details about how searches are accumulated.
- * 
- * @see TermFrequencyResults 
+ * Please see the TermFrequencyResults class for details about how searches are accumulated. <p/>
  * 
  * TODO Add JPA configure MySQL.
  * 
+ * @see TermFrequencyResults
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Component
@@ -63,7 +62,7 @@ public class TermQueryRepository {
 
     public TermFrequencyResults getAccumulatedResults(QueryKey queryKey) {
         TermFrequencyResults results = termFrequencyResultsMap.get(queryKey);
-        
+
         if (results == null) {
             for (QueryKey key : termFrequencyResultsMap.keySet()) {
                 log.debug("equals: " + key.equals(queryKey) + ", key: " + key + "MVC queryKey: " + queryKey);

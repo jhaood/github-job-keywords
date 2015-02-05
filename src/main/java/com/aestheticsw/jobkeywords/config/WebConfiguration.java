@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * This class isn't needed yet because Spring Boot enables MVC.
- * But this will allow changing the converters and other stuff.
+ * Configures the web layer to expose the CSS and Javascript files and to render either JSON or XML
+ * in response to REST calls.
  */
 @Configuration
 // The @EnableWebMvc annotation disabled the automatic configuration of the
@@ -37,6 +37,13 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
+     * The configureContentNegotiation() method configures the request-URL extensions to pull
+     * either XML or JSON from the rest controllers.
+     * 
+     * This allows the client to specify either *.json
+     * or *.xml which will pull the correct type - but only as long as the controller method does
+     * not constrain the return type with the "produces" annotation attribute.
+     * 
      * - Enables path extension. Note that favor does not mean use one approach in preference to
      * another, it just enables or disables it. The order of checking is always path extension,
      * parameter, Accept header.
@@ -57,11 +64,9 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
             .mediaType("json", MediaType.APPLICATION_JSON);
     }
 
-    /**
+    /*
      * Don't need special configuration of the MessageConverter for the REST controllers.
-     * 
      * KEEP THIS CODE FOR WHEN DESERIALIZATION or SERIALIZATION EVENTUALLY NEEDS TO GET TWEAKED
-     * 
      * Chrome json plugin strips the quotes off attribute-names. Have to pull JSON response from
      * source or from Dev-Tools.
      */

@@ -17,7 +17,8 @@ import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 
 /**
- * Return either a list of jobs, or return the job-details for a specifig job-ID. 
+ * Return either a list of jobs, or return the job-details for a specifig job-ID.
+ * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Component
@@ -89,7 +90,7 @@ public class IndeedService {
 
         log.debug("Indeed job-list query: " + queryUrl);
 
-        // XUserAgentInterceptor isn't needed now, but might be useful some time. 
+        // XUserAgentInterceptor isn't needed now, but might be useful some time.
         // restTemplate.setInterceptors(Collections.singletonList(new XUserAgentInterceptor()));
 
         JobListResponse jobListResponse = restTemplate.getForObject(queryUrl.toString(), JobListResponse.class);
@@ -103,9 +104,10 @@ public class IndeedService {
     }
 
     /**
-     * Return the job-details sub-section of the HTML that Indeed returns. This method takes a URL that Indeed
-     * returns for each JobSummary returned by getIndeedJobList() above.  
-     *  
+     * Return the job-details sub-section of the HTML that Indeed returns. This method takes a URL
+     * that Indeed
+     * returns for each JobSummary returned by getIndeedJobList() above.
+     * 
      * 
      * This method is dependent upon the JSoup library which can consume malformed
      * HTML and XML with invalid syntax.

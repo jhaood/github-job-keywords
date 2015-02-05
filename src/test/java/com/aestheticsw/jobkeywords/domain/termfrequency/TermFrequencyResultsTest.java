@@ -37,7 +37,7 @@ public class TermFrequencyResultsTest {
         results.accumulateTermFrequencyList(param2, list1);
         results.accumulateTermFrequencyList(param3, list2);
 
-        List<TermFrequency> sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
+        List<TermFrequency> sortedList = results.getSortedTermFrequencyList(new TermFrequency.FrequencyComparator());
         assertNotNull(sortedList);
         assertEquals(6, sortedList.get(0).getFrequency());
         assertEquals("java", sortedList.get(0).getTerm());
@@ -50,7 +50,7 @@ public class TermFrequencyResultsTest {
 
         // adding param2 a second time should get ignored.
         results.accumulateTermFrequencyList(param2, list2);
-        sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
+        sortedList = results.getSortedTermFrequencyList(new TermFrequency.FrequencyComparator());
 
         assertEquals(6, sortedList.get(1).getFrequency());
         assertEquals("spring", sortedList.get(1).getTerm());

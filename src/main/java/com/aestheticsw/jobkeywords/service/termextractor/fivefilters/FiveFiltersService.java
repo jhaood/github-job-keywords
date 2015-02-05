@@ -31,10 +31,10 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 /**
  * The FiveFiltersService provides a single method for extracting keywords from a large piece of
  * text. The text may contain simple HTML tags which the service will remove before extracting the
- * terms.
+ * terms.<p/>
  * 
  * The client of this Service must isolate a reasonably specific piece of text from which terms will
- * be extracted. The Five-Filters service does not ignore XML tags. Five-Filters is not tolerant.
+ * be extracted. The Five-Filters service does not ignore XML tags. Five-Filters is not tolerant.<p/>
  * 
  * TODO convert from Five-Filters to a real commercial, multi-language term extractor such as
  * AlchemyAPI or Maui
@@ -109,7 +109,7 @@ public class FiveFiltersService {
         return sortedTermList;
     }
 
-    // public access ONLY for testing... 
+    // public access ONLY for testing...
     public String[][] executeFiveFiltersPost(String content) {
         String query = "http://termextract.fivefilters.org/extract.php";
 
@@ -172,7 +172,7 @@ public class FiveFiltersService {
         regExMap.put(Pattern.compile("</p>"), ". ");
         regExMap.put(Pattern.compile("<br>"), " ");
         regExMap.put(Pattern.compile("<br [^>]*>"), " ");
-        regExMap.put(Pattern.compile("<br/>"), " ");
+        regExMap.put(Pattern.compile("<p/>"), " ");
         regExMap.put(Pattern.compile("<b>"), "");
         regExMap.put(Pattern.compile("<b [^>]*>"), "");
         regExMap.put(Pattern.compile("</b>"), "");
@@ -185,7 +185,7 @@ public class FiveFiltersService {
         regExMap.put(Pattern.compile("·"), " ");
 
         // <U+0091> and other characters that are common in the UK
-        
+
         regExMap.put(Pattern.compile("[\\u0091\\u0092]"), "'");
 
         regExMap.put(Pattern.compile("[§®«»\\u0095]"), "");
@@ -193,7 +193,8 @@ public class FiveFiltersService {
         // regExMap.put(Pattern.compile("«"), "");
         // regExMap.put(Pattern.compile("»"), "");
 
-        // remove accent characters that were separated from the associated character by Normalize.normalize()
+        // remove accent characters that were separated from the associated character by
+        // Normalize.normalize()
         regExMap.put(Pattern.compile("\\p{M}"), "");
 
         // Non-printable characters are not a significant problem in the US, UK or France

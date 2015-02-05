@@ -1,8 +1,9 @@
 package com.aestheticsw.jobkeywords.domain.simple;
 
 /**
- * This data model class lets the SimpleRestService experiment with JSON desearialization. 
- * This class also allows the SimpleRestController  experiment with JSON and XML serialization. 
+ * This data model class lets the SimpleRestService experiment with JSON desearialization.<p/>
+ * 
+ * This class also allows the SimpleRestController experiment with JSON and XML serialization.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */

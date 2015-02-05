@@ -53,12 +53,12 @@ public class TermQueryRepositoryTest extends TestBase {
         TermFrequencyResults results = termQueryRepository.getAccumulatedResults(param1.getQueryKey());
         assertNotNull(results);
         assertFalse(termQueryRepository.getAccumulatedResults(param2.getQueryKey()).hasResults());
-        assertEquals(0, termQueryRepository.getAccumulatedResults(param2.getQueryKey()).getSortedList().size());
+        assertEquals(0, termQueryRepository.getAccumulatedResults(param2.getQueryKey()).getSortedTermFrequencyList().size());
 
         // assert that the manager ignored param2's empty results
-        assertEquals(2, results.getSortedList().size());
+        assertEquals(2, results.getSortedTermFrequencyList().size());
 
-        List<TermFrequency> sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
+        List<TermFrequency> sortedList = results.getSortedTermFrequencyList(new TermFrequency.FrequencyComparator());
         assertNotNull(sortedList);
         assertEquals(6, sortedList.get(0).getFrequency());
         assertEquals("java", sortedList.get(0).getTerm());
@@ -72,7 +72,7 @@ public class TermQueryRepositoryTest extends TestBase {
         results = termQueryRepository.getAccumulatedResults(param2.getQueryKey());
         assertNotNull(results);
 
-        sortedList = results.getSortedList(new TermFrequency.FrequencyComparator());
+        sortedList = results.getSortedTermFrequencyList(new TermFrequency.FrequencyComparator());
         assertNotNull(sortedList);
 
         assertEquals(8, sortedList.get(0).getFrequency());

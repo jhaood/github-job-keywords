@@ -8,9 +8,11 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
 /**
- * This interceptor can overwrite the headers for an outbound HttpClient request. For example,
- * the user-agent may have to be spoofed to look like a browser instead of HttpClient. This might 
- * be needed later if Indeed or FiveFilters decides they don't want to serve requests from apps. 
+ * This interceptor can overwrite the headers for an outbound HttpClient request. <p/>
+ * 
+ * For example,
+ * the user-agent may have to be spoofed to look like a browser instead of HttpClient. This might
+ * be needed later if Indeed or FiveFilters decides they don't want to serve requests from apps.
  */
 public class XUserAgentInterceptor implements ClientHttpRequestInterceptor {
 

@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
+ * JobListResponse is the root of the object graph from the Indeed API that represents a list of
+ * job-summaries.
+ * 
  * <pre>
  * The Indeed data model is small: 
  * 

@@ -84,6 +84,19 @@
 					<useSystemClassLoader>false</useSystemClassLoader>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.1</version>
+				<configuration>
+					<nohelp>true</nohelp>
+					<!-- 
+					<show>private</show>
+					 -->
+					<reportOutputDirectory>${project.reporting.outputDirectory}/javadoc</reportOutputDirectory>
+					<destDir>api</destDir>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>

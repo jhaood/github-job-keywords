@@ -8,14 +8,21 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * QueryKey represents the unique parameters that define a query expression for a country and city. 
- * This class is a subset of SearchParameters because Indeed will only return a max of 25 jobs per search. 
- * The UI allows the user to search multiple times in order to span more than 25 jobs.
+ * QueryKey represents the unique parameters for a query expression and a location.
+ * <p/>
  * 
- * The QueryTermRepository accumulates results from multiple searches. The QueryKey is the index into 
- * the repository's map of unique search expressions for a given city and country. 
+ * This class is a subset of SearchParameters. This subset is needed because results from multipe
+ * searches can be accumulated for a given query-string and location. Indeed will only return a max
+ * of 25 jobs per search. So the application allows the user to search across several pages of
+ * results in order to span more than 25 jobs.
+ * <p/>
+
+ * The QueryTermRepository accumulates results from multiple searches. The QueryKey is the index
+ * into the repository's map of unique search expressions for a given city and country.
+ * <p/>
  * 
  * QueryKey is an immutable class that can be used an an index in a Map.
+ * <p/>
  * 
  * This class also defines a public Comparator that allow the UI to sort a list of QueryKeys.
  * 

@@ -133,7 +133,7 @@ public class TermExtractorServiceTest {
         TermFrequencyResults accumulatedResults = termQueryRepository.getAccumulatedResults(params2.getQueryKey());
         assertNotNull(accumulatedResults);
 
-        List<TermFrequency> sortedList = accumulatedResults.getSortedList();
+        List<TermFrequency> sortedList = accumulatedResults.getSortedTermFrequencyList();
         assertEquals(2, sortedList.size());
         assertEquals("term one", sortedList.get(0).getTerm());
         assertEquals(8, sortedList.get(0).getFrequency());

@@ -6,9 +6,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * SearchParameter holds the full set of parameters for a given search. This class is distinct from
- * the QueryKey class because Indeed will only return a maxiumum of 25 jobs per REST call. The UI allows
- * the user to search multiple times for the same QueryKey values in order to span more than 25 jobs. 
+ * SearchParameter holds the full set of parameters for a given search. <p/>
+ * 
+ * This class is distinct from
+ * the QueryKey class because Indeed will only return a maxiumum of 25 jobs per REST call. The UI
+ * allows
+ * the user to search multiple times for the same QueryKey values in order to span more than 25
+ * jobs. <p/>
  * 
  * SearchParameters is an immutable class that can be used as an index in a Map.
  * 
