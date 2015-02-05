@@ -1,5 +1,11 @@
-package com.aestheticsw.jobkeywords.domain;
+package com.aestheticsw.jobkeywords.domain.simple;
 
+/**
+ * This data model class lets the SimpleRestService experiment with JSON desearialization. 
+ * This class also allows the SimpleRestController  experiment with JSON and XML serialization. 
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class PivotalJsonPage {
 
     private String name;

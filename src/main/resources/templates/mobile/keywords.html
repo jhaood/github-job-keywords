@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+    layout:decorator="layout">
+<head>
+<title>Job Keywords - Search &amp; Results</title>
+<script>
+	$(document).ready(function() {
+		function globalAjaxCursorChange() {
+			$(document).ajaxStart(function() {
+				$('body').addClass('waiting');
+				$('#query-form-div-id input[type="text"]').addClass('uneditable-input uneditable-bg')
+				$('#query-form-div-id input[type="submit"]').attr('disabled',true);
+			});
+			$(document).ajaxComplete(function() {
+				$('body').removeClass('waiting');
+				$('#query-form-div-id input[type="text"]').removeClass('uneditable-input uneditable-bg')
+				$('#query-form-div-id input[type="submit"]').attr('disabled',false);
+			});
+		}
+		globalAjaxCursorChange();
+
+		$('#query-form-id').submit(function(event) {
+
+			event.preventDefault();
+			if ($('#had-form-errors').val() == 'true') {
+				$("#is-ajax-request").val("false");
+			} else {
+				$("#is-ajax-request").val("true");
+			}
+			var formValues = $(this).serialize();
+			var jqxhr = $.post('/job/search', formValues, function(data) {
+
+				var containsWholePage = $(data).find("#content-id").length;
+				if (containsWholePage) {
+					$('#content-id').html($(data).find("#content-id").html());
+				} else {
+					$('#query-results-id').html(data);
+				}
+			}).fail(function(message) {
+				alert("Ajax HTTP error: " + message);
+			});
+		});
+
+	});
+</script>
+</head>
+<body>
+    <h1 layout:fragment="header">Job Keywords - Search &amp; Results (Mobile)</h1>
+    <div layout:fragment="content" id="content-id" class="container">
+
+        <div th:fragment="query-form-div" id="query-form-div-id" class="pull-left">
+            <!--    -->
+            <form id="query-form-id" th:action="@{/job/search}" th:object="${searchFormBean}" action="#" method="post">
+                <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false" />
+                <input type="hidden" id="had-form-errors" th:field="*{hadFormErrors}" />
+
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+                    <p th:each="error : ${#fields.errors('*')}" th:text="${error}">default validation error message</p>
+                </div>
+
+                <label for="query">Indeed Query Expression</label>
+                <input type="text" th:field="*{query}" th:class="${#fields.hasErrors('query')} ? 'field-error'" />
+
+                <label for="country">Country</label>
+                <input type="text" th:field="*{country}" th:class="${#fields.hasErrors('country')} ? 'field-error'" />
+
+                <label for="city">City</label>
+                <input type="text" th:field="*{city}" th:class="${#fields.hasErrors('city')} ? 'field-error'" />
+
+                <label for="jobCount"># Jobs</label>
+                <input type="text" th:field="*{jobCount}" th:class="${#fields.hasErrors('jobCount')} ? 'field-error'" />
+
+                <label for="start">Starting Job Index</label>
+                <input type="text" th:field="*{start}" th:class="${#fields.hasErrors('start')} ? 'field-error'" />
+
+                <div class="form-actions">
+                    <input type="submit" value="Search" />
+                </div>
+            </form>
+        </div>
+
+        <div th:fragment="query-results (results)" id="query-results-id" class="pull-right">
+            <table id="results-table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <td>Term</td>
+                        <td>Frequency</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${results == null or ! results.hasResults()}">
+                        <td colspan="3">No results</td>
+                    </tr>
+                    <th:block th:if="${results != null and results.hasResults()}">
+                        <tr th:each="result : ${results.getTerms()}">
+                            <td th:text="${result.term}">1</td>
+                            <td th:text="${result.frequency}" />
+                            <td></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+

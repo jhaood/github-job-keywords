@@ -30,11 +30,17 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
-import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
-import com.aestheticsw.jobkeywords.service.termextractor.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.utils.SearchUtils;
 
+/**
+ * This Spring MVC controller is integrated into the Thymeleaf configuration to produce an HTML5 Web
+ * interface for a browser running on a desktop, smartphones or tablet.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @Controller
 @RequestMapping(value = "/job")
 public class JobController {
@@ -52,20 +58,26 @@ public class JobController {
         this.termExtractorService = termExtractorService;
     }
 
-    // Total control - setup a model and return the view name yourself. Or consider
-    // subclassing ExceptionHandlerExceptionResolver (see below).
+    /**
+     * This exception handler passes the exception message to Thymeleaf, but suppresses the stack
+     * trace from the UI.
+     */
     @ExceptionHandler(Throwable.class)
     public ModelAndView handleError(HttpServletRequest req, Throwable exception) {
-      log.error("Request: " + req.getRequestURL() + " raised " + exception, exception);
+        log.error("Request: " + req.getRequestURL() + " raised " + exception, exception);
 
-      ModelAndView mav = new ModelAndView();
-      mav.addObject("message", exception.getMessage());
-      mav.addObject("exception", exception);
-      mav.addObject("url", req.getRequestURL());
-      mav.setViewName("exception");
-      return mav;
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("message", exception.getMessage());
+        mav.addObject("exception", exception);
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName("exception");
+        return mav;
     }
 
+    /**
+     * TODO - This method isn't integrated into the UI right now, but will be soon.
+     */
+    // TODO replace the discrete attributes with the Thymeleaf SearchFormBean.
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     public String getIndeedJobList(Map<String, Object> model, @RequestParam(
             required = false, defaultValue = "Java Spring") String query, @RequestParam(
@@ -87,12 +99,29 @@ public class JobController {
         return "joblist";
     }
 
+    /**
+     * Render the search page in its entirety for a GET http request.
+     */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String showKeywordsPage(@ModelAttribute SearchFormBean searchFormBean) {
         initializeSearchFormBean(searchFormBean);
         return "keywords";
     }
 
+    /**
+     * The search page relies on an AJAX call to submit the form-parameters and redraw only a
+     * portion of the HTML page.
+     * 
+     * If a validation error occurs for an initial search then the Javascript must correctly handle
+     * the case where a subsequent search corrects the validation error and draws the response.
+     * Correcting a validation error requires the Javascript to redraw both the <form> and the
+     * results <div> HTML.
+     *
+     * If the search page is in a clean state then the search results only require redrawing the
+     * <div> that contains the results. When an initial validation error occurs, only the <div>
+     * that contains the form must be redrawn. When an initial valication is subsequencly corrected
+     * then both <div>s must be redrawn. 
+     */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ModelAndView getTermListForSearchParameters(@Valid SearchFormBean searchFormBean, BindingResult result,
             RedirectAttributes redirect, @RequestParam(required = false) boolean isAjaxRequest) {
@@ -102,6 +131,8 @@ public class JobController {
         if (result.hasErrors()) {
             searchFormBean.setHadFormErrors(true);
             modelMap.put("formErrors", result.getAllErrors());
+
+            // Return the whole HTML page and let the Javascript select which <div> tags it wants to render. 
             return new ModelAndView("keywords", modelMap);
         }
 
@@ -118,14 +149,18 @@ public class JobController {
             termList = termExtractorService.extractTerms(params);
         } catch (IndeedQueryException e) {
             searchFormBean.setHadFormErrors(true);
-            result.addError(new FieldError("searchFormBean", "query", "No results found, check query expression: " + params));
+            result.addError(new FieldError("searchFormBean", "query", "No results found, check query expression: "
+                + params));
             modelMap.put("formErrors", result.getAllErrors());
+            
+            // Return the whole HTML page and let the Javascript select which <div> tags it wants to render. 
             return new ModelAndView("keywords", modelMap);
         }
 
         searchFormBean.setHadFormErrors(false);
         modelMap.put("results", termList);
         if (isAjaxRequest) {
+            // Return only the results fragment. 
             return new ModelAndView("keywords :: query-results", modelMap);
         }
         return new ModelAndView("keywords", modelMap);

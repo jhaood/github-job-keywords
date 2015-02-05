@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This class experiments with the JSON serializer. It restricts the output to ONLY JSON instead of
+ * allowing the HTTP client to request either JSON or XML.
+ */
 @RestController
 @RequestMapping(value = "/rest/user")
 public class UserRestController {

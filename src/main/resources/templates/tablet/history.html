@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+    layout:decorator="layout">
+<head>
+<title>Job Keywords - Search History</title>
+<script>
+	$(document).ready(function() {
+
+		$('#query-form').submit(function(event) {
+			event.preventDefault();
+			$("#is-ajax-request").val("true");
+			var formValues = $(this).serialize();
+			$.post('/job/history', formValues, function(data) {
+				$('#query-results-id').html(data);
+			});
+		});
+
+	});
+</script>
+</head>
+<body>
+    <h1 layout:fragment="header">Job Keywords - Search History (Tablet)</h1>
+    <div layout:fragment="content" class="container">
+        <!-- 
+        <div layout:fragment="query-form-fragment" class="pull-right">
+            <form id="query-form" th:action="@{/job/history}" th:object="${searchFormBean}" action="#" method="get">
+                <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false" />
+
+                <div class="form-actions">
+                    <input type="submit" value="Search" />
+                </div>
+            </form>
+        </div>
+         -->
+
+        <div th:fragment="query-results (results)" id="query-results-id" class="pull-left">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <td>Query</td>
+                        <td>Country</td>
+                        <td>City</td>
+                        <td>Results</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${results == null or ! results.hasResults()}">
+                        <td colspan="3">No results</td>
+                    </tr>
+                    <th:block th:if="${results != null and results.hasResults()}">
+                        <tr th:each="result : ${results.getQueryKeyList()}">
+                            <td th:text="${result.query}" />
+                            <td th:text="${result.locale.country}" />
+                            <td th:text="${result.city}" />
+                            <td>
+                                <form class="accumulated-form-class" th:action="@{/job/accumulated}"
+                                    th:object="${searchFormBean}" action="#" method="post">
+
+                                    <!-- th:field="*{query}"  -->
+                                    <input type="hidden" th:value="${result.query}" name="query" />
+
+                                    <input type="hidden" th:value="${result.locale.country}" name="country" />
+
+                                    <input type="hidden" th:value="${result.city}" name="city" />
+
+                                    <div class="form-actions">
+                                        <input type="submit" value="Show Accumulated Terms" />
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

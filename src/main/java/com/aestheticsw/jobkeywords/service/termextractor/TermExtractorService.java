@@ -16,10 +16,16 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
-import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
+import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersService;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
 
-// TODO try to remove TestBase because mocks should be sufficient
-//
+/**
+ * The TermExtracorService is the primary public interface that wraps both the Indeed and
+ * FiveFilters services.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @Service
 public class TermExtractorService {
 
@@ -45,7 +51,7 @@ public class TermExtractorService {
         JobListResponse jobListResponse = getIndeedService().getIndeedJobList(params);
 
         List<JobSummary> jobSummaries = jobListResponse.getResults().getResults();
-        
+
         log.info("Indeed returned jobCount=" + ((jobSummaries != null) ? jobSummaries.size() : "0 (no results)"));
         if (jobSummaries == null || jobSummaries.size() == 0) {
             throw new IndeedQueryException("Query returned no results: " + params);

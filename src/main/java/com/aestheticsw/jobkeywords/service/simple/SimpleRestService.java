@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.rest;
+package com.aestheticsw.jobkeywords.service.simple;
 
 import net.exacode.spring.logging.inject.Log;
 
@@ -7,18 +7,17 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
+import com.aestheticsw.jobkeywords.domain.simple.PivotalJsonPage;
 
+/**
+ * This is a test fixture for converting JSON into a simple domain class. This allows the
+ * SimpleRestController to experiment with returning XML or Json to a HTTP client. 
+ */
 @Component
 public class SimpleRestService {
 
     @Log
     private Logger log;
-
-    // TODO use HttpComponentsClientHttpRequestFactory to create the RestTemplate
-    // HttpClient httpClient = HttpClientBuilder.create().build();
-    // ClientHttpRequestFactory requestFactory = new
-    // HttpComponentsClientHttpRequestFactory(httpClient);
 
     private RestTemplate restTemplate;
 

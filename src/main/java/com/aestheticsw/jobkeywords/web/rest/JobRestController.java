@@ -17,11 +17,18 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
-import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
-import com.aestheticsw.jobkeywords.service.termextractor.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.utils.SearchUtils;
 
+/**
+ * This REST controller exposes the Indeed job list or the extracted terms to a RESTful client.
+ *  
+ * This controller experiments with JSON and XML serialization. 
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @RestController
 @RequestMapping(value = "/rest/job")
 public class JobRestController {
@@ -39,6 +46,9 @@ public class JobRestController {
         this.termExtractorService = termExtractorService;
     }
 
+    // Don't specify the "produces" media type - allow the configuraiton to detect which format 
+    // is being requested by the client. 
+    // 
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
@@ -51,7 +61,8 @@ public class JobRestController {
 
         Locale locale = Locale.US;
         if (country != null) {
-            locale = SearchUtils.lookupLocaleByCountry(country);
+            // force to upper case !
+            locale = SearchUtils.lookupLocaleByCountry(country.toUpperCase());
         }
 
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
@@ -74,7 +85,7 @@ public class JobRestController {
 
         Locale locale = Locale.US;
         if (country != null) {
-            locale = SearchUtils.lookupLocaleByCountry(country);
+            locale = SearchUtils.lookupLocaleByCountry(country.toUpperCase());
         }
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
 
@@ -97,7 +108,7 @@ public class JobRestController {
 
         Locale locale = Locale.US;
         if (country != null) {
-            locale = SearchUtils.lookupLocaleByCountry(country);
+            locale = SearchUtils.lookupLocaleByCountry(country.toUpperCase());
         }
         QueryKey queryKey = new QueryKey(query, locale, city);
 

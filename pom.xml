@@ -7,9 +7,10 @@
 
 	<artifactId>job-keywords</artifactId>
 	<groupId>com.aestheticsw</groupId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<description>keyword extraction from job listings</description>
 
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

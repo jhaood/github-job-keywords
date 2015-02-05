@@ -26,7 +26,9 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
-import com.aestheticsw.jobkeywords.service.indeed.IndeedService;
+import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersService;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
 public class TermExtractorServiceTest {

@@ -5,6 +5,16 @@ import java.util.Locale;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * SearchParameter holds the full set of parameters for a given search. This class is distinct from
+ * the QueryKey class because Indeed will only return a maxiumum of 25 jobs per REST call. The UI allows
+ * the user to search multiple times for the same QueryKey values in order to span more than 25 jobs. 
+ * 
+ * SearchParameters is an immutable class that can be used as an index in a Map.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ * @see QueryKey
+ */
 public class SearchParameters {
     private String query;
     private int jobCount;
@@ -21,10 +31,15 @@ public class SearchParameters {
 
     public SearchParameters(String query, int jobCount, int start, Locale locale, String city, int radius, String sort) {
         super();
-        this.query = query;
+        // force query to lower case (query can't be null so don't test for null)
+        this.query = query.toLowerCase();
         this.jobCount = jobCount;
         this.start = start;
         this.locale = locale;
+        // force city to lower case
+        if (city != null) {
+            city = city.toLowerCase();
+        }
         this.city = city;
         this.radius = radius;
         this.sort = sort;
@@ -63,6 +78,8 @@ public class SearchParameters {
             return false;
         }
         SearchParameters otherSearchParameters = (SearchParameters) other;
+
+        // TODO cache this EqualsBuilder for performance reasons. ! ! !
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(query, otherSearchParameters.query).append(jobCount, otherSearchParameters.jobCount)
             .append(start, otherSearchParameters.start).append(locale, otherSearchParameters.locale)

@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.indeed;
+package com.aestheticsw.jobkeywords.service.termextractor.indeed;
 
 import static org.junit.Assert.*;
 

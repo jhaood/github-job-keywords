@@ -1,7 +1,6 @@
-package com.aestheticsw.jobkeywords.service.indeed;
+package com.aestheticsw.jobkeywords.service.termextractor.indeed;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import net.exacode.spring.logging.inject.Log;
 
@@ -16,8 +15,11 @@ import org.springframework.xml.xpath.XPathOperations;
 
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.service.rest.XUserAgentInterceptor;
 
+/**
+ * Return either a list of jobs, or return the job-details for a specifig job-ID. 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @Component
 public class IndeedService {
 
@@ -56,16 +58,18 @@ public class IndeedService {
         // restTemplate.setMessageConverters(messageConverters);
     }
 
+    /**
+     * <pre>
+     * Example search parameters...
+     * 
+     * "http://api.indeed.com/ads/apisearch?publisher=1652353865637104&q=java&l=austin%2C+tx" +
+     * "&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=us&chnl=&userip=1.2.3.4"
+     * + "&useragent=Mozilla/%2F4.0%28Firefox%29&v=2";
+     * </pre>
+     */
     public JobListResponse getIndeedJobList(SearchParameters params) {
-        /*
-         * More search parameters...
-         * String query =
-         * "http://api.indeed.com/ads/apisearch?publisher=1652353865637104&q=java&l=austin%2C+tx" +
-         * "&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=us&chnl=&userip=1.2.3.4"
-         * + "&useragent=Mozilla/%2F4.0%28Firefox%29&v=2";
-         */
         StringBuilder queryUrl = new StringBuilder();
-        String query = encodeIndeedQuery(params.getQuery());
+        String query = params.getQuery();
 
         queryUrl.append("http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=").append(query);
         queryUrl.append("&limit=").append(params.getJobCount());
@@ -85,22 +89,9 @@ public class IndeedService {
 
         log.debug("Indeed job-list query: " + queryUrl);
 
-        restTemplate.setInterceptors(Collections.singletonList(new XUserAgentInterceptor()));
+        // XUserAgentInterceptor isn't needed now, but might be useful some time. 
+        // restTemplate.setInterceptors(Collections.singletonList(new XUserAgentInterceptor()));
 
-        /*
-         * More HttpClient attempts at controlling headers.
-         * HttpHeaders headers = new HttpHeaders();
-         * headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
-         * HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-         * String stringResponse = restTemplate.exchange(query, HttpMethod.GET, entity,
-         * String.class).getBody();
-         * String stringResponse = restTemplate.getForObject(queryUrl, String.class);
-         */
-
-        /*
-         * http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=senior+java+%
-         * 28engineering+or+developer+or+engineer%29&limit=2&start=0&co=US&l=San Francisco
-         */
         JobListResponse jobListResponse = restTemplate.getForObject(queryUrl.toString(), JobListResponse.class);
         log.debug("Response: " + jobListResponse);
 
@@ -111,22 +102,17 @@ public class IndeedService {
         return jobListResponse;
     }
 
-    private String encodeIndeedQuery(String query) {
-        /*
-         * query = query.replaceAll(" ", "+");
-         * query = query.replaceAll("\\(", "%28");
-         * query = query.replaceAll("\\)", "%29");
-         */
-        return query;
-    }
-
     /**
+     * Return the job-details sub-section of the HTML that Indeed returns. This method takes a URL that Indeed
+     * returns for each JobSummary returned by getIndeedJobList() above.  
+     *  
+     * 
      * This method is dependent upon the JSoup library which can consume malformed
      * HTML and XML with invalid syntax.
      * 
      * JSoup can't be tested easily.
      * 
-     * TODO convert JSoup to HtmlCleaner
+     * TODO convert from JSoup to HtmlCleaner
      */
     public String getIndeedJobDetails(String url) {
         log.debug("Indeed job-details query: " + url);

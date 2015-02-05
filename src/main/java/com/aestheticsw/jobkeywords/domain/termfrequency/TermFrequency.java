@@ -4,13 +4,27 @@ import java.util.Comparator;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
+/**
+ * The TermFrequency class holds a single term returned from the keyword extractor and
+ * holds the Frequency and word-count for the term.
+ * 
+ * This class also defines a few Comparators that can sort in different ways. The typical sort
+ * that's most interesting is ordered by descending frequency. Other Comparators allow sorting
+ * by term-string and the "complexity" of a term (a multi-word term is more complex than a single
+ * word)
+ * 
+ * This class is not immutable because it is used by the TermQueryRepository to add up the
+ * frequency of occurrences across multiple searches for the same QueryKey.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class TermFrequency {
     private String term;
     private int frequency;
     private int wordCount;
 
     /**
-     * This constructor is used in the data store to accumulate results.
+     * This constructor is used in the data repository to accumulate results.
      * The frequency gets set independently via addFrequency() .
      */
     public TermFrequency(String term, int wordCount) {
@@ -51,10 +65,8 @@ public class TermFrequency {
     }
 
     /**
-     * Sort by descending term-frequency, word-count but ascending term-string
-     * 
-     * TODO: cache the CompareToBuilder and update in addFrequency()
-     */
+     * Sort by descending term-frequency, descending word-count and ascending term-string
+          */
     public static class FrequencyComparator implements Comparator<TermFrequency> {
         @Override
         public int compare(TermFrequency term1, TermFrequency term2) {

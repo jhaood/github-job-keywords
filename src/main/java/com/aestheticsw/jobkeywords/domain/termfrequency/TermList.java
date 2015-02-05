@@ -23,6 +23,10 @@ public class TermList {
         return this;
     }
 
+    /**
+     * This method makes it easy to generate a blacklist regular expression. The blacklist 
+     * is saved by the FiveFiltersService. 
+     */
     public String createRegExpForNewTerms(String existingRegEx) {
         StringBuilder builder = new StringBuilder();
         for (Iterator<TermFrequency> termIter = terms.iterator(); termIter.hasNext();) {

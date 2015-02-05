@@ -17,20 +17,21 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 
 /**
- * <pre>
- * TermQueryRepository - manages the accumulation of search results. 
- *              For each unique query-key, holds 1 TermFrequencyResults object
- *              A "unique query-key is a subset of the full search parameters that uniquely identifies
- *              a TermFrequencyResults that will accumulate results from subsequent searches.  
- *    Map<QueryKey, TermFrequencyResults>
- *    
- * TermFrequencyResults - Contains a Map and a List. 
- *              The Map of term-name to TermFrequency instance for fast lookup 
- *              The List saves the search parameters for each search that have been accumulated 
- *              into this set of results.  
- *    Map<term-name, TermFrequency>
- *    List<SearchParameters>
- * </pre>
+ * The TermQueryResponsitory is keeps an in-memory data store of the results that
+ * have been accumulated since the server began running.
+ * 
+ * The TermQueryRepository class maintains a Map that differentiates results based
+ * on the unique search parameters. A unique search is for a given query-expression and location.
+ * 
+ * The need to accumulate results across multiple searches comes from a limitation of Indeed.com. 
+ * Indeed.com will return a maximum of 25 jobs at a time. The user can query multiple times in 
+ * order to accumulate results across 50, 100 or 200 job descriptions. 
+ * 
+ * Please see the TermFrequencyResults class for details about how searches are accumulated.
+ * 
+ * @see TermFrequencyResults 
+ * 
+ * TODO Add JPA configure MySQL.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
@@ -62,7 +63,11 @@ public class TermQueryRepository {
 
     public TermFrequencyResults getAccumulatedResults(QueryKey queryKey) {
         TermFrequencyResults results = termFrequencyResultsMap.get(queryKey);
+        
         if (results == null) {
+            for (QueryKey key : termFrequencyResultsMap.keySet()) {
+                log.debug("equals: " + key.equals(queryKey) + ", key: " + key + "MVC queryKey: " + queryKey);
+            }
             return new TermFrequencyResults();
         }
         return results;

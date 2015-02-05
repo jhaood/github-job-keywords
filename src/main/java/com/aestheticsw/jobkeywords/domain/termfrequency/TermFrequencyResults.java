@@ -11,8 +11,16 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * This holds all the TermFrequence results that correspond to a unique QueryKey. The class holds
+ * the list of SearchParameters that may have accumulated into a given TermFrequencyResults object. 
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TermFrequencyResults {
+
+    // TODO add the QueryKey that uniquely identifies a given TermFrequencyResult instance.
 
     private static Logger log = LoggerFactory.getLogger(TermFrequencyResults.class);
 

@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.termextractor;
+package com.aestheticsw.jobkeywords.service.termextractor.fivefilters;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -28,6 +28,19 @@ import org.springframework.web.client.RestTemplate;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 
+/**
+ * The FiveFiltersService provides a single method for extracting keywords from a large piece of
+ * text. The text may contain simple HTML tags which the service will remove before extracting the
+ * terms.
+ * 
+ * The client of this Service must isolate a reasonably specific piece of text from which terms will
+ * be extracted. The Five-Filters service does not ignore XML tags. Five-Filters is not tolerant.
+ * 
+ * TODO convert from Five-Filters to a real commercial, multi-language term extractor such as
+ * AlchemyAPI or Maui
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @Component
 public class FiveFiltersService {
 
@@ -38,13 +51,32 @@ public class FiveFiltersService {
 
     Map<Pattern, String> regExMap = initRegExMap();
 
-    // english blacklist
+    // English blacklist
+    // TODO move the blacklist up to the TermExtractorService
     private String blacklistRegEx =
-        "experience|work|team|software engineer|services|systems|data|design|ability|candidate|knowledge|customers|applications|software|computer science|products|building|technologies|qualifications|projects|requirements|position|support|solutions|ceo|expertise|cloud|employment|world|platform|company|understanding|skills|software development experience|software development projects|software development|environment|infrastructure|opportunity|applicants|people|engineers|part|today|capital|practices|architecture|role|leadership|field|years|manner|service|thousands|generation|teams|code|research|candidates|responsibilities|leader|models|day|developers|billions|color|problems|approach|industry|machine|tools|features|religion|race|risk|implementation|quality|technology|analysis|software community|customer relationship management|bain capital ventures|subject matter experts|environment";
+        "experience|work|team|software engineer|services|systems|data|design|ability|candidate|knowledge|customers|applications|software|"
+            + "computer science|products|building|technologies|qualifications|projects|requirements|position|support|solutions|ceo|expertise|"
+            + "cloud|employment|world|platform|company|understanding|skills|software development experience|software development projects|"
+            + "software development|environment|infrastructure|opportunity|applicants|people|engineers|part|today|capital|practices|architecture|"
+            + "role|leadership|field|years|manner|service|thousands|generation|teams|code|research|candidates|responsibilities|leader|models|day|"
+            + "developers|billions|color|problems|approach|industry|machine|tools|features|religion|race|risk|implementation|quality|technology|"
+            + "analysis|software community|customer relationship management|bain capital ventures|subject matter experts|environment";
 
-    // french blacklist - but FiveFilters doesn't do well with French.
-    // blacklistRegEx +=
-    // "|sein|conception|missions|maitrise|poste|charge|production|afin|environnement|avez|equipe|realisation|mise|logiciels|groupe|informatique|gestion|conseil|rediger|nos clients|ajoutee|formation|votre mission|signalisation ferroviaire|des connaissances|accompagnons nos clients|cadre du developpement|'industrie|developpement logiciel|l offre yourcegid|des expertises metier|fonde son savoir-faire|performance des entreprises|integrer l 'equipe|venez relever ce|des conditions egales|votre mission consiste|groupe cegid compte|sommes partenaires des|assistance technique bureau|premier editeur francais|renforcons nos equipes|competences techniques plurielles|analyses fonctionnelles organiques|standards du client|un|une|le|la|les|l";
+    // The French blacklist - but FiveFilters doesn't handle French in any type of grammatical sense
+    // so this isn't used now.
+    /*
+     * String frenchBlacklistRegEx =
+     * "|sein|conception|missions|maitrise|poste|charge|production|afin|environnement|avez|equipe|realisation|mise|logiciels|groupe|informatique|"
+     * +
+     * "gestion|conseil|rediger|nos clients|ajoutee|formation|votre mission|signalisation ferroviaire|des connaissances|accompagnons nos clients|"
+     * +
+     * "cadre du developpement|'industrie|developpement logiciel|l offre yourcegid|des expertises metier|fonde son savoir-faire|performance des entreprises|"
+     * +
+     * "integrer l 'equipe|venez relever ce|des conditions egales|votre mission consiste|groupe cegid compte|sommes partenaires des|"
+     * +
+     * "assistance technique bureau|premier editeur francais|renforcons nos equipes|competences techniques plurielles|analyses fonctionnelles organiques|"
+     * + "standards du client|un|une|le|la|les|l";
+     */
 
     private Pattern blacklistPattern;
 
@@ -77,7 +109,8 @@ public class FiveFiltersService {
         return sortedTermList;
     }
 
-    String[][] executeFiveFiltersPost(String content) {
+    // public access ONLY for testing... 
+    public String[][] executeFiveFiltersPost(String content) {
         String query = "http://termextract.fivefilters.org/extract.php";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
@@ -151,20 +184,20 @@ public class FiveFiltersService {
         regExMap.put(Pattern.compile("- ·"), " ");
         regExMap.put(Pattern.compile("·"), " ");
 
-        // <U+0091> and other characters... 
+        // <U+0091> and other characters that are common in the UK
+        
         regExMap.put(Pattern.compile("[\\u0091\\u0092]"), "'");
 
-        regExMap.put(Pattern.compile("[®«»\\u0095]"), "");
+        regExMap.put(Pattern.compile("[§®«»\\u0095]"), "");
         // regExMap.put(Pattern.compile("®"), "");
         // regExMap.put(Pattern.compile("«"), "");
         // regExMap.put(Pattern.compile("»"), "");
 
-        // remove accent characters that were stripped by Normalize.normalize()
+        // remove accent characters that were separated from the associated character by Normalize.normalize()
         regExMap.put(Pattern.compile("\\p{M}"), "");
 
-        // Non-printable characters don't appear to be a problem.
+        // Non-printable characters are not a significant problem in the US, UK or France
         // regExMap.put(Pattern.compile("[\\x00\\x08\\x0B\\x0C\\x0E-\\x1F]"), "");
-
 
         return regExMap;
     }

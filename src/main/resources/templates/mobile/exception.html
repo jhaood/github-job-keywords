@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Error</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../css/bootstrap.min.css" />
+</head>
+<body>
+
+    <h1 layout:fragment="header">Job Keywords - Internal Error Occurred (Mobile)</h1>
+
+    <div layout:fragment="content" class="container">
+
+        <div>
+            There was an unexpected error (message=${message})
+        </div>
+        <div th:text="${url}">default url</div>
+        <div th:text="${exception}">default exception</div>
+
+    </div>
+</body>
+</html>

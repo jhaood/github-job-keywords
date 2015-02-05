@@ -7,6 +7,20 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * QueryKey represents the unique parameters that define a query expression for a country and city. 
+ * This class is a subset of SearchParameters because Indeed will only return a max of 25 jobs per search. 
+ * The UI allows the user to search multiple times in order to span more than 25 jobs.
+ * 
+ * The QueryTermRepository accumulates results from multiple searches. The QueryKey is the index into 
+ * the repository's map of unique search expressions for a given city and country. 
+ * 
+ * QueryKey is an immutable class that can be used an an index in a Map.
+ * 
+ * This class also defines a public Comparator that allow the UI to sort a list of QueryKeys.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class QueryKey {
 
     private String query;
@@ -48,6 +62,8 @@ public class QueryKey {
             return false;
         }
         QueryKey otherSearchParameters = (QueryKey) other;
+
+        // TODO cache the EqualsBuilder for performance ! ! !
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(query, otherSearchParameters.query).append(locale, otherSearchParameters.locale)
             .append(city, otherSearchParameters.city);
@@ -71,10 +87,15 @@ public class QueryKey {
         return city;
     }
 
+    /**
+     * This comparator sorts first by Query-string, then by Country (aka Locale), then by City.
+     */
     public static class QueryKeyComparator implements Comparator<QueryKey> {
 
         @Override
         public int compare(QueryKey key1, QueryKey key2) {
+            // The CompareToBuilder can't be cached - which is OK because this Comparator isn't used
+            // often
             CompareToBuilder builder = new CompareToBuilder();
             builder.append(key1.query, key2.query);
             builder.append((key1.locale != null) ? key1.locale.getCountry() : null,

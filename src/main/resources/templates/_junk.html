@@ -1,0 +1,120 @@
+"
+<!DOCTYPE html>
+↵↵
+<html>
+↵
+<head>
+↵
+<title>Job Keywords - Search &amp; Results</title>↵↵
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+↵
+<script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
+↵
+<script>↵    $(document).ready(function() {↵↵        $('#query-form-id').submit(function(event) {↵           event.preventDefault();↵            if ($('#had-form-errors').val() == 'true') {↵               $("#is-ajax-request").val("false");↵            } else {↵               $("#is-ajax-request").val("true");↵         }↵          var formValues = $(this).serialize();↵          $.post('/job/search', formValues, function(data) {↵             var containsWholePage = $(data).filter("#content-id").length;↵              if (containsWholePage) {↵                   $('#content-id').html(data);↵               } else {↵                   $('#query-results-id').html(data);↵             }↵          });↵        });↵↵   });↵</script>
+↵
+</head>
+↵
+<body>
+    ↵
+    <div class="container">
+        ↵
+        <div class="navbar">
+            ↵
+            <div class="navbar-inner">
+                ↵ <a class="brand" href="/job/history"> Job Keywords </a>↵
+                <ul class="nav">
+                    ↵
+                    <li>
+                        ↵ <a href="/job/search"> Search </a>↵
+                    </li>
+                    ↵
+                    <li>
+                        ↵ <a href="/job/history"> History </a>↵
+                    </li>
+                    ↵
+                    <li>
+                        ↵ <a href="/job/accumulated"> Cumulative Results </a>↵
+                    </li>
+                    ↵
+                </ul>
+                ↵
+            </div>
+            ↵
+        </div>
+        ↵
+        <h1>Job Keywords - Search &amp; Results</h1>
+        ↵
+        <div id="content-id" class="container">
+            ↵↵
+            <div id="query-form-div-id" class="pull-left">
+                ↵
+                <!--    -->
+                ↵
+                <form id="query-form-id" action="/job/search" method="post">
+                    ↵
+                    <input type="hidden" id="is-ajax-request" name="isAjaxRequest" value="false" />
+                    ↵
+                    <input type="hidden" id="had-form-errors" name="hadFormErrors" value="true" />
+                    ↵↵
+                    <div class="alert alert-error">
+                        ↵
+                        <p>Query expression is required.</p>
+                        ↵
+                    </div>
+                    ↵↵ <label for="query">Indeed Query Expression</label>↵
+                    <input type="text" class="field-error" id="query" name="query" value="" />
+                    ↵↵ <label for="country">Country</label>↵
+                    <input type="text" id="country" name="country" value="US" />
+                    ↵↵ <label for="city">City</label>↵
+                    <input type="text" id="city" name="city" value="" />
+                    ↵↵ <label for="jobCount"># Jobs</label>↵
+                    <input type="text" id="jobCount" name="jobCount" value="1" />
+                    ↵↵ <label for="start">Starting Job Index</label>↵
+                    <input type="text" id="start" name="start" value="0" />
+                    ↵↵
+                    <div class="form-actions">
+                        ↵
+                        <input type="submit" value="Search" />
+                        ↵
+                    </div>
+                    ↵
+                </form>
+                ↵
+            </div>
+            ↵↵
+            <div id="query-results-id" class="pull-right">
+                ↵
+                <table id="results-table" class="table table-bordered table-striped">
+                    ↵
+                    <thead>
+                        ↵
+                        <tr>
+                            ↵
+                            <td>Term</td>↵
+                            <td>Frequency</td>↵
+                            <td></td>↵
+                        </tr>
+                        ↵
+                    </thead>
+                    ↵
+                    <tbody>
+                        ↵
+                        <tr>
+                            ↵
+                            <td colspan="3">No results</td>↵
+                        </tr>
+                        ↵ ↵
+                    </tbody>
+                    ↵
+                </table>
+                ↵
+            </div>
+            ↵
+        </div>
+        ↵
+    </div>
+    ↵
+</body>
+↵
+</html>
+↵"

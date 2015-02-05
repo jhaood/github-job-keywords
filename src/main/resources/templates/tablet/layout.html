@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+<title>Layout</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{/css/default.css}" href="../../css/default.css" />
+<script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <a class="brand" th:href="@{/job/history}" href="@{/job/history}"> Job Keywords </a>
+                <ul class="nav">
+                    <li>
+                        <a th:href="@{/job/search}" href="/job/search"> Search </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/job/history}" href="/job/history"> History </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/job/accumulated}" href="/job/accumulated"> Cumulative Results </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <h1 layout:fragment="header">Default Layout Header (Tablet)</h1>
+        <div layout:fragment="content" id="content-id">Default content</div>
+    </div>
+</body>
+</html>

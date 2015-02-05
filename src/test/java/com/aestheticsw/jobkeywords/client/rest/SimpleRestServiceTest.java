@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.service.rest.SimpleRestService;
+import com.aestheticsw.jobkeywords.service.simple.SimpleRestService;
 
 /*
  * Use TestBase instead of annotating every class.

@@ -9,7 +9,16 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-// @SpringBootApplication annotation is not necessary
+/**
+ * The JobKeywordsApplication is the primary configuration class for both the spring-boot
+ * application runtime and for all the integration tests.
+ * 
+ * There is no easy way to separate the integ-test configuration from the Application config.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
+
+// The @SpringBootApplication annotation is not necessary
 
 @Configuration
 // @EnableAutoConfiguration is Not required for tests, but is required to launch app-JAR

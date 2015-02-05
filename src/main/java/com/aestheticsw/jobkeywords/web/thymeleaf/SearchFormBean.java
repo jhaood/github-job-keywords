@@ -2,6 +2,11 @@ package com.aestheticsw.jobkeywords.web.thymeleaf;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * This is the Thymeleaf form-backing bean that allows it to bind input-tags to Java variables.   
+ *  
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class SearchFormBean {
     @NotEmpty(message = "Query expression is required.")
     private String query;

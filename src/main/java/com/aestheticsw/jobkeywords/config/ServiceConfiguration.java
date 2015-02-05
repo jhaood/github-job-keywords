@@ -7,6 +7,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.Jaxp13XPathTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
+/**
+ * Service layer configuration. This class CAN override the default configuration from spring-boot.
+ * 
+ * Most of the spring-boot and spring-framework automatic configuration is used reliably now.  
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @Configuration
 public class ServiceConfiguration {
 

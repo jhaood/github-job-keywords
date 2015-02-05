@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aestheticsw.jobkeywords.domain.PivotalJsonPage;
-import com.aestheticsw.jobkeywords.service.rest.SimpleRestService;
+import com.aestheticsw.jobkeywords.domain.simple.PivotalJsonPage;
+import com.aestheticsw.jobkeywords.service.simple.SimpleRestService;
 
+/**
+ * This controller experiments with JSON serialization and relies on the same data model class 
+ * for JSON desearialization in the SimpleRestService. 
+ */
 @RestController
 @RequestMapping(value = "/rest")
 public class SimpleRestController {
