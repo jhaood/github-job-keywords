@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Job Keywords Application Overview</TITLE>
+</HEAD>
+<BODY>
+    The Job-Keywords application searches Indeed.com and passes the detailed job descriptions through a term extractor
+    that counts the most frequent terms that appear.
+    <p />
+    The application integrates two RESTful APIs and stores the results in an in-memory repository. For now, previous
+    search results will be lost after the server is restarted.
+    <p />
+    This application is built with Java 8, Spring 4.1.6 and spring-boot. One goal was to demonstrate the simplicity of
+    buildling an application with spring-boot. A web application can be built with about 10 lines of code - a single
+    java source file and a single HTML file.
+    <p />
+    The spring-boot framework automatically configures a bunch of stuff that used to be cumbersome when building Java
+    apps. While automatic configuration has many benefits, it can be tedious to figure out why manual configuration can
+    sometimes break the auto-config thus breaking the app. For example, it's difficult to manually configure Jackson's
+    JSON and XML converters and it's difficult to override the automatic configuration for View Resolvers such as
+    Thymeleaf, JSP and JSON.
+    <p />
+
+
+</BODY>
+</HTML>

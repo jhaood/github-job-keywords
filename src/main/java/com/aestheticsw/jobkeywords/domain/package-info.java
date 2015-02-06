@@ -1,6 +1,6 @@
 /**
- * The data model is separated into several packages:
- * <p/>
+ * The data model is divided into support for the Indeed API, the term-frequency data store and a
+ * simple test package.
  * 
  * indeed - The data model for Indeed.com's job lists. This is tuned for desearializing XML from the
  * Indeed REST API.
@@ -11,6 +11,6 @@
  * and location.
  * <p/>
  * 
- * simple - some example classes that demonstrate XML & JSON serialization and desearialization.
+ * simple - some example classes that demonstrate XML &amp; JSON serialization and desearialization.
  */
 package com.aestheticsw.jobkeywords.domain;

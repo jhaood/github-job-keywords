@@ -89,12 +89,13 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.10.1</version>
 				<configuration>
+					<failOnError>false</failOnError>
 					<nohelp>true</nohelp>
 					<!-- 
 					<show>private</show>
 					 -->
-					<reportOutputDirectory>${project.reporting.outputDirectory}/javadoc</reportOutputDirectory>
-					<destDir>api</destDir>
+					<reportOutputDirectory>${basedir}/target/classes/static</reportOutputDirectory>
+					<destDir>javadoc</destDir>
 				</configuration>
 			</plugin>
 

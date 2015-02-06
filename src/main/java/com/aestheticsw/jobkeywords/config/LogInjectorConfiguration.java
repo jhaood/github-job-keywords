@@ -6,7 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configure the log injector that supports the @Log annotation
+ * Configure the log injector that supports the @Log annotation. (Thanks to Exacode for the log
+ * injector.)
+ * 
+ * @see net.exacode.spring.logging.inject.LogInjector net.exacode.spring.logging.inject.LogInjector
  */
 @Configuration
 public class LogInjectorConfiguration {

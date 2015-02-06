@@ -9,11 +9,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-
 public class TermFrequencyResultsTest {
 
     @Test
@@ -32,7 +27,7 @@ public class TermFrequencyResultsTest {
         list2.add(tf2);
         list2.add(tf3);
 
-        TermFrequencyResults results = new TermFrequencyResults();
+        TermFrequencyResults results = new TermFrequencyResults(param1.getQueryKey());
         results.accumulateTermFrequencyList(param1, list1);
         results.accumulateTermFrequencyList(param2, list1);
         results.accumulateTermFrequencyList(param3, list2);

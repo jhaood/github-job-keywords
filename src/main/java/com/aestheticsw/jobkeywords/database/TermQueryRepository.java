@@ -53,7 +53,7 @@ public class TermQueryRepository {
         synchronized (termFrequencyResultsMap) {
             termFrequencyResults = termFrequencyResultsMap.get(queryKey);
             if (termFrequencyResults == null) {
-                termFrequencyResults = new TermFrequencyResults();
+                termFrequencyResults = new TermFrequencyResults(queryKey);
                 termFrequencyResultsMap.put(queryKey, termFrequencyResults);
             }
         }
@@ -67,7 +67,7 @@ public class TermQueryRepository {
             for (QueryKey key : termFrequencyResultsMap.keySet()) {
                 log.debug("equals: " + key.equals(queryKey) + ", key: " + key + "MVC queryKey: " + queryKey);
             }
-            return new TermFrequencyResults();
+            return new TermFrequencyResults(queryKey);
         }
         return results;
     }
