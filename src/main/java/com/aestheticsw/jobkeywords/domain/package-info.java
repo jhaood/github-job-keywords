@@ -1,5 +1,5 @@
 /**
- * The data model is divided into support for the Indeed API, the term-frequency data store and a
+ * The data model is divided into support for the Indeed API, the term-frequency data and a
  * simple test package.
  * 
  * indeed - The data model for Indeed.com's job lists. This is tuned for desearializing XML from the

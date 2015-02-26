@@ -2,30 +2,49 @@ package com.aestheticsw.jobkeywords.domain.termfrequency;
 
 import java.util.Comparator;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 /**
- * The TermFrequency class holds a single term returned from the keyword extractor and
- * holds the Frequency and word-count for the term. <p/>
+ * The TermFrequency class holds a single term returned from the keyword extractor and holds the
+ * Frequency and word-count for the term.
+ * <p/>
  * 
  * This class also defines a few Comparators that can sort in different ways. The typical sort
- * that's most interesting is ordered by descending frequency. Other Comparators allow sorting
- * by term-string and the "complexity" of a term (a multi-word term is more complex than a single
- * word) <p/>
+ * that's most interesting is ordered by descending frequency. Other Comparators allow sorting by
+ * term-string and the "complexity" of a term (a multi-word term is more complex than a single word)
+ * <p/>
  * 
- * This class is not immutable because it is used by the TermQueryRepository to add up the
+ * This class is not immutable because it is used by the TermQueryDataManager to add up the
  * frequency of occurrences across multiple searches for the same QueryKey.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
+@Entity
 public class TermFrequency {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    // @Column(name = "TERM_FREQUENCY_RESULTS_ID")
+    // private Long termFrequencyResultsId;
+
     private String term;
     private int frequency;
     private int wordCount;
 
+    @SuppressWarnings("unused")
+    private TermFrequency() {
+        super();
+    }
+
     /**
-     * This constructor is used in the data repository to accumulate results.
-     * The frequency gets set independently via addFrequency() .
+     * This constructor is used in the data repository to accumulate results. The frequency gets set
+     * independently via addFrequency() .
      */
     public TermFrequency(String term, int wordCount) {
         this.term = term;

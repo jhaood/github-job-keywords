@@ -1,6 +1,8 @@
 package com.aestheticsw.jobkeywords.service.termextractor.indeed;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
@@ -11,6 +13,7 @@ import com.aestheticsw.jobkeywords.config.TestBase;
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 
+//TODO rename to *IT
 public class IndeedServiceTest extends TestBase {
 
     @Autowired

@@ -7,6 +7,13 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * TermList is only used for deserialization from the TermExtractorService. This class is not
+ * persistent.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
+//TODO change NON_EMPTY because it should be Include.EMPTY
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TermList {
     private List<TermFrequency> terms;
@@ -24,8 +31,8 @@ public class TermList {
     }
 
     /**
-     * This method makes it easy to generate a blacklist regular expression. The blacklist 
-     * is saved by the FiveFiltersService. 
+     * This method makes it easy to generate a blacklist regular expression. The blacklist is saved
+     * by the FiveFiltersService.
      */
     public String createRegExpForNewTerms(String existingRegEx) {
         StringBuilder builder = new StringBuilder();

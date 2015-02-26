@@ -11,6 +11,7 @@ import com.aestheticsw.jobkeywords.JobKeywordsApplication;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
 @WebAppConfiguration
+// TODO rename to ITBase
 public class TestBase {
     @Test
     public void noopTestIgnoreThis() {

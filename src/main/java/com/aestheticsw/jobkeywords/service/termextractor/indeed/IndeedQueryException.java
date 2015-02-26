@@ -6,6 +6,8 @@ package com.aestheticsw.jobkeywords.service.termextractor.indeed;
  */
 public class IndeedQueryException extends Exception {
 
+    private static final long serialVersionUID = -3312431007385262417L;
+
     public IndeedQueryException() {
         super();
     }

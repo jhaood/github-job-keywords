@@ -14,6 +14,7 @@ import com.aestheticsw.jobkeywords.config.TestBase;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
+//TODO rename to *IT
 public class FiveFiltersServiceTest extends TestBase {
 
     @Autowired

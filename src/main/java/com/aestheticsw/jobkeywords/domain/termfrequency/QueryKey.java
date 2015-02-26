@@ -3,9 +3,16 @@ package com.aestheticsw.jobkeywords.domain.termfrequency;
 import java.util.Comparator;
 import java.util.Locale;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * QueryKey represents the unique parameters for a query expression and a location.
@@ -16,7 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * of 25 jobs per search. So the application allows the user to search across several pages of
  * results in order to span more than 25 jobs.
  * <p/>
-
+ * 
  * The QueryTermRepository accumulates results from multiple searches. The QueryKey is the index
  * into the repository's map of unique search expressions for a given city and country.
  * <p/>
@@ -28,32 +35,41 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
+@Entity
 public class QueryKey {
 
-    private String query;
-    private Locale locale;
-    private String city;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private HashCodeBuilder hashCodeBuilder;
-    private String toStringCache;
+    private String query = "";
+    private Locale locale = Locale.US;
+    private String city = "";
+
+    @JsonIgnore
+    @Transient
+    private transient HashCodeBuilder hashCodeBuilder;
+
+    @JsonIgnore
+    @Transient
+    private transient String toStringCache;
+
+    private QueryKey() {
+        super();
+    }
 
     public QueryKey(String query, Locale locale, String city) {
         super();
         this.query = query;
         this.locale = locale;
         this.city = city;
-
-        hashCodeBuilder = new HashCodeBuilder(17, 37).append(query).append(locale).append(city);
-
-        StringBuilder builder = new StringBuilder("Search-params: ");
-        builder.append(locale == null ? "" : locale + ", ");
-        builder.append(city == null ? "" : city + ", ");
-        builder.append(query == null ? "'" : query + "', ");
-        toStringCache = builder.toString();
     }
 
     @Override
     public int hashCode() {
+        if (hashCodeBuilder == null) {
+            hashCodeBuilder = new HashCodeBuilder(17, 37).append(query).append(locale).append(city);
+        }
         return hashCodeBuilder.hashCode();
     }
 
@@ -79,6 +95,13 @@ public class QueryKey {
 
     @Override
     public String toString() {
+        if (toStringCache == null) {
+            StringBuilder builder = new StringBuilder("Search-params: ");
+            builder.append(locale == null ? "" : locale + ", ");
+            builder.append(city == null ? "" : city + ", ");
+            builder.append(query == null ? "'" : query + "', ");
+            toStringCache = builder.toString();
+        }
         return toStringCache;
     }
 
@@ -110,6 +133,10 @@ public class QueryKey {
             builder.append(key1.city, key2.city);
             return builder.build();
         }
+    }
+
+    public Long getId() {
+        return id;
     }
 
 }

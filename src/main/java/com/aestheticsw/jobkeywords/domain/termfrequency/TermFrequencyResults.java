@@ -6,10 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aestheticsw.jobkeywords.database.TermQueryRepository;
+import com.aestheticsw.jobkeywords.service.database.TermQueryDataManager;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -22,29 +33,54 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * This class also holds
  * a list of SearchParameters in case the results have been accumulated across multiple searches.
  * 
- * @see TermQueryRepository
+ * @see TermQueryDataManager
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Entity
 public class TermFrequencyResults {
 
     private static Logger log = LoggerFactory.getLogger(TermFrequencyResults.class);
 
+    // TODO id-generator ? 
+    @Id
+    @GeneratedValue
+    @Column(name="ID")
+    private Long id;
+    
     /**
      * The QueryKey that identifies the unique query-string and location that can be accumulated
      * into a given TermFrequencyResults instance.
      */
+    @ManyToOne(optional = false)
+    // TODO What's @NaturalId about ? 
+    // @NaturalId
     private QueryKey queryKey;
 
+    // , mappedBy = "termFrequencyResultsId"
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="TERM_FREQUENCY_RESULTS_ID", referencedColumnName="ID")
     private List<SearchParameters> searchParametersList = new ArrayList<>();
 
+    // , mappedBy = "termFrequencyResultsId"
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @MapKey(name = "term")
+    @JoinColumn(name="TERM_FREQUENCY_RESULTS_ID", referencedColumnName="ID")
     private Map<String, TermFrequency> termFrequencyMap = new HashMap<>();
+
+    @SuppressWarnings("unused")
+    private TermFrequencyResults() {
+        super();
+    }
 
     public TermFrequencyResults(QueryKey queryKey) {
         this.queryKey = queryKey;
     }
 
+    /**
+     * This method should only be called by the TermQueryDataManager and testing code. 
+     */
     public void accumulateTermFrequencyList(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         if (!queryKey.equals(searchParameters.getQueryKey())) {
             throw new IllegalArgumentException("Attempt to add terms for inappropriate SearchParameters: '"
@@ -59,12 +95,12 @@ public class TermFrequencyResults {
         }
         synchronized (termFrequencyMap) {
             for (TermFrequency termFrequency : termFrequencyList) {
-                TermFrequency storedTermFrequency = termFrequencyMap.get(termFrequency.getTerm());
-                if (storedTermFrequency == null) {
-                    storedTermFrequency = new TermFrequency(termFrequency.getTerm(), termFrequency.getWordCount());
-                    termFrequencyMap.put(storedTermFrequency.getTerm(), storedTermFrequency);
+                TermFrequency existingTermFrequency = termFrequencyMap.get(termFrequency.getTerm());
+                if (existingTermFrequency == null) {
+                    existingTermFrequency = new TermFrequency(termFrequency.getTerm(), termFrequency.getWordCount());
+                    termFrequencyMap.put(existingTermFrequency.getTerm(), existingTermFrequency);
                 }
-                storedTermFrequency.addFrequency(termFrequency.getFrequency());
+                existingTermFrequency.addFrequency(termFrequency.getFrequency());
             }
         }
     }
@@ -77,17 +113,17 @@ public class TermFrequencyResults {
         return getSortedTermFrequencyList(new TermFrequency.FrequencyComparator());
     }
 
-    public List<TermFrequency> getSortedTermFrequencyList(Comparator comparator) {
+    public List<TermFrequency> getSortedTermFrequencyList(Comparator<? super TermFrequency> comparator) {
         List<TermFrequency> list = new ArrayList<>(termFrequencyMap.values());
         list.sort(comparator);
         return list;
     }
 
-    QueryKey getQueryKey() {
+    public QueryKey getQueryKey() {
         return queryKey;
     }
 
-    List<SearchParameters> getSearchParametersList() {
+    public List<SearchParameters> getSearchParametersList() {
         return searchParametersList;
     }
 }

@@ -206,7 +206,6 @@ public class FiveFiltersService {
     /**
      * test the content for invalid characters
      */
-    @SuppressWarnings("unused")
     private void testContentForInvalidCharacters(String content) {
         int subSize = 200;
         for (int len = 0; len < (content.length() - subSize); len += subSize) {

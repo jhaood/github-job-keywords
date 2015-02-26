@@ -2,8 +2,15 @@ package com.aestheticsw.jobkeywords.domain.termfrequency;
 
 import java.util.Locale;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * SearchParameter holds the full set of parameters for a given search. <p/>
@@ -19,7 +26,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author Jim Alexander (jhaood@gmail.com)
  * @see QueryKey
  */
+@Entity
 public class SearchParameters {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    
+    // @Column(name = "TERM_FREQUENCY_RESULTS_ID")
+    // private Long termFrequencyResultsId;
+    
     private String query;
     private int jobCount;
     private int start;
@@ -28,10 +44,22 @@ public class SearchParameters {
     private int radius;
     private String sort;
 
-    private QueryKey queryKeyCache;
+    @JsonIgnore
+    @Transient
+    private transient QueryKey queryKeyCache;
 
-    private HashCodeBuilder hashCodeBuilder;
-    private String toStringCache;
+    @JsonIgnore
+    @Transient
+    private transient HashCodeBuilder hashCodeBuilderCache;
+    
+    @JsonIgnore
+    @Transient
+    private transient String toStringCache;
+
+    @SuppressWarnings("unused")
+    private SearchParameters() {
+        super();
+    }
 
     public SearchParameters(String query, int jobCount, int start, Locale locale, String city, int radius, String sort) {
         super();
@@ -48,26 +76,18 @@ public class SearchParameters {
         this.radius = radius;
         this.sort = sort;
 
-        queryKeyCache = new QueryKey(query, locale, city);
-        hashCodeBuilder =
-            new HashCodeBuilder(17, 37).append(query).append(jobCount).append(start).append(locale).append(city)
-                .append(radius).append(sort);
 
-        StringBuilder builder = new StringBuilder("Search-params: ");
-        builder.append(locale == null ? "" : locale + ", ");
-        builder.append(city == null ? "" : city + ", ");
-        builder.append("start: " + start + ", ");
-        builder.append("count: " + jobCount + ", query:'");
-        builder.append(query == null ? "'" : query + "', ");
-        builder.append(radius == 0 ? "" : "radius: " + radius + ", ");
-        builder.append(sort == null ? "" : "sort: " + sort + ", ");
-        toStringCache = builder.toString();
 
     }
 
     @Override
     public int hashCode() {
-        return hashCodeBuilder.hashCode();
+        if (hashCodeBuilderCache == null) {
+            hashCodeBuilderCache =
+                    new HashCodeBuilder(17, 37).append(query).append(jobCount).append(start).append(locale).append(city)
+                        .append(radius).append(sort);
+        }
+        return hashCodeBuilderCache.hashCode();
     }
 
     @Override
@@ -83,24 +103,38 @@ public class SearchParameters {
         }
         SearchParameters otherSearchParameters = (SearchParameters) other;
 
-        // TODO cache this EqualsBuilder for performance reasons. ! ! !
-        EqualsBuilder builder = new EqualsBuilder();
-        builder.append(query, otherSearchParameters.query).append(jobCount, otherSearchParameters.jobCount)
+        // Can't cache the EqualsBuilder because it depends on the argument 'otherSearchParameters'
+        EqualsBuilder equalsBuilder = new EqualsBuilder();
+        equalsBuilder.append(query, otherSearchParameters.query).append(jobCount, otherSearchParameters.jobCount)
             .append(start, otherSearchParameters.start).append(locale, otherSearchParameters.locale)
             .append(city, otherSearchParameters.city).append(radius, otherSearchParameters.radius)
             .append(sort, otherSearchParameters.sort);
-        return builder.isEquals();
+        return equalsBuilder.isEquals();
     }
 
     @Override
     public String toString() {
+        if (toStringCache == null) {
+            StringBuilder builder = new StringBuilder("Search-params: ");
+            builder.append(locale == null ? "" : locale + ", ");
+            builder.append(city == null ? "" : city + ", ");
+            builder.append("start: " + start + ", ");
+            builder.append("count: " + jobCount + ", query:'");
+            builder.append(query == null ? "'" : query + "', ");
+            builder.append(radius == 0 ? "" : "radius: " + radius + ", ");
+            builder.append(sort == null ? "" : "sort: " + sort + ", ");
+            toStringCache = builder.toString();
+        }
         return toStringCache;
     }
 
     public QueryKey getQueryKey() {
+        if (queryKeyCache == null) {
+            queryKeyCache = new QueryKey(query, locale, city);
+        }
         return queryKeyCache;
     }
-
+    
     public String getQuery() {
         return query;
     }

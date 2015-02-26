@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.aestheticsw.jobkeywords.database.TermQueryRepository;
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
@@ -16,6 +15,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
+import com.aestheticsw.jobkeywords.service.database.TermQueryDataManager;
 import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersService;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
@@ -32,16 +32,16 @@ public class TermExtractorService {
     @Log
     Logger log;
 
-    private TermQueryRepository termQueryRepository;
+    private TermQueryDataManager termQueryDataManager;
 
     private IndeedService indeedService;
 
     private FiveFiltersService fiveFiltersService;
 
     @Autowired
-    public TermExtractorService(TermQueryRepository termQueryRepository, IndeedService indeedService,
+    public TermExtractorService(TermQueryDataManager termQueryDataManager, IndeedService indeedService,
             FiveFiltersService fiveFiltersService) {
-        this.termQueryRepository = termQueryRepository;
+        this.termQueryDataManager = termQueryDataManager;
         this.indeedService = indeedService;
         this.fiveFiltersService = fiveFiltersService;
     }
@@ -80,8 +80,8 @@ public class TermExtractorService {
         return getTermQueryRepository().getSearchHistory();
     }
 
-    private TermQueryRepository getTermQueryRepository() {
-        return termQueryRepository;
+    private TermQueryDataManager getTermQueryRepository() {
+        return termQueryDataManager;
     }
 
     private IndeedService getIndeedService() {

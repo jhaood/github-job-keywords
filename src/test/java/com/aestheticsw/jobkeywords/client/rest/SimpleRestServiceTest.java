@@ -14,6 +14,7 @@ import com.aestheticsw.jobkeywords.service.simple.SimpleRestService;
  * @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
  * @WebAppConfiguration
  */
+//TODO rename to *IT
 public class SimpleRestServiceTest extends TestBase {
 
     @Autowired
