@@ -86,7 +86,6 @@ public class QueryKey {
         }
         QueryKey otherSearchParameters = (QueryKey) other;
 
-        // TODO cache the EqualsBuilder for performance ! ! !
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(query, otherSearchParameters.query).append(locale, otherSearchParameters.locale)
             .append(city, otherSearchParameters.city);

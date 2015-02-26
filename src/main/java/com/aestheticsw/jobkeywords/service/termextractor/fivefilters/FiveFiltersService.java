@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
+import com.aestheticsw.jobkeywords.service.serialization.TermList;
 
 /**
  * The FiveFiltersService provides a single method for extracting keywords from a large piece of

@@ -1,10 +1,11 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.service.serialization;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**

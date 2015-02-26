@@ -22,8 +22,7 @@ public class QueryKeyRepositoryImpl implements QueryKeyRepositoryCustom {
         query.setParameter(2, queryKey.getCity());
         List<QueryKey> results = query.getResultList();
         if (results.size() > 1) {
-            // TODO use a better exception
-            throw new IllegalArgumentException("Found >1 QueryKey");
+            throw new IllegalStateException("Found >1 QueryKey");
         } else if (results.size() == 0) {
             return null;
         } 

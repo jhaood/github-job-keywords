@@ -26,10 +26,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
+import com.aestheticsw.jobkeywords.service.serialization.QueryList;
+import com.aestheticsw.jobkeywords.service.serialization.TermList;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;

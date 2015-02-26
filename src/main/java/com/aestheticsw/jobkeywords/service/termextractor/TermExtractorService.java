@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermList;
 import com.aestheticsw.jobkeywords.service.database.TermQueryDataManager;
+import com.aestheticsw.jobkeywords.service.serialization.QueryList;
+import com.aestheticsw.jobkeywords.service.serialization.TermList;
 import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersService;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
@@ -77,7 +77,7 @@ public class TermExtractorService {
     }
 
     public QueryList getSearchHistory() {
-        return getTermQueryRepository().getSearchHistory();
+        return new QueryList(getTermQueryRepository().getSearchHistory());
     }
 
     private TermQueryDataManager getTermQueryRepository() {

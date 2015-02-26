@@ -1,5 +1,6 @@
 package com.aestheticsw.jobkeywords.service.database;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryList;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
@@ -93,9 +93,10 @@ public class TermQueryDataManager {
         return results;
     }
 
-    public QueryList getSearchHistory() {
+    public List<QueryKey> getSearchHistory() {
         // Set<QueryKey> queryKeys = termFrequencyResultsMap.keySet();
         List<QueryKey> queryKeys = termQueryRepository.findDistinctQueryKeys();
-        return new QueryList(queryKeys, new QueryKey.QueryKeyComparator());
+        Collections.sort(queryKeys, new QueryKey.QueryKeyComparator());
+        return queryKeys;
     }
 }
