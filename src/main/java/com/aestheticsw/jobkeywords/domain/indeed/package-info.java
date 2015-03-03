@@ -1,10 +1,12 @@
 /**
- * These domain classes are specific to the Indeed API. The framework deserializes the
- * XML response directly into a JobListResponse object graph. <p/>
+ * These domain classes are specific to the Indeed API.
+ * <p/>
  * 
- * Please see the javadoc for the JobListResponse class for more details about the data model.
+ * Please see the javadoc for the JobListResponse class for more details about the data model is
+ * instantiated. The framework deserializes the XML response directly into a JobListResponse object
+ * graph.
  *
- * @see com.aestheticsw.jobkeywords.domain.indeed.JobListResponse
+ * @see com.aestheticsw.jobkeywords.service.termextractor.indeed.JobListResponse
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */

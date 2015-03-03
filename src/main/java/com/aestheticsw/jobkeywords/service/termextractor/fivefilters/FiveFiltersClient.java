@@ -29,7 +29,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.service.serialization.TermList;
 
 /**
- * The FiveFiltersService provides a single method for extracting keywords from a large piece of
+ * The FiveFiltersClient provides a single method for extracting keywords from a large piece of
  * text. The text may contain simple HTML tags which the service will remove before extracting the
  * terms.<p/>
  * 
@@ -42,7 +42,7 @@ import com.aestheticsw.jobkeywords.service.serialization.TermList;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Component
-public class FiveFiltersService {
+public class FiveFiltersClient {
 
     @Log
     private Logger log;
@@ -81,7 +81,7 @@ public class FiveFiltersService {
     private Pattern blacklistPattern;
 
     @Autowired
-    public FiveFiltersService(RestTemplate restTemplate) {
+    public FiveFiltersClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

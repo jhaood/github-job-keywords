@@ -15,10 +15,10 @@ import com.aestheticsw.jobkeywords.service.serialization.TermList;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
 //TODO rename to *IT
-public class FiveFiltersServiceTest extends TestBase {
+public class FiveFiltersClientTest extends TestBase {
 
     @Autowired
-    private FiveFiltersService service;
+    private FiveFiltersClient service;
 
     @Test
     public void appContext() {

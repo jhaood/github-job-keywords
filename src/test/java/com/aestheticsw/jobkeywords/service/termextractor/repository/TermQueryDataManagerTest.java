@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,6 +24,7 @@ import com.aestheticsw.jobkeywords.config.LogInjectorConfiguration;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryDataManager;
 
 //TODO rename to *IT
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 

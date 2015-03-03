@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Configuration
-@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.domain", "com.aestheticsw.jobkeywords.service.database" })
+@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.domain", "com.aestheticsw.jobkeywords.service" })
 @EnableAutoConfiguration
 @EntityScan(basePackages = { "com.aestheticsw.jobkeywords.domain" })
 @EnableJpaRepositories(
-        value = "com.aestheticsw.jobkeywords.service.database",
+        value = "com.aestheticsw.jobkeywords.service",
         queryLookupStrategy = QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND)
 @EnableJpaAuditing
 @EnableTransactionManagement

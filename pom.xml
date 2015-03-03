@@ -66,6 +66,19 @@
 		</testResources>
 
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<!-- 
+				<configuration>
+					<compilerArguments>
+						<verbose />
+						<profile>compact1</profile>
+					</compilerArguments>
+				</configuration>
+				 -->
+			</plugin>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -105,6 +118,16 @@
 	</build>
 
 	<dependencies>
+		<!-- add a local JAR as a "system" dependency - trying to get "-profile compact3" working 
+		<dependency>
+			<groupId>javax.xml</groupId>
+			<artifactId>bind</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/target/classes/javax.xml.bind.jar</systemPath>
+		</dependency>
+		-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

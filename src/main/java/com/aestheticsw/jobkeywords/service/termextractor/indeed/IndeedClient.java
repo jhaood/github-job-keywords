@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
-import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 
 /**
@@ -22,7 +21,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Component
-public class IndeedService {
+public class IndeedClient {
 
     @Log
     private Logger log;
@@ -32,7 +31,7 @@ public class IndeedService {
     private XPathOperations xpathTemplate;
 
     @Autowired
-    public IndeedService(RestTemplate restTemplate, XPathOperations xpathTemplate) {
+    public IndeedClient(RestTemplate restTemplate, XPathOperations xpathTemplate) {
         this.restTemplate = restTemplate;
         this.xpathTemplate = xpathTemplate;
 

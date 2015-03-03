@@ -33,7 +33,7 @@ public class TermList {
 
     /**
      * This method makes it easy to generate a blacklist regular expression. The blacklist is saved
-     * by the FiveFiltersService.
+     * by the FiveFiltersClient.
      */
     public String createRegExpForNewTerms(String existingRegEx) {
         StringBuilder builder = new StringBuilder();

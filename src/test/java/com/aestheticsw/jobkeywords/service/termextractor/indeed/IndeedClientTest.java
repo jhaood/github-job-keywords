@@ -10,14 +10,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 
 //TODO rename to *IT
-public class IndeedServiceTest extends TestBase {
+public class IndeedClientTest extends TestBase {
 
     @Autowired
-    private IndeedService service;
+    private IndeedClient service;
 
     @Test
     public void loadContext() {

@@ -7,8 +7,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.aestheticsw.jobkeywords.domain.simple.PivotalJsonPage;
-
 /**
  * This is a test fixture for converting JSON into a simple domain class. This allows the
  * SimpleRestController to experiment with returning XML or Json to a HTTP client. 

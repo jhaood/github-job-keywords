@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aestheticsw.jobkeywords.domain.simple.PivotalJsonPage;
+import com.aestheticsw.jobkeywords.service.simple.PivotalJsonPage;
 import com.aestheticsw.jobkeywords.service.simple.SimpleRestService;
 
 /**

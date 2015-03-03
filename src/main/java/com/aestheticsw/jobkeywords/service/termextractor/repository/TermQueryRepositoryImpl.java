@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 
+// TODO rename to TermFrequenceResultsRepositoryImpl
 public class TermQueryRepositoryImpl implements TermQueryRepositoryCustom {
 
     @PersistenceContext

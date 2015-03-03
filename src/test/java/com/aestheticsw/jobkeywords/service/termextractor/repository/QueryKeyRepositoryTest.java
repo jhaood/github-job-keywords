@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -16,6 +16,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.aestheticsw.jobkeywords.config.DatabaseConfiguration;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.QueryKeyRepository;
 
 //TODO add DbUnitTestExecutionListener.class 
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 

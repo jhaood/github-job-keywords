@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

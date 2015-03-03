@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.indeed;
+package com.aestheticsw.jobkeywords.service.termextractor.indeed;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
 
 @XmlRootElement(name = "jobSummaries")
 @XmlAccessorType(XmlAccessType.FIELD)

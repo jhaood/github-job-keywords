@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
@@ -32,7 +31,8 @@ import com.aestheticsw.jobkeywords.service.serialization.QueryList;
 import com.aestheticsw.jobkeywords.service.serialization.TermList;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedClient;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.utils.SearchUtils;
 
 /**
@@ -47,14 +47,14 @@ public class JobController {
     @Log
     private Logger log;
 
-    private IndeedService indeedService;
+    private IndeedClient indeedClient;
 
     private TermExtractorService termExtractorService;
 
     @Autowired
-    public JobController(IndeedService indeedService, TermExtractorService termExtractorService) {
+    public JobController(IndeedClient indeedClient, TermExtractorService termExtractorService) {
         super();
-        this.indeedService = indeedService;
+        this.indeedClient = indeedClient;
         this.termExtractorService = termExtractorService;
     }
 
@@ -93,7 +93,7 @@ public class JobController {
 
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
 
-        JobListResponse jobListResponse = indeedService.getIndeedJobList(params);
+        JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
         model.put("joblist", jobListResponse);
 
         return "joblist";

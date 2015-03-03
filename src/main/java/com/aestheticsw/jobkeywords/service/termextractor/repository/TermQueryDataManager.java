@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +37,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
  */
 @Component
 @Transactional
+// TODO rename to TermFrequencyResultsDataManager
 public class TermQueryDataManager {
 
     // public access for tests to inject or mock a logger.

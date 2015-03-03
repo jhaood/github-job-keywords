@@ -8,17 +8,17 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.aestheticsw.jobkeywords.domain.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.database.TermQueryDataManager;
 import com.aestheticsw.jobkeywords.service.serialization.QueryList;
 import com.aestheticsw.jobkeywords.service.serialization.TermList;
-import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersService;
+import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedService;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedClient;
+import com.aestheticsw.jobkeywords.service.termextractor.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryDataManager;
 
 /**
  * The TermExtracorService is the primary public interface that wraps both the Indeed and
@@ -34,21 +34,21 @@ public class TermExtractorService {
 
     private TermQueryDataManager termQueryDataManager;
 
-    private IndeedService indeedService;
+    private IndeedClient indeedClient;
 
-    private FiveFiltersService fiveFiltersService;
+    private FiveFiltersClient fiveFiltersClient;
 
     @Autowired
-    public TermExtractorService(TermQueryDataManager termQueryDataManager, IndeedService indeedService,
-            FiveFiltersService fiveFiltersService) {
+    public TermExtractorService(TermQueryDataManager termQueryDataManager, IndeedClient indeedClient,
+            FiveFiltersClient fiveFiltersClient) {
         this.termQueryDataManager = termQueryDataManager;
-        this.indeedService = indeedService;
-        this.fiveFiltersService = fiveFiltersService;
+        this.indeedClient = indeedClient;
+        this.fiveFiltersClient = fiveFiltersClient;
     }
 
     public TermList extractTerms(SearchParameters params) throws IndeedQueryException {
 
-        JobListResponse jobListResponse = getIndeedService().getIndeedJobList(params);
+        JobListResponse jobListResponse = getIndeedClient().getIndeedJobList(params);
 
         List<JobSummary> jobSummaries = jobListResponse.getResults().getResults();
 
@@ -60,7 +60,7 @@ public class TermExtractorService {
         StringBuilder combinedJobDetails = new StringBuilder();
         for (int index = 0; index < params.getJobCount() && index < jobSummaries.size(); index++) {
             JobSummary job = jobSummaries.get(index);
-            String jobDetails = getIndeedService().getIndeedJobDetails(job.getUrl());
+            String jobDetails = getIndeedClient().getIndeedJobDetails(job.getUrl());
             combinedJobDetails.append(jobDetails);
             combinedJobDetails.append("\n ");
         }
@@ -84,12 +84,12 @@ public class TermExtractorService {
         return termQueryDataManager;
     }
 
-    private IndeedService getIndeedService() {
-        return indeedService;
+    private IndeedClient getIndeedClient() {
+        return indeedClient;
     }
 
-    private FiveFiltersService getFiveFiltersService() {
-        return fiveFiltersService;
+    private FiveFiltersClient getFiveFiltersService() {
+        return fiveFiltersClient;
     }
 
 }

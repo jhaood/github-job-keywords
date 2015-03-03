@@ -7,16 +7,17 @@
  * the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
 
-public interface TermQueryRepository extends Repository<TermFrequencyResults, Long>, TermQueryRepositoryCustom {
+// TODO rename to TermFrequenceResultsRepository
+public interface TermQueryRepository extends JpaRepository<TermFrequencyResults, Long>, TermQueryRepositoryCustom {
 
     // Page<TermFrequencyResults> findAll(Pageable pageable);
     List<TermFrequencyResults> findAll();

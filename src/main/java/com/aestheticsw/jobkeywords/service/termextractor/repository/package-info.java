@@ -3,4 +3,4 @@
  * the server is restarted. This will be changed in the future.
  */
 
-package com.aestheticsw.jobkeywords.service.database;
+package com.aestheticsw.jobkeywords.service.termextractor.repository;

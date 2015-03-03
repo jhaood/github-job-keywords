@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.simple;
+package com.aestheticsw.jobkeywords.service.simple;
 
 /**
  * This data model class lets the SimpleRestService experiment with JSON desearialization.<p/>
