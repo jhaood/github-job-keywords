@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
-import com.aestheticsw.jobkeywords.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.domain.TermList;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
-import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedClient;
-import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.indeed.JobListResponse;
-import com.aestheticsw.jobkeywords.utils.SearchUtils;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermList;
+import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
+import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
+import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
 
 /**
  * This REST controller exposes the Indeed job list or the extracted terms to a RESTful client.

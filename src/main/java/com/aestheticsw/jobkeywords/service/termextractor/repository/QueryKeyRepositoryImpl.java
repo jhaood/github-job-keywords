@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
 public class QueryKeyRepositoryImpl implements QueryKeyRepositoryCustom {
 

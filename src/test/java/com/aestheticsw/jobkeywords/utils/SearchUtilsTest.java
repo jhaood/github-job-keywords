@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
+
 public class SearchUtilsTest {
 
     @Test

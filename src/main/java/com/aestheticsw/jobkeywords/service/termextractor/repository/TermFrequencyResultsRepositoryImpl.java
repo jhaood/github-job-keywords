@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
 public class TermFrequencyResultsRepositoryImpl implements TermFrequencyResultsRepositoryCustom {
 
@@ -17,7 +17,7 @@ public class TermFrequencyResultsRepositoryImpl implements TermFrequencyResultsR
     public List<QueryKey> findDistinctQueryKeys() {
         TypedQuery<QueryKey> query =
             entityManager.createQuery(
-                "select new com.aestheticsw.jobkeywords.domain.QueryKey(key.query, key.locale, key.city) "
+                "select new com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey(key.query, key.locale, key.city) "
                     + " from QueryKey key group by key.query, key.locale, key.city", QueryKey.class);
 
         List<QueryKey> results = query.getResultList();

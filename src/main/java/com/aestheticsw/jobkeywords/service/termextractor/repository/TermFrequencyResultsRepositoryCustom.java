@@ -2,7 +2,7 @@ package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import java.util.List;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
 public interface TermFrequencyResultsRepositoryCustom {
 

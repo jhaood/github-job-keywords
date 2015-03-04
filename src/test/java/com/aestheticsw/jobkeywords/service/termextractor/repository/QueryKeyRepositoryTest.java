@@ -14,8 +14,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.aestheticsw.jobkeywords.config.DatabaseConfiguration;
-import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.QueryKeyRepository;
 
 //TODO add DbUnitTestExecutionListener.class 

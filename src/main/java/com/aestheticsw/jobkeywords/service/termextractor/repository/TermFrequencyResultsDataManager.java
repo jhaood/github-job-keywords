@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
-import com.aestheticsw.jobkeywords.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
 /**
  * The TermFrequencyResultsDataManager maintains the database of results.

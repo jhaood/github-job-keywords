@@ -2,7 +2,7 @@ package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
 public interface QueryKeyRepository extends JpaRepository<QueryKey, Long>, QueryKeyRepositoryCustom {
 

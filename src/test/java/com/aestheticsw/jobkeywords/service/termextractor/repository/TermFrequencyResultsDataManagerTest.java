@@ -19,12 +19,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.aestheticsw.jobkeywords.config.DatabaseConfiguration;
-import com.aestheticsw.jobkeywords.config.LogInjectorConfiguration;
-import com.aestheticsw.jobkeywords.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
+import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
 
 //TODO rename to *IT
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 

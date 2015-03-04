@@ -13,8 +13,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.aestheticsw.jobkeywords.domain.QueryKey;
-import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
 public interface TermFrequencyResultsRepository extends JpaRepository<TermFrequencyResults, Long>, TermFrequencyResultsRepositoryCustom {
 

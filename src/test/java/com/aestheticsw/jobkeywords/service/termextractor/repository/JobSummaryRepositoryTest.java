@@ -10,7 +10,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.aestheticsw.jobkeywords.config.DatabaseConfiguration;
+import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
 
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 
     DirtiesContextTestExecutionListener.class,
