@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aestheticsw.jobkeywords.service.simple.PivotalJsonPage;
+import com.aestheticsw.jobkeywords.service.simple.PivotalJsonResponse;
 import com.aestheticsw.jobkeywords.service.simple.SimpleRestService;
 
 /**
@@ -31,10 +31,10 @@ public class SimpleRestController {
     }
 
     @RequestMapping(value = "/pivotal", method = RequestMethod.GET, produces = "application/json")
-    public PivotalJsonPage getPage() {
+    public PivotalJsonResponse getPage() {
         log.info("/page endpoint");
 
-        PivotalJsonPage page = simpleRestService.getPage();
+        PivotalJsonResponse page = simpleRestService.getPage();
         return page;
     }
 

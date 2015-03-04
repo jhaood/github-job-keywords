@@ -11,16 +11,16 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
 
 /**
- * The TermQueryDataManager maintains the database of results.
+ * The TermFrequencyResultsDataManager maintains the database of results.
  * <p/>
  * 
- * The TermQueryDataManager class maintains a Map that differentiates results based on the unique
+ * The TermFrequencyResultsDataManager class maintains a Map that differentiates results based on the unique
  * search parameters. A unique search is for a given query-expression and location.
  * <p/>
  * 
@@ -37,8 +37,7 @@ import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
  */
 @Component
 @Transactional
-// TODO rename to TermFrequencyResultsDataManager
-public class TermQueryDataManager {
+public class TermFrequencyResultsDataManager {
 
     // public access for tests to inject or mock a logger.
     @Log
@@ -46,13 +45,13 @@ public class TermQueryDataManager {
 
     private QueryKeyRepository queryKeyRepository;
     
-    private TermQueryRepository termQueryRepository;
+    private TermFrequencyResultsRepository termFrequencyResultsRepository;
 
     @Autowired
-    public TermQueryDataManager(QueryKeyRepository queryKeyRepository, TermQueryRepository termQueryRepository) {
+    public TermFrequencyResultsDataManager(QueryKeyRepository queryKeyRepository, TermFrequencyResultsRepository termFrequencyResultsRepository) {
         super();
         this.queryKeyRepository = queryKeyRepository;
-        this.termQueryRepository = termQueryRepository;
+        this.termFrequencyResultsRepository = termFrequencyResultsRepository;
     }
 
     public void accumulateTermFrequencyResults(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
@@ -69,11 +68,11 @@ public class TermQueryDataManager {
         }
         
         TermFrequencyResults dbTermFrequencyResults;
-        synchronized (termQueryRepository) {
-            dbTermFrequencyResults = termQueryRepository.findByQueryKey(dbQueryKey);
+        synchronized (termFrequencyResultsRepository) {
+            dbTermFrequencyResults = termFrequencyResultsRepository.findByQueryKey(dbQueryKey);
             if (dbTermFrequencyResults == null) {
                 dbTermFrequencyResults = new TermFrequencyResults(dbQueryKey);
-                dbTermFrequencyResults = termQueryRepository.save(dbTermFrequencyResults);
+                dbTermFrequencyResults = termFrequencyResultsRepository.save(dbTermFrequencyResults);
             }
         }
         dbTermFrequencyResults.accumulateTermFrequencyList(searchParameters, termFrequencyList);
@@ -85,18 +84,18 @@ public class TermQueryDataManager {
         if (dbQueryKey == null) {
             dbQueryKey = queryKeyRepository.save(queryKey);
         }
-        TermFrequencyResults results = termQueryRepository.findByQueryKey(dbQueryKey);
+        TermFrequencyResults results = termFrequencyResultsRepository.findByQueryKey(dbQueryKey);
 
         if (results == null) {
             results = new TermFrequencyResults(dbQueryKey);
-            termQueryRepository.save(results);
+            termFrequencyResultsRepository.save(results);
         }
         return results;
     }
 
     public List<QueryKey> getSearchHistory() {
         // Set<QueryKey> queryKeys = termFrequencyResultsMap.keySet();
-        List<QueryKey> queryKeys = termQueryRepository.findDistinctQueryKeys();
+        List<QueryKey> queryKeys = termFrequencyResultsRepository.findDistinctQueryKeys();
         Collections.sort(queryKeys, new QueryKey.QueryKeyComparator());
         return queryKeys;
     }

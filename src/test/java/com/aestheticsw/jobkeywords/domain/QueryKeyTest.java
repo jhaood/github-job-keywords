@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.domain;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
+import com.aestheticsw.jobkeywords.domain.QueryKey;
 
 public class QueryKeyTest {
 

@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.domain;
 
 import java.util.Comparator;
 
@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
  * term-string and the "complexity" of a term (a multi-word term is more complex than a single word)
  * <p/>
  * 
- * This class is not immutable because it is used by the TermQueryDataManager to add up the
+ * This class is not immutable because it is used by the TermFrequencyResultsDataManager to add up the
  * frequency of occurrences across multiple searches for the same QueryKey.
  * 
  * @author Jim Alexander (jhaood@gmail.com)

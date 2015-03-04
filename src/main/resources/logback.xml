@@ -4,6 +4,7 @@
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
+    
     <jmxConfigurator/>
 
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
@@ -19,7 +20,7 @@
     <logger name="org.springframework.boot" level="info"/>
     <logger name="org.springframework.boot.autoconfiguration" level="debug"/>
         
-    <logger name="org.thymeleaf" level="debug"/>
+    <logger name="org.thymeleaf" level="info"/>
 
     <logger name="com.aestheticsw" level="debug"/>
     

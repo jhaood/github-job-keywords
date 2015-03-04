@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Comparator;
 
 import org.junit.Test;
+
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
 
 public class TermFrequencyTest {
 

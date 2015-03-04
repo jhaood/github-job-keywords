@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.serialization.QueryList;
-import com.aestheticsw.jobkeywords.service.serialization.TermList;
+import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.domain.QueryList;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.domain.TermList;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedClient;

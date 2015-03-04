@@ -10,4 +10,4 @@
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
-package com.aestheticsw.jobkeywords.domain.indeed;
+package com.aestheticsw.jobkeywords.service.termextractor.indeed;

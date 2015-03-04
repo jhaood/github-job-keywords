@@ -24,16 +24,16 @@ public class SimpleRestService {
         restTemplate = new RestTemplate(factory);
     }
 
-    public PivotalJsonPage getPage() {
-        PivotalJsonPage page =
-            restTemplate.getForObject("http://graph.facebook.com/pivotalsoftware", PivotalJsonPage.class);
+    public PivotalJsonResponse getPage() {
+        PivotalJsonResponse response =
+            restTemplate.getForObject("http://graph.facebook.com/pivotalsoftware", PivotalJsonResponse.class);
 
-        System.out.println("Name:    " + page.getName());
-        System.out.println("About:   " + page.getAbout());
-        System.out.println("Phone:   " + page.getPhone());
-        System.out.println("Website: " + page.getWebsite());
+        System.out.println("Name:    " + response.getName());
+        System.out.println("About:   " + response.getAbout());
+        System.out.println("Phone:   " + response.getPhone());
+        System.out.println("Website: " + response.getWebsite());
 
-        return page;
+        return response;
     }
 
 }

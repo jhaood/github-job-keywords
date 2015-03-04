@@ -1,12 +1,21 @@
-package com.aestheticsw.jobkeywords.domain.indeed;
+package com.aestheticsw.jobkeywords.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.FIELD)
+@Entity
 public class JobSummary {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String jobTitle;
     private String company;
     private String city;

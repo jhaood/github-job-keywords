@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.domain;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +20,7 @@ import javax.persistence.OneToMany;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryDataManager;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * This class also holds
  * a list of SearchParameters in case the results have been accumulated across multiple searches.
  * 
- * @see TermQueryDataManager
+ * @see TermFrequencyResultsDataManager
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
@@ -79,7 +79,7 @@ public class TermFrequencyResults {
     }
 
     /**
-     * This method should only be called by the TermQueryDataManager and testing code. 
+     * This method should only be called by the TermFrequencyResultsDataManager and testing code. 
      */
     public void accumulateTermFrequencyList(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         if (!queryKey.equals(searchParameters.getQueryKey())) {

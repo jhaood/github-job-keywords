@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.client.rest;
+package com.aestheticsw.jobkeywords.web.rest;
 
 import static org.junit.Assert.assertNotNull;
 

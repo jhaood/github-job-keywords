@@ -18,20 +18,20 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.LoggerFactory;
 
-import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.serialization.TermList;
+import com.aestheticsw.jobkeywords.domain.JobSummary;
+import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.domain.TermList;
 import com.aestheticsw.jobkeywords.service.termextractor.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.JobList;
 import com.aestheticsw.jobkeywords.service.termextractor.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.QueryKeyRepository;
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryDataManager;
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryRepository;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
 public class TermExtractorServiceTest {
@@ -41,7 +41,7 @@ public class TermExtractorServiceTest {
     private TermExtractorService serviceUnderTest;
 
     @Mock
-    private TermQueryDataManager termQueryDataManager;
+    private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
 
     @Mock
     private IndeedClient indeedClient;
@@ -50,7 +50,7 @@ public class TermExtractorServiceTest {
     private FiveFiltersClient fiveFiltersClient;
 
     @Mock
-    private TermQueryRepository termQueryRepository;
+    private TermFrequencyResultsRepository termFrequencyResultsRepository;
 
     @Mock
     private QueryKeyRepository queryKeyRepository;
@@ -76,13 +76,13 @@ public class TermExtractorServiceTest {
         MockitoAnnotations.initMocks(this);
 
         /*
-        termQueryDataManager = Mockito.spy(new TermQueryDataManager(queryKeyRepository, termQueryRepository));
+        termFrequencyResultsDataManager = Mockito.spy(new TermFrequencyResultsDataManager(queryKeyRepository, termFrequencyResultsRepository));
         // manually set the logger because Spring doesn't instantiate the manager
-        termQueryDataManager.log = LoggerFactory.getLogger(termQueryDataManager.getClass());
+        termFrequencyResultsDataManager.log = LoggerFactory.getLogger(termFrequencyResultsDataManager.getClass());
         */
 
         serviceUnderTest =
-            Mockito.spy(new TermExtractorService(termQueryDataManager, indeedClient, fiveFiltersClient));
+            Mockito.spy(new TermExtractorService(termFrequencyResultsDataManager, indeedClient, fiveFiltersClient));
 
         // manually set the logger because Spring doesn't instantiate the serviceUnderTest
         serviceUnderTest.log = LoggerFactory.getLogger(serviceUnderTest.getClass());
@@ -111,10 +111,10 @@ public class TermExtractorServiceTest {
         when(fiveFiltersClient.executeFiveFiltersPost(Mockito.any(String.class))).thenReturn(termListStringArray);
         when(fiveFiltersClient.getTermList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(termList);
 
-        // when(termQueryDataManager.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class), Mockito.any(List.class))).thenReturn(null);
-        when(termQueryDataManager.getAccumulatedResults(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
+        // when(termFrequencyResultsDataManager.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class), Mockito.any(List.class))).thenReturn(null);
+        when(termFrequencyResultsDataManager.getAccumulatedResults(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
         when(queryKeyRepository.findByCompoundKey(Mockito.any(QueryKey.class))).thenReturn(queryKey);
-        when(termQueryRepository.findByQueryKey(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
+        when(termFrequencyResultsRepository.findByQueryKey(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
 
         when(indeedClient.getIndeedJobDetails(Mockito.any(String.class))).thenReturn(jobDetailsString);
 

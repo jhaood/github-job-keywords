@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.Locale;
 
 import org.junit.Test;
+
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
 
 public class SearchParametersTest {
 

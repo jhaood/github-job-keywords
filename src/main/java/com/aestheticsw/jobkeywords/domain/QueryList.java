@@ -1,11 +1,10 @@
-package com.aestheticsw.jobkeywords.service.serialization;
+package com.aestheticsw.jobkeywords.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -13,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
-//TODO change NON_EMPTY because it should be Include.EMPTY
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class QueryList {
     private List<QueryKey> queryKeyList;
 

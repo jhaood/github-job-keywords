@@ -25,8 +25,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.service.serialization.TermList;
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.TermList;
 
 /**
  * The FiveFiltersClient provides a single method for extracting keywords from a large piece of

@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.service.rest;
+package com.aestheticsw.jobkeywords.service.support;
 
 import java.io.IOException;
 

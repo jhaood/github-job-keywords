@@ -7,7 +7,7 @@ package com.aestheticsw.jobkeywords.service.simple;
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
-public class PivotalJsonPage {
+public class PivotalJsonResponse {
 
     private String name;
     private String about;

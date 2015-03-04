@@ -18,29 +18,29 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.aestheticsw.jobkeywords.config.DatabaseConfiguration;
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.QueryKeyRepository;
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryRepository;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
 
 // TODO rename to *IT
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { DatabaseConfiguration.class })
-public class TermQueryRepositoryTest {
+public class TermFrequencyResultsRepositoryTest {
 
     @Autowired
-    private TermQueryRepository termQueryRepository;
+    private TermFrequencyResultsRepository termFrequencyResultsRepository;
 
     @Autowired
     private QueryKeyRepository queryKeyRepository;
 
     @Test
     public void loadContext() {
-        assertNotNull(termQueryRepository);
+        assertNotNull(termFrequencyResultsRepository);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class TermQueryRepositoryTest {
             TermFrequencyResults tfr1 = new TermFrequencyResults(dbKey1);
             tfr1.accumulateTermFrequencyList(param1, list1);
 
-            termQueryRepository.save(tfr1);
+            termFrequencyResultsRepository.save(tfr1);
 
-            dbTfr1 = termQueryRepository.findByQueryKey(dbKey1);
+            dbTfr1 = termFrequencyResultsRepository.findByQueryKey(dbKey1);
             assertNotNull(dbTfr1);
 
             assertNotNull(dbTfr1.getQueryKey());
@@ -85,9 +85,9 @@ public class TermQueryRepositoryTest {
 
             dbTfr1.accumulateTermFrequencyList(param1_2, list1);
 
-            termQueryRepository.save(dbTfr1);
+            termFrequencyResultsRepository.save(dbTfr1);
 
-            TermFrequencyResults dbTfr2 = termQueryRepository.findByQueryKey(dbKey1);
+            TermFrequencyResults dbTfr2 = termFrequencyResultsRepository.findByQueryKey(dbKey1);
             assertNotNull(dbTfr2);
 
             assertNotNull(dbTfr2.getQueryKey());
@@ -122,7 +122,7 @@ public class TermQueryRepositoryTest {
 
             TermFrequencyResults tfr = new TermFrequencyResults(dbKey1);
             tfr.accumulateTermFrequencyList(param1, list1);
-            termQueryRepository.save(tfr);
+            termFrequencyResultsRepository.save(tfr);
         }
 
         {
@@ -130,7 +130,7 @@ public class TermQueryRepositoryTest {
 
             TermFrequencyResults tfr = new TermFrequencyResults(dbKey1_2);
             tfr.accumulateTermFrequencyList(param1_2, list1);
-            termQueryRepository.save(tfr);
+            termFrequencyResultsRepository.save(tfr);
         }
 
         {
@@ -138,10 +138,10 @@ public class TermQueryRepositoryTest {
 
             TermFrequencyResults tfr = new TermFrequencyResults(dbKey2);
             tfr.accumulateTermFrequencyList(param2, list1);
-            termQueryRepository.save(tfr);
+            termFrequencyResultsRepository.save(tfr);
         }
         
-        List<QueryKey> keys = termQueryRepository.findDistinctQueryKeys();
+        List<QueryKey> keys = termFrequencyResultsRepository.findDistinctQueryKeys();
         assertNotNull(keys);
         assertEquals(2, keys.size());
     }

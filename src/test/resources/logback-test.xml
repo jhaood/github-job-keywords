@@ -11,9 +11,9 @@
 	
 	<logger name="net.exacode.spring.logging" level="info" />
 
-    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework" level="info"/>
 
-    <logger name="com.aestheticsw" level="DEBUG"/>
+    <logger name="com.aestheticsw" level="debug"/>
 	
 	<root level="none">
 		<appender-ref ref="stdout" />

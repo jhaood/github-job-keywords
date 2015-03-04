@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
 
 /**
  * Return either a list of jobs, or return the job-details for a specifig job-ID.

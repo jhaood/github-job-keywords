@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
 
 //TODO rename to *IT
 public class IndeedClientTest extends TestBase {

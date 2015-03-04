@@ -13,11 +13,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.aestheticsw.jobkeywords.domain.termfrequency.QueryKey;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.domain.QueryKey;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
 
-// TODO rename to TermFrequenceResultsRepository
-public interface TermQueryRepository extends JpaRepository<TermFrequencyResults, Long>, TermQueryRepositoryCustom {
+public interface TermFrequencyResultsRepository extends JpaRepository<TermFrequencyResults, Long>, TermFrequencyResultsRepositoryCustom {
 
     // Page<TermFrequencyResults> findAll(Pageable pageable);
     List<TermFrequencyResults> findAll();

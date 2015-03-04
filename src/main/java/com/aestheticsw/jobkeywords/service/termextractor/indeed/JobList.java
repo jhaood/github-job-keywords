@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.aestheticsw.jobkeywords.domain.indeed.JobSummary;
+import com.aestheticsw.jobkeywords.domain.JobSummary;
 
 @XmlRootElement(name = "jobSummaries")
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.domain.termfrequency;
+package com.aestheticsw.jobkeywords.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
+
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
 
 public class TermFrequencyResultsTest {
 

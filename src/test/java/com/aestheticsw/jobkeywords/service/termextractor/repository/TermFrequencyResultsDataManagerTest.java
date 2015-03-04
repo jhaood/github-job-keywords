@@ -21,10 +21,10 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.aestheticsw.jobkeywords.config.DatabaseConfiguration;
 import com.aestheticsw.jobkeywords.config.LogInjectorConfiguration;
-import com.aestheticsw.jobkeywords.domain.termfrequency.SearchParameters;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequency;
-import com.aestheticsw.jobkeywords.domain.termfrequency.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryDataManager;
+import com.aestheticsw.jobkeywords.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.domain.TermFrequencyResults;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
 
 //TODO rename to *IT
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 
@@ -32,10 +32,10 @@ import com.aestheticsw.jobkeywords.service.termextractor.repository.TermQueryDat
     TransactionalTestExecutionListener.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { DatabaseConfiguration.class, LogInjectorConfiguration.class })
-public class TermQueryDataManagerTest {
+public class TermFrequencyResultsDataManagerTest {
 
     @Autowired
-    private TermQueryDataManager termQueryDataManager;
+    private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
 
     @Before 
     public void setup() {
@@ -43,7 +43,7 @@ public class TermQueryDataManagerTest {
     
     @Test
     public void loadContext() {
-        assertNotNull(termQueryDataManager);
+        assertNotNull(termFrequencyResultsDataManager);
     }
 
     @Test
@@ -64,16 +64,16 @@ public class TermQueryDataManagerTest {
         list2.add(tf3);
         list2.add(tf4);
 
-        termQueryDataManager.accumulateTermFrequencyResults(param1, list1);
-        termQueryDataManager.accumulateTermFrequencyResults(param1_2, list1);
+        termFrequencyResultsDataManager.accumulateTermFrequencyResults(param1, list1);
+        termFrequencyResultsDataManager.accumulateTermFrequencyResults(param1_2, list1);
 
         // confirm that adding an empty results-list ignores the params and list.
-        termQueryDataManager.accumulateTermFrequencyResults(param2, new ArrayList<>());
+        termFrequencyResultsDataManager.accumulateTermFrequencyResults(param2, new ArrayList<>());
 
-        TermFrequencyResults results = termQueryDataManager.getAccumulatedResults(param1.getQueryKey());
+        TermFrequencyResults results = termFrequencyResultsDataManager.getAccumulatedResults(param1.getQueryKey());
         assertNotNull(results);
-        assertFalse(termQueryDataManager.getAccumulatedResults(param2.getQueryKey()).hasResults());
-        assertEquals(0, termQueryDataManager.getAccumulatedResults(param2.getQueryKey()).getSortedTermFrequencyList().size());
+        assertFalse(termFrequencyResultsDataManager.getAccumulatedResults(param2.getQueryKey()).hasResults());
+        assertEquals(0, termFrequencyResultsDataManager.getAccumulatedResults(param2.getQueryKey()).getSortedTermFrequencyList().size());
 
         // assert that the manager ignored param2's empty results
         assertEquals(2, results.getSortedTermFrequencyList().size());
@@ -86,10 +86,10 @@ public class TermQueryDataManagerTest {
         assertEquals(4, sortedList.get(1).getFrequency());
         assertEquals("spring", sortedList.get(1).getTerm());
 
-        termQueryDataManager.accumulateTermFrequencyResults(param2, list2);
+        termFrequencyResultsDataManager.accumulateTermFrequencyResults(param2, list2);
 
-        assertNotNull(termQueryDataManager.getAccumulatedResults(param1.getQueryKey()));
-        results = termQueryDataManager.getAccumulatedResults(param2.getQueryKey());
+        assertNotNull(termFrequencyResultsDataManager.getAccumulatedResults(param1.getQueryKey()));
+        results = termFrequencyResultsDataManager.getAccumulatedResults(param2.getQueryKey());
         assertNotNull(results);
 
         sortedList = results.getSortedTermFrequencyList(new TermFrequency.FrequencyComparator());
