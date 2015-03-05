@@ -8,23 +8,24 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * TermList is only used for deserialization from the TermExtractorServiceImpl. This class is not
- * persistent.
+ * TermFrequencyList is only used for deserialization from the TermExtractorServiceImpl.
+ * 
+ * This class is not persistent.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class TermList {
+public class TermFrequencyList {
     private List<TermFrequency> terms;
 
-    public TermList(List<TermFrequency> terms) {
+    public TermFrequencyList(List<TermFrequency> terms) {
         if (terms == null) {
             terms = new ArrayList<>();
         }
         this.terms = terms;
     }
 
-    public TermList sort(Comparator<TermFrequency> comparator) {
+    public TermFrequencyList sort(Comparator<TermFrequency> comparator) {
         terms.sort(comparator);
         return this;
     }

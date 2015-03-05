@@ -22,9 +22,8 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermList;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.TermExtractorServiceImpl;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
@@ -60,7 +59,7 @@ public class TermExtractorServiceTest {
 
     private String jobDetailsString;
 
-    private TermList termList;
+    private TermFrequencyList termFrequencyList;
 
     private String[][] termListStringArray;
 
@@ -99,18 +98,18 @@ public class TermExtractorServiceTest {
 
         termListStringArray = new String[][] { { "term one", "4", "2" }, { "term two", "2", "2" } };
 
-        List<TermFrequency> termFrequencyList = new ArrayList<>();
+        List<TermFrequency> termFrequencies = new ArrayList<>();
         for (int i = 0; i < termListStringArray.length; i++) {
-            termFrequencyList.add(new TermFrequency(termListStringArray[i]));
+            termFrequencies.add(new TermFrequency(termListStringArray[i]));
         }
-        termList = new TermList(termFrequencyList);
+        termFrequencyList = new TermFrequencyList(termFrequencies);
 
         queryKey = new QueryKey("query", Locale.US, "city");
         termFrequencyResults = new TermFrequencyResults(queryKey);
 
         when(indeedClient.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
         when(fiveFiltersClient.executeFiveFiltersPost(Mockito.any(String.class))).thenReturn(termListStringArray);
-        when(fiveFiltersClient.getTermList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(termList);
+        when(fiveFiltersClient.getTermFrequencyList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(termFrequencyList);
 
         // when(termFrequencyResultsDataManager.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class), Mockito.any(List.class))).thenReturn(null);
         when(termFrequencyResultsDataManager.getAccumulatedResults(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
@@ -119,7 +118,7 @@ public class TermExtractorServiceTest {
 
         when(indeedClient.getIndeedJobDetails(Mockito.any(String.class))).thenReturn(jobDetailsString);
 
-        // given(serviceUnderTest.extractTerms(Mockito.any(SearchParameters.class))).willReturn(termList);;
+        // given(serviceUnderTest.extractTerms(Mockito.any(SearchParameters.class))).willReturn(termFrequencyList);;
     }
 
     @Test
@@ -132,7 +131,7 @@ public class TermExtractorServiceTest {
         // when(this.indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
 
         SearchParameters params1 = new SearchParameters("java", 1, 0, Locale.US, null, 0, null);
-        TermList extractedTermList;
+        TermFrequencyList extractedTermList;
         try {
             extractedTermList = serviceUnderTest.extractTerms(params1);
         } catch (IndeedQueryException e) {

@@ -26,10 +26,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKeyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
@@ -144,9 +144,9 @@ public class JobController {
             new SearchParameters(searchFormBean.getQuery(), searchFormBean.getJobCount(), searchFormBean.getStart(),
                 locale, searchFormBean.getCity(), searchFormBean.getRadius(), searchFormBean.getSort());
 
-        TermList termList;
+        TermFrequencyList termFrequencyList;
         try {
-            termList = termExtractorService.extractTerms(params);
+            termFrequencyList = termExtractorService.extractTerms(params);
         } catch (IndeedQueryException e) {
             searchFormBean.setHadFormErrors(true);
             result.addError(new FieldError("searchFormBean", "query", "No results found, check query expression: "
@@ -158,7 +158,7 @@ public class JobController {
         }
 
         searchFormBean.setHadFormErrors(false);
-        modelMap.put("results", termList);
+        modelMap.put("results", termFrequencyList);
         if (isAjaxRequest) {
             // Return only the results fragment. 
             return new ModelAndView("keywords :: query-results", modelMap);
@@ -195,7 +195,7 @@ public class JobController {
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public ModelAndView getSearchHistory(@ModelAttribute SearchFormBean searchFormBean) {
 
-        QueryList results = termExtractorService.getSearchHistory();
+        QueryKeyList results = termExtractorService.getSearchHistory();
 
         return new ModelAndView("history", "results", results);
     }

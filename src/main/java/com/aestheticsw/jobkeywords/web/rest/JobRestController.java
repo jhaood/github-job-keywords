@@ -16,7 +16,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
@@ -75,7 +75,7 @@ public class JobRestController {
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/terms", method = RequestMethod.GET)
-    public TermList getTermListForSearchParameters(
+    public TermFrequencyList getTermFrequencyListForSearchParameters(
             @RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
                     required = false, defaultValue = "2") int jobCount, @RequestParam(
                     required = false, defaultValue = "0") int start, @RequestParam(
@@ -90,7 +90,7 @@ public class JobRestController {
         }
         SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
 
-        TermList terms;
+        TermFrequencyList terms;
         try {
             terms = termExtractorService.extractTerms(params);
         } catch (IndeedQueryException e) {

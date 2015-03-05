@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKeyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
@@ -51,7 +51,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
      * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#extractTerms(com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters)
      */
     @Override
-    public TermList extractTerms(SearchParameters params) throws IndeedQueryException {
+    public TermFrequencyList extractTerms(SearchParameters params) throws IndeedQueryException {
 
         JobListResponse jobListResponse = getIndeedClient().getIndeedJobList(params);
 
@@ -70,7 +70,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
             combinedJobDetails.append("\n ");
         }
 
-        TermList terms = getFiveFiltersService().getTermList(combinedJobDetails.toString(), params.getLocale());
+        TermFrequencyList terms = getFiveFiltersService().getTermFrequencyList(combinedJobDetails.toString(), params.getLocale());
 
         getTermFrequencyResultsDataManager().accumulateTermFrequencyResults(params, terms.getTerms());
 
@@ -89,8 +89,8 @@ public class TermExtractorServiceImpl implements TermExtractorService {
      * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#getSearchHistory()
      */
     @Override
-    public QueryList getSearchHistory() {
-        return new QueryList(getTermFrequencyResultsDataManager().getSearchHistory());
+    public QueryKeyList getSearchHistory() {
+        return new QueryKeyList(getTermFrequencyResultsDataManager().getSearchHistory());
     }
 
     private TermFrequencyResultsDataManager getTermFrequencyResultsDataManager() {

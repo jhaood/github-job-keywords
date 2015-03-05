@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 
 /**
  * The FiveFiltersClient provides a single method for extracting keywords from a large piece of
@@ -85,7 +85,7 @@ public class FiveFiltersClient {
         this.restTemplate = restTemplate;
     }
 
-    public TermList getTermList(String content, Locale locale) {
+    public TermFrequencyList getTermFrequencyList(String content, Locale locale) {
 
         content = removeHtmlTagsAndOtherBogusContent(content, locale);
 
@@ -102,11 +102,11 @@ public class FiveFiltersClient {
         for (String[] innerArray : stringArray) {
             terms.add(new TermFrequency(innerArray));
         }
-        TermList termList = new TermList(terms);
-        TermList sortedTermList = termList.sort(new TermFrequency.FrequencyComparator());
-        log.debug("\n  RegEx expression for NEW terms: " + sortedTermList.createRegExpForNewTerms(blacklistRegEx));
+        TermFrequencyList termFrequencyList = new TermFrequencyList(terms);
+        TermFrequencyList sortedTermFrequencyList = termFrequencyList.sort(new TermFrequency.FrequencyComparator());
+        log.debug("\n  RegEx expression for NEW terms: " + sortedTermFrequencyList.createRegExpForNewTerms(blacklistRegEx));
 
-        return sortedTermList;
+        return sortedTermFrequencyList;
     }
 
     // public access ONLY for testing...

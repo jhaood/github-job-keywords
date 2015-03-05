@@ -8,22 +8,22 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * QueryList is not persistent, It is only used to sort QueryKeys. 
+ * QueryKeyList is not persistent, It is only used to serialize QueryKeys into a JSON string. 
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class QueryList {
+public class QueryKeyList {
     private List<QueryKey> queryKeyList;
 
-    public QueryList(Collection<QueryKey> queryKeys) {
+    public QueryKeyList(Collection<QueryKey> queryKeys) {
         if (queryKeys == null) {
             queryKeys = new ArrayList<>();
         }
         queryKeyList = new ArrayList<QueryKey>(queryKeys);
     }
 
-    public QueryList(Collection<QueryKey> queryKeys, Comparator<QueryKey> comparator) {
+    public QueryKeyList(Collection<QueryKey> queryKeys, Comparator<QueryKey> comparator) {
         this(queryKeys);
         queryKeyList.sort(comparator);
     }
