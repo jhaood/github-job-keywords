@@ -27,7 +27,51 @@
 		<dbunit.version>2.5.0</dbunit.version>
 		<spring-test-dbunit.version>1.2.1</spring-test-dbunit.version>
 		<m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
+
+		<!-- 
+		<spring-profiles-active>test</spring-profiles-active>
+		-->
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>dev-h2</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<spring-profiles-active>test</spring-profiles-active>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring-profiles-active>mysql</spring-profiles-active>
+				<spring-jpa-hibernate-ddl-auto>create</spring-jpa-hibernate-ddl-auto>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-olddb</id>
+			<properties>
+				<spring-profiles-active>mysql</spring-profiles-active>
+				<spring-jpa-hibernate-ddl-auto>validate</spring-jpa-hibernate-ddl-auto>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring-profiles-active>mysql</spring-profiles-active>
+				<spring-jpa-hibernate-ddl-auto>validate</spring-jpa-hibernate-ddl-auto>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod-newdb</id>
+			<properties>
+				<spring-profiles-active>mysql</spring-profiles-active>
+				<spring-jpa-hibernate-ddl-auto>create</spring-jpa-hibernate-ddl-auto>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<filters>
@@ -65,7 +109,8 @@
 				<directory>src/test/java</directory>
 				<filtering>false</filtering>
 				<excludes>
-					<exclude>**/*.java</exclude>
+					<exclude>**/*.xml</exclude>
+					<exclude>**/*.properties</exclude>
 				</excludes>
 			</testResource>
 		</testResources>
@@ -95,6 +140,12 @@
 						<version>1.2.0.RELEASE</version>
 					</dependency>
 				</dependencies>
+				<configuration>
+					<!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -->
+					<jvmArguments>
+						-Dspring.profiles.active=${spring-profiles-active} -Dspring.jpa.hibernate.ddl-auto=${spring-jpa-hibernate-ddl-auto}
+					</jvmArguments>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -102,8 +153,15 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<useSystemClassLoader>false</useSystemClassLoader>
+					<!-- Can't override the defaule value in application.properties from the command line 
+					-->
+					<systemPropertyVariables>
+						<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
+						<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -243,22 +301,18 @@
 		</dependency>
 
 <!-- 
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<scope>runtime</scope>
-		</dependency>
- -->
+-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>test</scope>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<!-- 
 		<dependency>
 			<groupId>com.github.springtestdbunit</groupId>

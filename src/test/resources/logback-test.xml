@@ -15,6 +15,11 @@
 
     <logger name="org.springframework.beans.factory" level="info"/>
     <logger name="org.springframework.beans.factory.config" level="debug"/>
+    
+    <!-- log the property-file filenames -->
+    <logger name="org.springframework.core.env.StandardEnvironment" level="debug"/>
+    <!-- log all property value resolution attempts -->
+    <logger name="org.springframework.core.env" level="info"/>
 
     <logger name="org.springframework.boot" level="info"/>
     <logger name="org.springframework.boot.autoconfiguration" level="debug"/>
