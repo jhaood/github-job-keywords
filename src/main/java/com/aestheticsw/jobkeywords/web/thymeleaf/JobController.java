@@ -28,8 +28,8 @@ import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKeyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
@@ -75,9 +75,9 @@ public class JobController {
     }
 
     /**
-     * TODO - This method isn't integrated into the UI right now, but will be soon.
+     * FIXME TODO - This method isn't integrated into the UI right now, but will be soon.
      */
-    // TODO replace the discrete attributes with the Thymeleaf SearchFormBean.
+    // FIXME TODO replace the discrete attributes with the Thymeleaf SearchFormBean.
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     public String getIndeedJobList(Map<String, Object> model, @RequestParam(
             required = false, defaultValue = "Java Spring") String query, @RequestParam(
@@ -91,7 +91,8 @@ public class JobController {
             locale = SearchUtils.lookupLocaleByCountry(country);
         }
 
-        SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
+        SearchParameters params =
+            new SearchParameters(new QueryKey(query, locale, city), jobCount, start, radius, sort);
 
         JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
         model.put("joblist", jobListResponse);
@@ -118,9 +119,9 @@ public class JobController {
      * results <div> HTML.
      *
      * If the search page is in a clean state then the search results only require redrawing the
-     * <div> that contains the results. When an initial validation error occurs, only the <div>
-     * that contains the form must be redrawn. When an initial valication is subsequencly corrected
-     * then both <div>s must be redrawn. 
+     * <div> that contains the results. When an initial validation error occurs, only the <div> that
+     * contains the form must be redrawn. When an initial valication is subsequencly corrected then
+     * both <div>s must be redrawn.
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ModelAndView getTermListForSearchParameters(@Valid SearchFormBean searchFormBean, BindingResult result,
@@ -141,8 +142,9 @@ public class JobController {
             locale = SearchUtils.lookupLocaleByCountry(searchFormBean.getCountry());
         }
         SearchParameters params =
-            new SearchParameters(searchFormBean.getQuery(), searchFormBean.getJobCount(), searchFormBean.getStart(),
-                locale, searchFormBean.getCity(), searchFormBean.getRadius(), searchFormBean.getSort());
+            new SearchParameters(new QueryKey(searchFormBean.getQuery(), locale, searchFormBean.getCity()),
+                searchFormBean.getJobCount(), searchFormBean.getStart(), searchFormBean.getRadius(),
+                searchFormBean.getSort());
 
         TermFrequencyList termFrequencyList;
         try {
@@ -152,7 +154,7 @@ public class JobController {
             result.addError(new FieldError("searchFormBean", "query", "No results found, check query expression: "
                 + params));
             modelMap.put("formErrors", result.getAllErrors());
-            
+
             // Return the whole HTML page and let the Javascript select which <div> tags it wants to render. 
             return new ModelAndView("keywords", modelMap);
         }

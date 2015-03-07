@@ -13,9 +13,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +25,14 @@ import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequenc
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * TermFrequencyResults holds the results for a unique query and location. The identifying key for a
- * TermFrequencyResult instance is a QueryKey.<p/>
+ * TermFrequencyResults holds the results for a set of SearchParameters.
  * 
- * The results may be accumiulated across multiple
- * searches where the unique key for a given TermFrequenceResult is a QueryKey.<p/>
+ * The results may be accumiulated across multiple searches where the unique key for a given
+ * TermFrequenceResult is a QueryKey.
+ * <p/>
  * 
- * This class also holds
- * a list of SearchParameters in case the results have been accumulated across multiple searches.
+ * This class also holds a list of SearchParameters for the accumulated results from multiple
+ * searches.
  * 
  * @see TermFrequencyResultsDataManager
  * 
@@ -43,30 +44,29 @@ public class TermFrequencyResults {
 
     private static Logger log = LoggerFactory.getLogger(TermFrequencyResults.class);
 
-    // TODO id-generator ? 
     @Id
     @GeneratedValue
-    @Column(name="ID")
+    @Column(name = "ID")
     private Long id;
     
+    @Version
+    private int version;
+
     /**
-     * The QueryKey that identifies the unique query-string and location that can be accumulated
+     * The QueryKey that identifies the query-string and location for the set of results accumulated
      * into a given TermFrequencyResults instance.
      */
-    @ManyToOne(optional = false)
-    // TODO What's @NaturalId about ? 
-    // @NaturalId
+    @OneToOne(optional = false)
     private QueryKey queryKey;
 
-    // , mappedBy = "termFrequencyResultsId"
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="TERM_FREQUENCY_RESULTS_ID", referencedColumnName="ID")
+    @JoinColumn(name = "TERM_FREQUENCY_RESULTS_ID", referencedColumnName = "ID")
     private List<SearchParameters> searchParametersList = new ArrayList<>();
 
     // , mappedBy = "termFrequencyResultsId"
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @MapKey(name = "term")
-    @JoinColumn(name="TERM_FREQUENCY_RESULTS_ID", referencedColumnName="ID")
+    @JoinColumn(name = "TERM_FREQUENCY_RESULTS_ID", referencedColumnName = "ID")
     private Map<String, TermFrequency> termFrequencyMap = new HashMap<>();
 
     @SuppressWarnings("unused")
@@ -79,7 +79,7 @@ public class TermFrequencyResults {
     }
 
     /**
-     * This method should only be called by the TermFrequencyResultsDataManager and testing code. 
+     * This method should only be called by the TermFrequencyResultsDataManager and testing code.
      */
     public void accumulateTermFrequencyList(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         if (!queryKey.equals(searchParameters.getQueryKey())) {

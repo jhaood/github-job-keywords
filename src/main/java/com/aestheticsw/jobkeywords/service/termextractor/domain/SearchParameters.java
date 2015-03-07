@@ -1,25 +1,31 @@
 package com.aestheticsw.jobkeywords.service.termextractor.domain;
 
-import java.util.Locale;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * SearchParameter holds the full set of parameters for a given search. <p/>
+ * SearchParameter holds the full set of parameters for a given search.
+ * <p/>
  * 
- * This class is distinct from
- * the QueryKey class because Indeed will only return a maxiumum of 25 jobs per REST call. The UI
- * allows
- * the user to search multiple times for the same QueryKey values in order to span more than 25
- * jobs. <p/>
+ * This class is distinct from the QueryKey class because Indeed will only return a maxiumum of 25
+ * jobs per REST call. The UI allows the user to search for the same QueryKey values but with
+ * different SearchParameter values in order to span more than 25 jobs.
+ * <p/>
  * 
  * SearchParameters is an immutable class that can be used as an index in a Map.
  * 
@@ -27,31 +33,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @see QueryKey
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "query_key_id", "jobCount", "start", "radius", "sort" }))
 public class SearchParameters {
 
     @Id
     @GeneratedValue
     private Long id;
-    
+
+    // SearchParameters is immutable but it does have a foreign-key relationship so define @Version 
+    @Version
+    private int version;
+
     // @Column(name = "TERM_FREQUENCY_RESULTS_ID")
     // private Long termFrequencyResultsId;
-    
-    private String query;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private QueryKey queryKey;
+
     private int jobCount;
     private int start;
-    private Locale locale;
-    private String city;
     private int radius;
-    private String sort;
-
-    @JsonIgnore
-    @Transient
-    private transient QueryKey queryKeyCache;
+    @Column(nullable = false)
+    private String sort = "";
 
     @JsonIgnore
     @Transient
     private transient HashCodeBuilder hashCodeBuilderCache;
-    
+
     @JsonIgnore
     @Transient
     private transient String toStringCache;
@@ -61,31 +69,23 @@ public class SearchParameters {
         super();
     }
 
-    public SearchParameters(String query, int jobCount, int start, Locale locale, String city, int radius, String sort) {
+    public SearchParameters(QueryKey queryKey, int jobCount, int start, int radius, String sort) {
         super();
-        // force query to lower case (query can't be null so don't test for null)
-        this.query = query.toLowerCase();
+
+        this.queryKey = queryKey;
         this.jobCount = jobCount;
         this.start = start;
-        this.locale = locale;
-        // force city to lower case
-        if (city != null) {
-            city = city.toLowerCase();
-        }
-        this.city = city;
         this.radius = radius;
-        this.sort = sort;
-
-
-
+        if (sort != null) {
+            this.sort = sort;
+        }
     }
 
     @Override
     public int hashCode() {
         if (hashCodeBuilderCache == null) {
             hashCodeBuilderCache =
-                    new HashCodeBuilder(17, 37).append(query).append(jobCount).append(start).append(locale).append(city)
-                        .append(radius).append(sort);
+                new HashCodeBuilder(17, 37).append(queryKey).append(jobCount).append(start).append(radius).append(sort);
         }
         return hashCodeBuilderCache.hashCode();
     }
@@ -105,9 +105,8 @@ public class SearchParameters {
 
         // Can't cache the EqualsBuilder because it depends on the argument 'otherSearchParameters'
         EqualsBuilder equalsBuilder = new EqualsBuilder();
-        equalsBuilder.append(query, otherSearchParameters.query).append(jobCount, otherSearchParameters.jobCount)
-            .append(start, otherSearchParameters.start).append(locale, otherSearchParameters.locale)
-            .append(city, otherSearchParameters.city).append(radius, otherSearchParameters.radius)
+        equalsBuilder.append(queryKey, otherSearchParameters.queryKey).append(jobCount, otherSearchParameters.jobCount)
+            .append(start, otherSearchParameters.start).append(radius, otherSearchParameters.radius)
             .append(sort, otherSearchParameters.sort);
         return equalsBuilder.isEquals();
     }
@@ -116,27 +115,18 @@ public class SearchParameters {
     public String toString() {
         if (toStringCache == null) {
             StringBuilder builder = new StringBuilder("Search-params: ");
-            builder.append(locale == null ? "" : locale + ", ");
-            builder.append(city == null ? "" : city + ", ");
+            builder.append(queryKey == null ? "'" : queryKey.toString() + "', ");
             builder.append("start: " + start + ", ");
             builder.append("count: " + jobCount + ", query:'");
-            builder.append(query == null ? "'" : query + "', ");
             builder.append(radius == 0 ? "" : "radius: " + radius + ", ");
-            builder.append(sort == null ? "" : "sort: " + sort + ", ");
+            builder.append(StringUtils.isNotEmpty(sort) ? "sort: " + sort + ", " : "");
             toStringCache = builder.toString();
         }
         return toStringCache;
     }
 
     public QueryKey getQueryKey() {
-        if (queryKeyCache == null) {
-            queryKeyCache = new QueryKey(query, locale, city);
-        }
-        return queryKeyCache;
-    }
-    
-    public String getQuery() {
-        return query;
+        return queryKey;
     }
 
     public int getJobCount() {
@@ -145,14 +135,6 @@ public class SearchParameters {
 
     public int getStart() {
         return start;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public int getRadius() {

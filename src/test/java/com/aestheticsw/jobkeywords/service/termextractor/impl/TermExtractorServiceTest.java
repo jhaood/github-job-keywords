@@ -130,7 +130,8 @@ public class TermExtractorServiceTest {
     public void extractTerms() throws IOException {
         // when(this.indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
 
-        SearchParameters params1 = new SearchParameters("java", 1, 0, Locale.US, null, 0, null);
+        QueryKey key = new QueryKey("java", Locale.US, null);
+        SearchParameters params1 = new SearchParameters(key, 1, 0, 0, null);
         TermFrequencyList extractedTermList;
         try {
             extractedTermList = serviceUnderTest.extractTerms(params1);

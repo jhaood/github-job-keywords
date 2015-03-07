@@ -25,6 +25,16 @@
     <logger name="org.springframework.boot.autoconfiguration" level="debug"/>
     <logger name="org.springframework.boot.context.config" level="debug"/>
 
+    <logger name="org.hibernate" level="info"/>
+
+    <logger name="org.hibernate.SQL" level="debug"/>
+    <logger name="org.hibernate.internal.NamedQueryRepository" level="debug"/>
+    <logger name="org.hibernate.jpa.internal.util.LogHelper" level="debug"/>
+    <logger name="org.hibernate.loader.entity.plan.EntityLoader" level="debug"/>
+    <logger name="org.hibernate.persister.entity.AbstractEntityPersister" level="debug"/>
+    <logger name="org.hibernate.persister.build.spi.LoadPlanTreePrinter" level="debug"/>
+    <logger name="org.hibernate.hql.internal.ast.QueryTranslatorImpl" level="debug"/>
+
     <logger name="com.aestheticsw" level="debug"/>
 	
 	<root level="none">

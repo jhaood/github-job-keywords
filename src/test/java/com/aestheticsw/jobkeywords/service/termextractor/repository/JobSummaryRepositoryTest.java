@@ -12,10 +12,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
 
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 
-    DirtiesContextTestExecutionListener.class,
-    TransactionalTestExecutionListener.class})
-
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { DatabaseConfiguration.class })
 public class JobSummaryRepositoryTest {

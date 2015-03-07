@@ -13,6 +13,7 @@ public class QueryKeyRepositoryImpl implements QueryKeyRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
 
+    // TODO convert to compound primary key for QueryKey
     public QueryKey findByCompoundKey(QueryKey queryKey) {
         TypedQuery<QueryKey> query =
             entityManager.createQuery(
@@ -20,6 +21,8 @@ public class QueryKeyRepositoryImpl implements QueryKeyRepositoryCustom {
         query.setParameter(0, queryKey.getQuery());
         query.setParameter(1, queryKey.getLocale());
         query.setParameter(2, queryKey.getCity());
+        
+        // Avoid the EmptyResultDataAccessException by pulling a list and using only the single element
         List<QueryKey> results = query.getResultList();
         if (results.size() > 1) {
             throw new IllegalStateException("Found >1 QueryKey");

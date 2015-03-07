@@ -10,9 +10,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.config.TestBase;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
 
 //TODO rename to *IT
 public class IndeedClientTest extends TestBase {
@@ -27,7 +26,8 @@ public class IndeedClientTest extends TestBase {
 
     @Test
     public void getIndeedJobList() {
-        SearchParameters params = new SearchParameters("java spring", 5, 0, Locale.US, null, 0, null);
+        QueryKey key = new QueryKey("java spring", Locale.US, null);
+        SearchParameters params = new SearchParameters(key, 5, 0, 0, null);
         JobListResponse jobListResponse = service.getIndeedJobList(params);
         assertNotNull(jobListResponse);
         assertTrue(jobListResponse.hasResults());

@@ -3,10 +3,14 @@ package com.aestheticsw.jobkeywords.service.termextractor.domain;
 import java.util.Comparator;
 import java.util.Locale;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -36,14 +40,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "query", "locale", "city" }))
 public class QueryKey {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    // TODO QueryKey is immutable. 
+    // TODO @Version shouldn't be needed even though hibernate does try to update versions on both ends of relationships. 
+    @Version
+    private int version;
+
+    @Column(nullable = false)
     private String query = "";
+
+    @Column(nullable = false)
     private Locale locale = Locale.US;
+
+    @Column(nullable = false)
     private String city = "";
 
     @JsonIgnore
@@ -60,8 +75,13 @@ public class QueryKey {
 
     public QueryKey(String query, Locale locale, String city) {
         super();
-        this.query = query;
+        // force query to lower case (query can't be null so don't test for null)
+        this.query = query.toLowerCase();
         this.locale = locale;
+        // force city to lower case
+        if (city != null) {
+            city = city.toLowerCase();
+        }
         this.city = city;
     }
 
@@ -84,11 +104,11 @@ public class QueryKey {
         if (other.getClass() != getClass()) {
             return false;
         }
-        QueryKey otherSearchParameters = (QueryKey) other;
+        QueryKey otherQueryKey = (QueryKey) other;
 
         EqualsBuilder builder = new EqualsBuilder();
-        builder.append(query, otherSearchParameters.query).append(locale, otherSearchParameters.locale)
-            .append(city, otherSearchParameters.city);
+        builder.append(query, otherQueryKey.query).append(locale, otherQueryKey.locale)
+            .append(city, otherQueryKey.city);
         return builder.isEquals();
     }
 

@@ -13,8 +13,8 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKeyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
@@ -61,6 +61,8 @@ public class TermExtractorServiceImpl implements TermExtractorService {
         if (jobSummaries == null || jobSummaries.size() == 0) {
             throw new IndeedQueryException("Query returned no results: " + params);
         }
+        
+        // FIXME TODO persist the jobSummaries -> maybe the right place is inside the IndeedClient ? 
 
         StringBuilder combinedJobDetails = new StringBuilder();
         for (int index = 0; index < params.getJobCount() && index < jobSummaries.size(); index++) {
@@ -70,7 +72,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
             combinedJobDetails.append("\n ");
         }
 
-        TermFrequencyList terms = getFiveFiltersService().getTermFrequencyList(combinedJobDetails.toString(), params.getLocale());
+        TermFrequencyList terms = getFiveFiltersService().getTermFrequencyList(combinedJobDetails.toString(), params.getQueryKey().getLocale());
 
         getTermFrequencyResultsDataManager().accumulateTermFrequencyResults(params, terms.getTerms());
 

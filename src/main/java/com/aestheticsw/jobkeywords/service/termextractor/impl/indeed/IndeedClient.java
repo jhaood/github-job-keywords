@@ -69,16 +69,16 @@ public class IndeedClient {
      */
     public JobListResponse getIndeedJobList(SearchParameters params) {
         StringBuilder queryUrl = new StringBuilder();
-        String query = params.getQuery();
+        String query = params.getQueryKey().getQuery();
 
         queryUrl.append("http://api.indeed.com/ads/apisearch?publisher=1652353865637104&v=2&q=").append(query);
         queryUrl.append("&limit=").append(params.getJobCount());
         queryUrl.append("&start=").append(params.getStart());
-        if (params.getLocale() != null) {
-            queryUrl.append("&co=").append(params.getLocale().getCountry());
+        if (params.getQueryKey().getLocale() != null) {
+            queryUrl.append("&co=").append(params.getQueryKey().getLocale().getCountry());
         }
-        if (params.getCity() != null) {
-            queryUrl.append("&l=").append(params.getCity());
+        if (params.getQueryKey().getCity() != null) {
+            queryUrl.append("&l=").append(params.getQueryKey().getCity());
         }
         if (params.getRadius() > 0) {
             queryUrl.append("&radius=").append(params.getRadius());

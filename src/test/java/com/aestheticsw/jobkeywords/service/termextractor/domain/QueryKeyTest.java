@@ -1,13 +1,14 @@
 package com.aestheticsw.jobkeywords.service.termextractor.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Comparator;
 import java.util.Locale;
 
 import org.junit.Test;
-
-import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
 public class QueryKeyTest {
 
@@ -17,25 +18,25 @@ public class QueryKeyTest {
 
         assertEquals("query", param1.getQuery());
         assertEquals(Locale.FRANCE, param1.getLocale());
-        assertEquals("Lyon", param1.getCity());
+        assertEquals("lyon", param1.getCity());
     }
 
     @Test
     public void nullValues() {
-        QueryKey key = new QueryKey(null, null, null);
-        assertEquals(null, key.getQuery());
+        QueryKey key = new QueryKey("query", null, null);
+        assertEquals("query", key.getQuery());
         assertEquals(null, key.getLocale());
         assertEquals(null, key.getCity());
 
         // this hard-coded value looks brittle based on dependency on HashCodeBuilder.
-        assertEquals(861101, key.hashCode());
+        assertEquals(1747495221, key.hashCode());
     }
 
     @Test
     public void nullEquals() {
-        QueryKey key1 = new QueryKey(null, null, null);
-        QueryKey key2 = new QueryKey(null, null, null);
-        QueryKey key3 = new QueryKey(null, null, "Lyon");
+        QueryKey key1 = new QueryKey("query", null, null);
+        QueryKey key2 = new QueryKey("query", null, null);
+        QueryKey key3 = new QueryKey("query", null, "Lyon");
 
         assertEquals(key1, key2);
         assertFalse(key1.equals(key3));

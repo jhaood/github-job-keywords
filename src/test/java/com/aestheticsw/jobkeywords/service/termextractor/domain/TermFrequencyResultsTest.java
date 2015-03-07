@@ -9,17 +9,14 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-
 public class TermFrequencyResultsTest {
 
     @Test
     public void accumulate() {
-        SearchParameters param1 = new SearchParameters("query", 1, 1, Locale.US, null, 0, null);
-        SearchParameters param2 = new SearchParameters("query", 1, 2, Locale.US, null, 0, null);
-        SearchParameters param3 = new SearchParameters("query", 1, 3, Locale.US, null, 0, null);
+        QueryKey key = new QueryKey("query", Locale.US, null);
+        SearchParameters param1 = new SearchParameters(key, 1, 1, 0, null);
+        SearchParameters param2 = new SearchParameters(key, 1, 2, 0, null);
+        SearchParameters param3 = new SearchParameters(key, 1, 3, 0, null);
 
         TermFrequency tf1 = new TermFrequency(new String[] { "java", "3", "1" });
         TermFrequency tf2 = new TermFrequency(new String[] { "spring", "2", "1" });

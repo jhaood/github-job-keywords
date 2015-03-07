@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
@@ -24,8 +24,8 @@ import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
 
 /**
  * This REST controller exposes the Indeed job list or the extracted terms to a RESTful client.
- *  
- * This controller experiments with JSON and XML serialization. 
+ * 
+ * This controller experiments with JSON and XML serialization.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
@@ -35,7 +35,7 @@ public class JobRestController {
     @Log
     private Logger log;
 
-    // TODO - don't inject the indeedClient here... expose the Indeed response through the TermExtractor service. 
+    // FIXME TODO - don't inject the indeedClient here... expose the Indeed response through the TermExtractor service. 
     private IndeedClient indeedClient;
 
     private TermExtractorService termExtractorService;
@@ -66,7 +66,8 @@ public class JobRestController {
             locale = SearchUtils.lookupLocaleByCountry(country.toUpperCase());
         }
 
-        SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
+        SearchParameters params =
+            new SearchParameters(new QueryKey(query, locale, city), jobCount, start, radius, sort);
 
         JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
         return jobListResponse;
@@ -75,10 +76,10 @@ public class JobRestController {
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/terms", method = RequestMethod.GET)
-    public TermFrequencyList getTermFrequencyListForSearchParameters(
-            @RequestParam(required = false, defaultValue = "Java Spring") String query, @RequestParam(
-                    required = false, defaultValue = "2") int jobCount, @RequestParam(
-                    required = false, defaultValue = "0") int start, @RequestParam(
+    public TermFrequencyList getTermFrequencyListForSearchParameters(@RequestParam(
+            required = false, defaultValue = "Java Spring") String query, @RequestParam(
+            required = false, defaultValue = "2") int jobCount,
+            @RequestParam(required = false, defaultValue = "0") int start, @RequestParam(
                     required = false, defaultValue = "US") String country, @RequestParam(required = false) String city,
             @RequestParam(required = false, defaultValue = "0") int radius, @RequestParam(required = false) String sort)
             throws IOException {
@@ -88,7 +89,7 @@ public class JobRestController {
         if (country != null) {
             locale = SearchUtils.lookupLocaleByCountry(country.toUpperCase());
         }
-        SearchParameters params = new SearchParameters(query, jobCount, start, locale, city, radius, sort);
+        SearchParameters params = new SearchParameters(new QueryKey(query, locale, city), jobCount, start, radius, sort);
 
         TermFrequencyList terms;
         try {

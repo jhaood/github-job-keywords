@@ -2,30 +2,35 @@ package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 
 import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.repository.QueryKeyRepository;
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
 
 // TODO rename to *IT
+
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,7 +41,10 @@ public class TermFrequencyResultsRepositoryTest {
     private TermFrequencyResultsRepository termFrequencyResultsRepository;
 
     @Autowired
-    private QueryKeyRepository queryKeyRepository;
+    private SearchParametersRepository searchParametersRepository;
+
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
     @Test
     public void loadContext() {
@@ -44,6 +52,7 @@ public class TermFrequencyResultsRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void saveAndRetrieve() {
         TermFrequency tf1 = new TermFrequency(new String[] { "java", "3", "1" });
         TermFrequency tf2 = new TermFrequency(new String[] { "spring", "2", "1" });
@@ -51,19 +60,24 @@ public class TermFrequencyResultsRepositoryTest {
         list1.add(tf1);
         list1.add(tf2);
 
-        QueryKey dbKey1;
-        TermFrequencyResults dbTfr1;
+        TransactionStatus status = transactionManager.getTransaction(null);
+
+        // QueryKey dbKey1;
+        QueryKey key = new QueryKey("query-one", Locale.US, "");
+        SearchParameters param1 = new SearchParameters(key, 1, 1, 0, "");
+
         {
-            SearchParameters param1 = new SearchParameters("query-one", 1, 1, Locale.US, "", 0, "");
-
-            dbKey1 = queryKeyRepository.save(param1.getQueryKey());
-
-            TermFrequencyResults tfr1 = new TermFrequencyResults(dbKey1);
+            TermFrequencyResults tfr1 = new TermFrequencyResults(param1.getQueryKey());
             tfr1.accumulateTermFrequencyList(param1, list1);
 
             termFrequencyResultsRepository.save(tfr1);
+        }
 
-            dbTfr1 = termFrequencyResultsRepository.findByQueryKey(dbKey1);
+        transactionManager.commit(status);
+        status = transactionManager.getTransaction(null);
+
+        {
+            TermFrequencyResults dbTfr1 = termFrequencyResultsRepository.findByQueryKey(param1.getQueryKey());
             assertNotNull(dbTfr1);
 
             assertNotNull(dbTfr1.getQueryKey());
@@ -80,14 +94,24 @@ public class TermFrequencyResultsRepositoryTest {
             assertEquals(2, dbTerms.get(1).getFrequency());
         }
 
+        transactionManager.commit(status);
+        status = transactionManager.getTransaction(null);
+
         {
-            SearchParameters param1_2 = new SearchParameters("query-one", 1, 2, Locale.US, "", 0, "");
+            SearchParameters param1_2 = new SearchParameters(key, 1, 2, 0, "");
+
+            TermFrequencyResults dbTfr1 = termFrequencyResultsRepository.findByQueryKey(param1.getQueryKey());
 
             dbTfr1.accumulateTermFrequencyList(param1_2, list1);
 
             termFrequencyResultsRepository.save(dbTfr1);
+        }
 
-            TermFrequencyResults dbTfr2 = termFrequencyResultsRepository.findByQueryKey(dbKey1);
+        transactionManager.commit(status);
+        status = transactionManager.getTransaction(null);
+
+        {
+            TermFrequencyResults dbTfr2 = termFrequencyResultsRepository.findByQueryKey(param1.getQueryKey());
             assertNotNull(dbTfr2);
 
             assertNotNull(dbTfr2.getQueryKey());
@@ -106,10 +130,15 @@ public class TermFrequencyResultsRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void distinctQueryKeys() {
-        SearchParameters param1 = new SearchParameters("query-one", 1, 1, Locale.US, "", 0, "");
-        SearchParameters param1_2 = new SearchParameters("query-one", 1, 2, Locale.US, "", 0, "");
-        SearchParameters param2 = new SearchParameters("query-TWO", 1, 1, Locale.US, "", 0, "");
+        QueryKey key1 = new QueryKey("query-two", Locale.US, "");
+        SearchParameters param1 = new SearchParameters(key1, 1, 1, 0, "");
+
+        SearchParameters param1_2 = new SearchParameters(key1, 1, 2, 0, "");
+
+        QueryKey key3 = new QueryKey("query-three", Locale.US, "");
+        SearchParameters param2 = new SearchParameters(key3, 1, 1, 0, "");
 
         TermFrequency tf1 = new TermFrequency(new String[] { "java", "3", "1" });
         TermFrequency tf2 = new TermFrequency(new String[] { "spring", "2", "1" });
@@ -117,32 +146,71 @@ public class TermFrequencyResultsRepositoryTest {
         list1.add(tf1);
         list1.add(tf2);
 
+        TransactionStatus status = transactionManager.getTransaction(null);
         {
-            QueryKey dbKey1 = queryKeyRepository.save(param1.getQueryKey());
+            // SearchParameters dbParam1 = searchParametersRepository.save(param1);
+            // QueryKey dbKey1 = dbParam1.getQueryKey();
 
-            TermFrequencyResults tfr = new TermFrequencyResults(dbKey1);
+            TermFrequencyResults tfr = new TermFrequencyResults(key1);
             tfr.accumulateTermFrequencyList(param1, list1);
             termFrequencyResultsRepository.save(tfr);
         }
-
+        transactionManager.rollback(status);
+        status = transactionManager.getTransaction(null);
         {
-            QueryKey dbKey1_2 = queryKeyRepository.save(param1_2.getQueryKey());
+            // SearchParameters dbParam1_2 = searchParametersRepository.save(param1_2);
+            // QueryKey dbKey1_2 = dbParam1_2.getQueryKey();
 
-            TermFrequencyResults tfr = new TermFrequencyResults(dbKey1_2);
+            TermFrequencyResults tfr = termFrequencyResultsRepository.findByQueryKey(param1_2.getQueryKey());
+            assertNotNull(tfr);
             tfr.accumulateTermFrequencyList(param1_2, list1);
             termFrequencyResultsRepository.save(tfr);
         }
-
+        transactionManager.commit(status);
+        status = transactionManager.getTransaction(null);
         {
-            QueryKey dbKey2 = queryKeyRepository.save(param2.getQueryKey());
+            // SearchParameters dbParam2 = searchParametersRepository.save(param2);
+            // QueryKey dbKey2 = dbParam2.getQueryKey();
 
-            TermFrequencyResults tfr = new TermFrequencyResults(dbKey2);
+            TermFrequencyResults tfr = new TermFrequencyResults(param2.getQueryKey());
             tfr.accumulateTermFrequencyList(param2, list1);
             termFrequencyResultsRepository.save(tfr);
         }
-        
-        List<QueryKey> keys = termFrequencyResultsRepository.findDistinctQueryKeys();
-        assertNotNull(keys);
-        assertEquals(2, keys.size());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    @Transactional
+    public void distinctQueryKeyException() {
+        QueryKey key1 = new QueryKey("query-four", Locale.US, "");
+        SearchParameters param1 = new SearchParameters(key1, 1, 1, 0, "");
+
+        SearchParameters param1_2 = new SearchParameters(key1, 1, 2, 0, "");
+
+        QueryKey key3 = new QueryKey("query-five", Locale.US, "");
+        SearchParameters param2 = new SearchParameters(key3, 1, 1, 0, "");
+
+        TermFrequency tf1 = new TermFrequency(new String[] { "java", "3", "1" });
+        TermFrequency tf2 = new TermFrequency(new String[] { "spring", "2", "1" });
+        List<TermFrequency> list1 = new ArrayList<>();
+        list1.add(tf1);
+        list1.add(tf2);
+
+        TransactionStatus status = transactionManager.getTransaction(null);
+        {
+            // SearchParameters dbParam1 = searchParametersRepository.save(param1);
+            // QueryKey dbKey1 = dbParam1.getQueryKey();
+
+            TermFrequencyResults tfr = new TermFrequencyResults(key1);
+            tfr.accumulateTermFrequencyList(param1, list1);
+            termFrequencyResultsRepository.save(tfr);
+        }
+        transactionManager.commit(status);
+        status = transactionManager.getTransaction(null);
+        {
+            TermFrequencyResults tfr = new TermFrequencyResults(key1);
+            tfr.accumulateTermFrequencyList(param1_2, list1);
+            termFrequencyResultsRepository.save(tfr);
+            fail("Expected constraint violation exception on the term_frequency_results.query_key_id foreign-key constraint");
+        }
     }
 }

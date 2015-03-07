@@ -2,9 +2,11 @@ package com.aestheticsw.jobkeywords.service.termextractor.domain;
 
 import java.util.Comparator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
@@ -30,8 +32,11 @@ public class TermFrequency {
     @GeneratedValue
     private Long id;
 
-    // @Column(name = "TERM_FREQUENCY_RESULTS_ID")
-    // private Long termFrequencyResultsId;
+    @Version
+    private int version;
+
+    @Column(name = "TERM_FREQUENCY_RESULTS_ID")
+    private Long termFrequencyResultsId;
 
     private String term;
     private int frequency;

@@ -3,10 +3,14 @@ package com.aestheticsw.jobkeywords.service.termextractor.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * JobSummary is immutable.  
+ */
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
@@ -15,6 +19,11 @@ public class JobSummary {
     @Id
     @GeneratedValue
     private Long id;
+
+    // JobSummary is immutable. 
+    // TODO @Version shouldn't be needed but hibernate used to update versions on both ends of relationships. 
+    @Version
+    private int version;
 
     private String jobTitle;
     private String company;

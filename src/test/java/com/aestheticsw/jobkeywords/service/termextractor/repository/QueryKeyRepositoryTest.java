@@ -17,15 +17,13 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
-// TODO add DbUnitTestExecutionListener.class 
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, 
-    DirtiesContextTestExecutionListener.class,
-    TransactionalTestExecutionListener.class})
-// @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
-// @DatabaseSetup(ItemRepositoryIT.DATASET)
-// @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = { ItemRepositoryIT.DATASET })
-// @DirtiesContext
+//@DatabaseSetup(...dataset...)
+//@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = { ...dataaset... })
+//@DirtiesContext
 
+// TODO add DbUnitTestExecutionListener.class
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { DatabaseConfiguration.class })
 public class QueryKeyRepositoryTest {
@@ -37,9 +35,9 @@ public class QueryKeyRepositoryTest {
     public void loadContext() {
     }
 
-    @Test 
+    @Test
     public void persist() {
-        QueryKey key = new QueryKey("query", Locale.US, "city");
+        QueryKey key = new QueryKey("query-eights", Locale.US, "city");
         QueryKey dbKey = queryKeyRepository.save(key);
         assertNotNull(dbKey);
         QueryKey retrievedKey = queryKeyRepository.findOne(dbKey.getId());

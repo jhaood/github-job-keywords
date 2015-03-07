@@ -12,15 +12,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * in response to REST calls.
  */
 @Configuration
-// The @EnableWebMvc annotation disabled the automatic configuration of the
-// ContentNegotiatingViewResolver so this class has to re-configure the content negotiator
+// @EnableWebMvc disables the automatic configuration of the ContentNegotiatingViewResolver 
+// so this class has to re-configure the content negotiator
 @EnableWebMvc
-// TODO is @EnableAutoConfiguration is always on by default ?
-// @EnableAutoConfiguration()
-// TODO Add these annotations when spring-data gets plugged in
-// TODO perhaps these annotations should be split among the service and web configuraiton. ? ?
-// @EnableSpringDataWebSupport
-// @EnableJpaRepositories(basePackages = "com.aestheticsw.jobkeywords.dao")
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     /**
@@ -38,12 +32,12 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * The configureContentNegotiation() method configures the request-URL extensions to pull
-     * either XML or JSON from the rest controllers.
+     * The configureContentNegotiation() method configures the request-URL extensions to pull either
+     * XML or JSON from the rest controllers.
      * 
-     * This allows the client to specify either *.json
-     * or *.xml which will pull the correct type - but only as long as the controller method does
-     * not constrain the return type with the "produces" annotation attribute.
+     * This allows the client to specify either *.json or *.xml which will pull the correct type -
+     * but only as long as the controller method does not constrain the return type with the
+     * "produces" annotation attribute.
      * 
      * - Enables path extension. Note that favor does not mean use one approach in preference to
      * another, it just enables or disables it. The order of checking is always path extension,
@@ -55,8 +49,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
      * - Ignore the Accept header completely. This is often the best approach if most of your
      * clients are actually web-browsers (typically making REST calls via AJAX).
      * 
-     * - Don't use the JAF, instead specify the media type mappings manually - we wish to
-     * support JSON and XML - and HTML (via Thymeleaf templates).
+     * - Don't use the JAF, instead specify the media type mappings manually - we wish to support
+     * JSON and XML - and HTML (via Thymeleaf templates).
      */
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
