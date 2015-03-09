@@ -1,5 +1,5 @@
 package com.aestheticsw.jobkeywords.config;
 
-public interface UnitTestCategory {
+public class UnitTestCategory {
 
 }

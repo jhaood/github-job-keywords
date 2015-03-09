@@ -12,12 +12,14 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.LoggerFactory;
 
+import com.aestheticsw.jobkeywords.config.UnitTestCategory;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
@@ -34,6 +36,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequenc
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
+@Category(UnitTestCategory.class)
 public class TermExtractorServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -122,7 +125,7 @@ public class TermExtractorServiceTest {
     }
 
     @Test
-    public void loadContext() {
+    public void initializeTest() {
         assertNotNull(serviceUnderTest);
     }
 

@@ -7,14 +7,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.aestheticsw.jobkeywords.config.TestBase;
+import com.aestheticsw.jobkeywords.config.ServiceTestCategory;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 
-//TODO rename to *IT
-public class IndeedClientTest extends TestBase {
+@Category(ServiceTestCategory.class)
+public class IndeedClientTest extends ServiceTestCategory {
 
     @Autowired
     private IndeedClient indeedClient;

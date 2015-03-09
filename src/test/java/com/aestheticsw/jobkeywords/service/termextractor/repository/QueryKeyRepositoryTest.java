@@ -5,28 +5,19 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
+import com.aestheticsw.jobkeywords.config.DatabaseTestCategory;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
+// TODO add DbUnitTestExecutionListener.class
 //@DatabaseSetup(...dataset...)
 //@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = { ...dataaset... })
 //@DirtiesContext
 
-// TODO add DbUnitTestExecutionListener.class
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
-    TransactionalTestExecutionListener.class })
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { DatabaseConfiguration.class })
-public class QueryKeyRepositoryTest {
+@Category(DatabaseTestCategory.class)
+public class QueryKeyRepositoryTest extends DatabaseTestCategory {
 
     @Autowired
     QueryKeyRepository queryKeyRepository;

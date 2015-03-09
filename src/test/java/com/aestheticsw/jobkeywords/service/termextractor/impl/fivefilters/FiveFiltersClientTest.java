@@ -11,13 +11,12 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.aestheticsw.jobkeywords.config.SpringContextTestCategory;
-import com.aestheticsw.jobkeywords.config.TestBase;
+import com.aestheticsw.jobkeywords.config.ServiceTestCategory;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
-@Category(SpringContextTestCategory.class)
-public class FiveFiltersClientTest extends TestBase {
+@Category(ServiceTestCategory.class)
+public class FiveFiltersClientTest extends ServiceTestCategory {
 
     @Autowired
     private FiveFiltersClient fiveFiltersClient;

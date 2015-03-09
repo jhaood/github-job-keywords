@@ -11,7 +11,7 @@ import org.junit.experimental.categories.Category;
 import com.aestheticsw.jobkeywords.config.UnitTestCategory;
 
 @Category(UnitTestCategory.class)
-public class TermFrequencyUnitTest {
+public class TermFrequencyTest {
 
     @Test
     public void constructor() {

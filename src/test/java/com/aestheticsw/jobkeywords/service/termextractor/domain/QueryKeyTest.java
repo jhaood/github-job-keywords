@@ -14,7 +14,7 @@ import org.junit.experimental.categories.Category;
 import com.aestheticsw.jobkeywords.config.UnitTestCategory;
 
 @Category(UnitTestCategory.class)
-public class QueryKeyUnitTest {
+public class QueryKeyTest {
 
     @Test
     public void constructor() {

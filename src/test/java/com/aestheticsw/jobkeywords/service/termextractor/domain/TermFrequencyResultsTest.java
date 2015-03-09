@@ -13,7 +13,7 @@ import org.junit.experimental.categories.Category;
 import com.aestheticsw.jobkeywords.config.UnitTestCategory;
 
 @Category(UnitTestCategory.class)
-public class TermFrequencyResultsUnitTest {
+public class TermFrequencyResultsTest {
 
     @Test
     public void accumulate() {

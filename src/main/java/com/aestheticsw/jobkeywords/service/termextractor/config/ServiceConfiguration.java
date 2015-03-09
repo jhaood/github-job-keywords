@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Configuration
-@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.impl" })
+@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.impl",
+    "com.aestheticsw.jobkeywords.service.simple" })
 public class ServiceConfiguration extends RestClientConfiguration {
 
 }

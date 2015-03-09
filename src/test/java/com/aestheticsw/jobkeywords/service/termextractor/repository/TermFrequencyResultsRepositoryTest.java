@@ -11,19 +11,13 @@ import java.util.Locale;
 import javax.transaction.Transactional;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
-import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
+import com.aestheticsw.jobkeywords.config.DatabaseTestCategory;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
@@ -31,11 +25,8 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyRes
 
 // TODO rename to *IT
 
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
-    TransactionalTestExecutionListener.class })
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { DatabaseConfiguration.class })
-public class TermFrequencyResultsRepositoryTest {
+@Category(DatabaseTestCategory.class)
+public class TermFrequencyResultsRepositoryTest extends DatabaseTestCategory {
 
     @Autowired
     private TermFrequencyResultsRepository termFrequencyResultsRepository;

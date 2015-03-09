@@ -1,15 +1,16 @@
 package com.aestheticsw.jobkeywords;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import com.aestheticsw.jobkeywords.config.ServiceTestCategory;
+
+@Category(ServiceTestCategory.class)
 @SpringApplicationConfiguration(classes = JobKeywordsApplication.class)
 @WebAppConfiguration
-public class JobKeywordsApplicationTests {
+public class JobKeywordsApplicationTest extends ServiceTestCategory {
 
     @Test
     public void contextLoads() {

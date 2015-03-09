@@ -152,57 +152,95 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+
 				<configuration>
-					<!-- spring examples turn off the system loader to avoid wacky classpath and loading problems -->
-					<useSystemClassLoader>false</useSystemClassLoader>
-
-					<!--  run tests in parallel on the method-level -->
-					<parallel>methods</parallel>
-					<threadCount>40</threadCount>
+					<groups>com.aestheticsw.jobkeywords.config.UnitTestCategory,
+						com.aestheticsw.jobkeywords.config.ServiceTestCategory,
+						com.aestheticsw.jobkeywords.config.DatabaseTestCategory</groups>
 					
-					<!-- Can't override the defaule value in application.properties from the command line 
-					-->
-					<systemPropertyVariables>
-						<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
-						<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
-					</systemPropertyVariables>
-
-					<includes>
-						<include>**/*TestSuite.java</include>
-					</includes>
-
-					<executions>
-						<execution>none</execution>
-						<execution>
-							<!-- 
-							 -->
-							<id>unit tests</id>
-							<phase>test</phase>
-							<configuration>
-								<includes>
-									<include>**/*UnitTestSuite.java</include>
-								</includes>
-							</configuration>
-							<!-- 
-							 -->
-							<goals>
-								<goal>test</goal>
-							</goals>
-						</execution>
-<!-- 
-
-						<execution>
-							<id>integ-tests</id>
-							<goals>
-								<goal>test</goal>
-							</goals>
-							<configuration>
-							</configuration>
-							<execution>
- -->
-					</executions>
-
+					<!--  skip the crap that comes in from the parent POMs... and enable my local <execution> configuraiton -->
+					<skip>true</skip>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>test</phase>
+						<id>unit-tests</id>
+
+						<configuration>
+							<groups>com.aestheticsw.jobkeywords.config.UnitTestCategory</groups>
+							<excludedGroups>com.aestheticsw.jobkeywords.config.ServiceTestCategory,
+								com.aestheticsw.jobkeywords.config.DatabaseTestCategory</excludedGroups>
+							<skip>false</skip>
+							
+							<!-- spring examples turn off the system loader to avoid wacky classpath and loading problems -->
+							<useSystemClassLoader>false</useSystemClassLoader>
+
+							<!--  run tests in parallel on the method-level -->
+							<parallel>methods</parallel>
+							<threadCount>40</threadCount>
+					
+							<!-- Can't override the default value in application.properties from the command line -->
+							<systemPropertyVariables>
+								<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
+								<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
+							</systemPropertyVariables>
+						</configuration>
+					</execution>
+
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>test</phase>
+						<id>service-tests</id>
+
+						<configuration>
+							<groups>com.aestheticsw.jobkeywords.config.ServiceTestCategory</groups>
+							<excludedGroups>com.aestheticsw.jobkeywords.config.UnitTestCategory,
+								com.aestheticsw.jobkeywords.config.DatabaseTestCategory</excludedGroups>
+							<skip>false</skip>
+							
+							<useSystemClassLoader>false</useSystemClassLoader>
+
+							<parallel>methods</parallel>
+							<threadCount>40</threadCount>
+					
+							<systemPropertyVariables>
+								<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
+								<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
+							</systemPropertyVariables>
+						</configuration>
+					</execution>
+
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>test</phase>
+						<id>database-tests</id>
+
+						<configuration>
+							<groups>com.aestheticsw.jobkeywords.config.DatabaseTestCategory</groups>
+							<excludedGroups>com.aestheticsw.jobkeywords.config.UnitTestCategory,
+								com.aestheticsw.jobkeywords.config.ServiceTestCategory</excludedGroups>
+							<skip>false</skip>
+							
+							<useSystemClassLoader>false</useSystemClassLoader>
+
+							<parallel>methods</parallel>
+							<threadCount>40</threadCount>
+					
+							<systemPropertyVariables>
+								<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
+								<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
+							</systemPropertyVariables>
+						</configuration>
+					</execution>
+
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -218,6 +256,7 @@
 					<reportOutputDirectory>${basedir}/target/classes/static</reportOutputDirectory>
 					<destDir>javadoc</destDir>
 				</configuration>
+
 			</plugin>
 
 		</plugins>
