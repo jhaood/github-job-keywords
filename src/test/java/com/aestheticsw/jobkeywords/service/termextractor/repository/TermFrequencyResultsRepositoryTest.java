@@ -49,6 +49,8 @@ public class TermFrequencyResultsRepositoryTest {
     @Test
     public void loadContext() {
         assertNotNull(termFrequencyResultsRepository);
+        assertNotNull(searchParametersRepository);
+        assertNotNull(transactionManager);
     }
 
     @Test

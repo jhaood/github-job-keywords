@@ -1,5 +1,5 @@
 package com.aestheticsw.jobkeywords.config;
 
-public class TestConfiguration {
+public interface IntegrationTestCategory {
 
 }

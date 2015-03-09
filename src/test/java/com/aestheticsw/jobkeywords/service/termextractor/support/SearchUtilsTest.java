@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.utils;
+package com.aestheticsw.jobkeywords.service.termextractor.support;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

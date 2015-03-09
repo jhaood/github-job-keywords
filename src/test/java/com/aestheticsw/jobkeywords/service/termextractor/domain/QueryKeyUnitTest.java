@@ -9,8 +9,12 @@ import java.util.Comparator;
 import java.util.Locale;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-public class QueryKeyTest {
+import com.aestheticsw.jobkeywords.config.UnitTestCategory;
+
+@Category(UnitTestCategory.class)
+public class QueryKeyUnitTest {
 
     @Test
     public void constructor() {

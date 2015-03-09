@@ -6,10 +6,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.Comparator;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
+import com.aestheticsw.jobkeywords.config.UnitTestCategory;
 
-public class TermFrequencyTest {
+@Category(UnitTestCategory.class)
+public class TermFrequencyUnitTest {
 
     @Test
     public void constructor() {

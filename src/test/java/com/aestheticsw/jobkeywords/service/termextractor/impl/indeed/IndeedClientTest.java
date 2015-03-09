@@ -17,18 +17,18 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters
 public class IndeedClientTest extends TestBase {
 
     @Autowired
-    private IndeedClient service;
+    private IndeedClient indeedClient;
 
     @Test
     public void loadContext() {
-        assertNotNull(service);
+        assertNotNull(indeedClient);
     }
 
     @Test
     public void getIndeedJobList() {
         QueryKey key = new QueryKey("java spring", Locale.US, null);
         SearchParameters params = new SearchParameters(key, 5, 0, 0, null);
-        JobListResponse jobListResponse = service.getIndeedJobList(params);
+        JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
         assertNotNull(jobListResponse);
         assertTrue(jobListResponse.hasResults());
         assertEquals(5, jobListResponse.getResults().getResults().size());

@@ -33,6 +33,7 @@ public class QueryKeyRepositoryTest {
 
     @Test
     public void loadContext() {
+        assertNotNull(queryKeyRepository);
     }
 
     @Test

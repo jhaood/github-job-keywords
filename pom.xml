@@ -13,9 +13,9 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.2.1.RELEASE</version>
+		<artifactId>job-keywords-parent</artifactId>
+		<groupId>com.aestheticsw</groupId>
+		<version>1.1-SNAPSHOT</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -166,6 +166,42 @@
 						<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
 						<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
 					</systemPropertyVariables>
+
+					<includes>
+						<include>**/*TestSuite.java</include>
+					</includes>
+
+					<executions>
+						<execution>none</execution>
+						<execution>
+							<!-- 
+							 -->
+							<id>unit tests</id>
+							<phase>test</phase>
+							<configuration>
+								<includes>
+									<include>**/*UnitTestSuite.java</include>
+								</includes>
+							</configuration>
+							<!-- 
+							 -->
+							<goals>
+								<goal>test</goal>
+							</goals>
+						</execution>
+<!-- 
+
+						<execution>
+							<id>integ-tests</id>
+							<goals>
+								<goal>test</goal>
+							</goals>
+							<configuration>
+							</configuration>
+							<execution>
+ -->
+					</executions>
+
 				</configuration>
 			</plugin>
 

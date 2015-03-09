@@ -1,5 +1,7 @@
 package com.aestheticsw.jobkeywords.service.termextractor.repository;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,9 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class })
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { DatabaseConfiguration.class })
 public class JobSummaryRepositoryTest {
 
@@ -23,6 +25,7 @@ public class JobSummaryRepositoryTest {
 
     @Test
     public void loadContext() {
+        assertNotNull(jobSummaryRepository);
     }
 
 }
