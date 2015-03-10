@@ -93,6 +93,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
     /* (non-Javadoc)
      * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#getSearchHistory()
      */
+    // TODO return List<QueryKey> - but would removing the intermediate object break the REST serializer ? 
     @Override
     public QueryKeyList getSearchHistory() {
         return new QueryKeyList(getTermFrequencyResultsDataManager().getSearchHistory());

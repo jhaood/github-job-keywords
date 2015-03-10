@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-public class SearchParametersTest {
+public class SearchParametersUnitTest {
 
     @Test
     public void constructor() {

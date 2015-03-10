@@ -7,7 +7,7 @@ import java.util.Comparator;
 
 import org.junit.Test;
 
-public class TermFrequencyTest {
+public class TermFrequencyUnitTest {
 
     @Test
     public void constructor() {

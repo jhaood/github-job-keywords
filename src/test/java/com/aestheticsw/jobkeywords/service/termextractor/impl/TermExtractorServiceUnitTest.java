@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKeyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
@@ -33,7 +35,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequenc
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
-public class TermExtractorServiceTest {
+public class TermExtractorServiceUnitTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -41,8 +43,8 @@ public class TermExtractorServiceTest {
 
     @Mock
     private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
-    
-    @Mock 
+
+    @Mock
     private JobSummaryRepository jobSummaryRepository;
 
     @Mock
@@ -66,10 +68,11 @@ public class TermExtractorServiceTest {
     private String[][] termListStringArray;
 
     private QueryKey queryKey;
+    private SearchParameters searchParameters;
 
     private TermFrequencyResults termFrequencyResults;
 
-    public TermExtractorServiceTest() {
+    public TermExtractorServiceUnitTest() {
     }
 
     @SuppressWarnings("unchecked")
@@ -84,7 +87,8 @@ public class TermExtractorServiceTest {
         */
 
         serviceUnderTest =
-            Mockito.spy(new TermExtractorServiceImpl(termFrequencyResultsDataManager, jobSummaryRepository, indeedClient, fiveFiltersClient));
+            Mockito.spy(new TermExtractorServiceImpl(termFrequencyResultsDataManager, jobSummaryRepository,
+                indeedClient, fiveFiltersClient));
 
         // manually set the logger because Spring doesn't instantiate the serviceUnderTest
         serviceUnderTest.log = LoggerFactory.getLogger(serviceUnderTest.getClass());
@@ -95,7 +99,7 @@ public class TermExtractorServiceTest {
 
         jobDetailsString = FileUtils.getClassResourceAsString("indeed-content.html", this);
 
-        termListStringArray = new String[][] { { "term one", "4", "2" }, { "term two", "2", "2" } };
+        termListStringArray = new String[][] { { "term one", "2", "2" }, { "term two", "4", "2" } };
 
         List<TermFrequency> termFrequencies = new ArrayList<>();
         for (int i = 0; i < termListStringArray.length; i++) {
@@ -104,16 +108,23 @@ public class TermExtractorServiceTest {
         termFrequencyList = new TermFrequencyList(termFrequencies);
 
         queryKey = new QueryKey("query", Locale.US, "city");
+        searchParameters = new SearchParameters(queryKey, 1, 0, 0, "");
         termFrequencyResults = new TermFrequencyResults(queryKey);
+        termFrequencyResults.accumulateTermFrequencyList(searchParameters, termFrequencies);
 
         when(indeedClient.getIndeedJobSummaryList(Mockito.any(SearchParameters.class))).thenReturn(jobSummaryList);
         when(fiveFiltersClient.executeFiveFiltersPost(Mockito.any(String.class))).thenReturn(termListStringArray);
-        when(fiveFiltersClient.getTermFrequencyList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(termFrequencyList);
+        when(fiveFiltersClient.getTermFrequencyList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(
+            termFrequencyList);
 
         // when(termFrequencyResultsDataManager.accumulateTermFrequencyResults(Mockito.any(SearchParameters.class), Mockito.any(List.class))).thenReturn(null);
-        when(termFrequencyResultsDataManager.getAccumulatedResults(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
+        when(termFrequencyResultsDataManager.getAccumulatedResults(Mockito.any(QueryKey.class))).thenReturn(
+            termFrequencyResults);
+        when(termFrequencyResultsDataManager.getSearchHistory()).thenReturn(Collections.singletonList(queryKey));
+
         when(queryKeyRepository.findByCompoundKey(Mockito.any(QueryKey.class))).thenReturn(queryKey);
-        when(termFrequencyResultsRepository.findByQueryKey(Mockito.any(QueryKey.class))).thenReturn(termFrequencyResults);
+        when(termFrequencyResultsRepository.findByQueryKey(Mockito.any(QueryKey.class))).thenReturn(
+            termFrequencyResults);
 
         when(indeedClient.getIndeedJobDetails(Mockito.any(String.class))).thenReturn(jobDetailsString);
 
@@ -143,11 +154,11 @@ public class TermExtractorServiceTest {
         assertEquals(2, extractedTerms.size());
         TermFrequency firstTerm = extractedTerms.get(0);
         assertEquals("term one", firstTerm.getTerm());
-        assertEquals(4, firstTerm.getFrequency());
+        assertEquals(2, firstTerm.getFrequency());
 
         TermFrequency secondTerm = extractedTerms.get(1);
         assertEquals("term two", secondTerm.getTerm());
-        assertEquals(2, secondTerm.getFrequency());
+        assertEquals(4, secondTerm.getFrequency());
 
         /* This doesn't test anything because of the mocking 
          * 
@@ -170,6 +181,33 @@ public class TermExtractorServiceTest {
         assertEquals("term two", secondTerm.getTerm());
         assertEquals(2, secondTerm.getFrequency());
         */
+    }
+
+    @Test
+    public void getAccumulatedTermFrequencyResults() throws IOException {
+        // when(this.indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobSummaryList);
+
+        QueryKey key = new QueryKey("java", Locale.US, null);
+        TermFrequencyResults termFrequencyResults;
+        termFrequencyResults = serviceUnderTest.getAccumulatedTermFrequencyResults(key);
+        assertNotNull(termFrequencyResults);
+        assertNotNull(termFrequencyResults.getQueryKey());
+        assertEquals(queryKey, termFrequencyResults.getQueryKey());
+        assertNotNull(termFrequencyResults.getSearchParametersList());
+        assertEquals(1, termFrequencyResults.getSearchParametersList().size());
+
+        List<TermFrequency> termFrequencyList = termFrequencyResults.getSortedTermFrequencyList();
+        assertNotNull(termFrequencyList);
+        assertEquals(2, termFrequencyList.size());
+        assertEquals("term two", termFrequencyList.get(0).getTerm());
+    }
+
+    @Test
+    public void getSearchHistory() {
+        QueryKeyList queryKeyList = serviceUnderTest.getSearchHistory();
+        assertNotNull(queryKeyList);
+        assertEquals(1, queryKeyList.getQueryKeyList().size());
+        assertEquals(queryKey, queryKeyList.getQueryKeyList().get(0));
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-public class TermFrequencyResultsTest {
+public class TermFrequencyResultsUnitTest {
 
     @Test
     public void accumulate() {

@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-public class QueryKeyTest {
+public class QueryKeyUnitTest {
 
     @Test
     public void constructor() {
