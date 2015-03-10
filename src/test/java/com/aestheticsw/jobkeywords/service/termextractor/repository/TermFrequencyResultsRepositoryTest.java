@@ -24,8 +24,6 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
-// TODO rename to *IT
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @DatabaseTestConfiguration
 public class TermFrequencyResultsRepositoryTest {

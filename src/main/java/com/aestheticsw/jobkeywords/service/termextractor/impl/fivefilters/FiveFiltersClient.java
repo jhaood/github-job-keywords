@@ -92,6 +92,7 @@ public class FiveFiltersClient {
         content = removeBlacklistTerms(content);
 
         String[][] stringArray = executeFiveFiltersPost(content);
+        
         if (stringArray == null) {
             if (content.length() < 10000) {
                 testContentForInvalidCharacters(content);
@@ -104,6 +105,7 @@ public class FiveFiltersClient {
         }
         TermFrequencyList termFrequencyList = new TermFrequencyList(terms);
         TermFrequencyList sortedTermFrequencyList = termFrequencyList.sort(new TermFrequency.FrequencyComparator());
+        
         log.debug("\n  RegEx expression for NEW terms: " + sortedTermFrequencyList.createRegExpForNewTerms(blacklistRegEx));
 
         return sortedTermFrequencyList;
@@ -122,8 +124,10 @@ public class FiveFiltersClient {
         requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<MultiValueMap<String, String>> requestEntity =
             new HttpEntity<MultiValueMap<String, String>>(params, requestHeaders);
+        
         ResponseEntity<String[][]> stringArrayEntty =
             restTemplate.exchange(query, HttpMethod.POST, requestEntity, String[][].class);
+        
         String[][] stringArray = stringArrayEntty.getBody();
 
         return stringArray;

@@ -4,10 +4,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.sql.DataSource;
+import javax.transaction.Transactional;
+
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +34,6 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
-// TODO rename to *IT
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @DatabaseTestConfiguration
 public class TermFrequencyResultsDataManagerTest {
@@ -29,8 +41,22 @@ public class TermFrequencyResultsDataManagerTest {
     @Autowired
     private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
 
+    @Autowired
+    DataSource dataSource;
+
     @Before
     public void setup() {
+    }
+
+    @After
+    @Transactional
+    public void dumpDatabase() throws SQLException, DatabaseUnitException, FileNotFoundException, IOException {
+        // full database export
+        Connection jdbcConnection = dataSource.getConnection();
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+        IDataSet fullDataSet = connection.createDataSet();
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream(
+            "./target/TermFrequencyResultsDataManagerTest-dbunit.xml"));
     }
 
     @Test
@@ -94,7 +120,7 @@ public class TermFrequencyResultsDataManagerTest {
         }
         {
             // confirm that param2's results are separate from param1's results 
-            
+
             TermFrequencyResults results = termFrequencyResultsDataManager.getAccumulatedResults(param2.getQueryKey());
             assertNotNull(results);
 
@@ -109,4 +135,5 @@ public class TermFrequencyResultsDataManagerTest {
             assertEquals("java", sortedList.get(1).getTerm());
         }
     }
+
 }

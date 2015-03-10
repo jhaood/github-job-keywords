@@ -18,7 +18,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyRes
 import com.aestheticsw.jobkeywords.service.termextractor.impl.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.JobSummaryRepository;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
 
 /**
@@ -35,14 +35,17 @@ public class TermExtractorServiceImpl implements TermExtractorService {
 
     private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
 
+    private JobSummaryRepository jobSummaryRepository;
+
     private IndeedClient indeedClient;
 
     private FiveFiltersClient fiveFiltersClient;
 
     @Autowired
-    public TermExtractorServiceImpl(TermFrequencyResultsDataManager termFrequencyResultsDataManager, IndeedClient indeedClient,
-            FiveFiltersClient fiveFiltersClient) {
+    public TermExtractorServiceImpl(TermFrequencyResultsDataManager termFrequencyResultsDataManager,
+            JobSummaryRepository jobSummaryRepository, IndeedClient indeedClient, FiveFiltersClient fiveFiltersClient) {
         this.termFrequencyResultsDataManager = termFrequencyResultsDataManager;
+        this.jobSummaryRepository = jobSummaryRepository;
         this.indeedClient = indeedClient;
         this.fiveFiltersClient = fiveFiltersClient;
     }
@@ -53,16 +56,14 @@ public class TermExtractorServiceImpl implements TermExtractorService {
     @Override
     public TermFrequencyList extractTerms(SearchParameters params) throws IndeedQueryException {
 
-        JobListResponse jobListResponse = getIndeedClient().getIndeedJobList(params);
-
-        List<JobSummary> jobSummaries = jobListResponse.getResults().getResults();
+        List<JobSummary> jobSummaries = getIndeedClient().getIndeedJobSummaryList(params);
 
         log.info("Indeed returned jobCount=" + ((jobSummaries != null) ? jobSummaries.size() : "0 (no results)"));
         if (jobSummaries == null || jobSummaries.size() == 0) {
             throw new IndeedQueryException("Query returned no results: " + params);
         }
-        
-        // FIXME TODO persist the jobSummaries -> maybe the right place is inside the IndeedClient ? 
+
+        jobSummaryRepository.save(jobSummaries);
 
         StringBuilder combinedJobDetails = new StringBuilder();
         for (int index = 0; index < params.getJobCount() && index < jobSummaries.size(); index++) {
@@ -72,7 +73,9 @@ public class TermExtractorServiceImpl implements TermExtractorService {
             combinedJobDetails.append("\n ");
         }
 
-        TermFrequencyList terms = getFiveFiltersService().getTermFrequencyList(combinedJobDetails.toString(), params.getQueryKey().getLocale());
+        TermFrequencyList terms =
+            getFiveFiltersService().getTermFrequencyList(combinedJobDetails.toString(),
+                params.getQueryKey().getLocale());
 
         getTermFrequencyResultsDataManager().accumulateTermFrequencyResults(params, terms.getTerms());
 
@@ -93,6 +96,11 @@ public class TermExtractorServiceImpl implements TermExtractorService {
     @Override
     public QueryKeyList getSearchHistory() {
         return new QueryKeyList(getTermFrequencyResultsDataManager().getSearchHistory());
+    }
+
+    @Override
+    public List<JobSummary> getIndeedJobSummaryList(SearchParameters params) {
+        return indeedClient.getIndeedJobSummaryList(params);
     }
 
     private TermFrequencyResultsDataManager getTermFrequencyResultsDataManager() {

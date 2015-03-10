@@ -1,7 +1,8 @@
-package com.aestheticsw.jobkeywords.web.thymeleaf;
+package com.aestheticsw.jobkeywords.web.html;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKeyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
@@ -32,7 +34,6 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyLis
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
 
 /**
@@ -79,7 +80,7 @@ public class JobController {
      */
     // FIXME TODO replace the discrete attributes with the Thymeleaf SearchFormBean.
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
-    public String getIndeedJobList(Map<String, Object> model, @RequestParam(
+    public String getIndeedJobSummaryList(Map<String, Object> model, @RequestParam(
             required = false, defaultValue = "Java Spring") String query, @RequestParam(
             required = false, defaultValue = "2") int jobCount,
             @RequestParam(required = false, defaultValue = "0") int start, @RequestParam(
@@ -94,10 +95,10 @@ public class JobController {
         SearchParameters params =
             new SearchParameters(new QueryKey(query, locale, city), jobCount, start, radius, sort);
 
-        JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
-        model.put("joblist", jobListResponse);
+        List<JobSummary> jobSummaryList = indeedClient.getIndeedJobSummaryList(params);
+        model.put("joblist", jobSummaryList);
 
-        return "joblist";
+        return jobSummaryList.toString();
     }
 
     /**

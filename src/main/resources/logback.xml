@@ -9,10 +9,9 @@
 
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     
+   	<logger name="net.exacode.spring.logging" level="info" />
+    
     <logger name="org.springframework" level="info"/>
-
-    <logger name="org.springframework.web.servlet" level="info"/>
-    <logger name="org.springframework.web.servlet.DispatcherServlet" level="debug"/>
 
     <logger name="org.springframework.beans.factory" level="info"/>
     <logger name="org.springframework.beans.factory.config" level="debug"/>
@@ -25,7 +24,26 @@
     <!-- log all property value resolution attempts -->
     <logger name="org.springframework.core.env" level="info"/>
 
+    <logger name="org.springframework.boot" level="info"/>
+    <logger name="org.springframework.boot.autoconfiguration" level="debug"/>
+    <logger name="org.springframework.boot.context.config" level="debug"/>
+
+    <logger name="org.springframework.web.servlet" level="info"/>
+    <logger name="org.springframework.web.servlet.DispatcherServlet" level="debug"/>
+    <logger name="org.springframework.web.client.RestTemplate" level="debug"/>
+    <logger name="org.springframework.http.client.support" level="debug"/>
+
     <logger name="org.thymeleaf" level="info"/>
+
+    <logger name="org.hibernate" level="info"/>
+
+    <logger name="org.hibernate.SQL" level="debug"/>
+    <logger name="org.hibernate.internal.NamedQueryRepository" level="debug"/>
+    <logger name="org.hibernate.jpa.internal.util.LogHelper" level="debug"/>
+    <logger name="org.hibernate.loader.entity.plan.EntityLoader" level="debug"/>
+    <logger name="org.hibernate.persister.entity.AbstractEntityPersister" level="debug"/>
+    <logger name="org.hibernate.persister.build.spi.LoadPlanTreePrinter" level="debug"/>
+    <logger name="org.hibernate.hql.internal.ast.QueryTranslatorImpl" level="debug"/>
 
     <logger name="com.aestheticsw" level="debug"/>
     

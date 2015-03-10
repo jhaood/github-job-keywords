@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.web.thymeleaf;
+package com.aestheticsw.jobkeywords.web.html;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

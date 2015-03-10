@@ -2,8 +2,8 @@ package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aestheticsw.jobkeywords.config.ServiceTestConfiguration;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 
@@ -28,12 +29,11 @@ public class IndeedClientTest {
     }
 
     @Test
-    public void getIndeedJobList() {
+    public void getIndeedJobSummaryList() {
         QueryKey key = new QueryKey("java spring", Locale.US, null);
         SearchParameters params = new SearchParameters(key, 5, 0, 0, null);
-        JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
-        assertNotNull(jobListResponse);
-        assertTrue(jobListResponse.hasResults());
-        assertEquals(5, jobListResponse.getResults().getResults().size());
+        List<JobSummary> jobSummaryList = indeedClient.getIndeedJobSummaryList(params);
+        assertNotNull(jobSummaryList);
+        assertEquals(5, jobSummaryList.size());
     }
 }

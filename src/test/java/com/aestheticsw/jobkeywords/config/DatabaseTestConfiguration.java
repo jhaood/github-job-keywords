@@ -1,6 +1,7 @@
 package com.aestheticsw.jobkeywords.config;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -13,12 +14,14 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
 import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
+@Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ContextConfiguration(classes = { LogInjectorConfiguration.class, DatabaseConfiguration.class })
-@TestExecutionListeners({ TransactionalTestExecutionListener.class, DependencyInjectionTestExecutionListener.class,
-    DirtiesContextTestExecutionListener.class })
+@ContextConfiguration(classes = { DatabaseConfiguration.class, LogInjectorConfiguration.class })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+    DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class })
 public @interface DatabaseTestConfiguration {
 
 }

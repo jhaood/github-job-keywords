@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableAutoConfiguration
-// Can't pull in properties here because can't override with a subsequent method-level prop-file
+// Can't pull in properties HERE because can't override with a subsequent method-level prop-file
 // @PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.config",
     "com.aestheticsw.jobkeywords.service.termextractor.repository" })
@@ -41,17 +41,17 @@ public class DatabaseConfiguration {
      */
     @Profile("!mysql")
     @Configuration
-    @PropertySource({"classpath:application.properties"})
+    @PropertySource({ "classpath:application.properties" })
     public static class H2Profile {
     }
-    
+
     /**
      * Spring tests aren't loading profile-specific property files - DAMN IT. So force it to load
      * the correct ones.
      */
     @Profile("mysql")
     @Configuration
-    @PropertySource({"classpath:application.properties", "classpath:application-mysql.properties" })
+    @PropertySource({ "classpath:application.properties", "classpath:application-mysql.properties" })
     public static class MysqlProfile {
     }
 
@@ -68,8 +68,7 @@ public class DatabaseConfiguration {
     private String password;
 
     @Bean
-    // @ConfigurationProperties(prefix = "datasource.test", ignoreUnknownFields = true)
-    public DataSource primaryDataSource() {
+    public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.url(datasourceUrl);
         dataSourceBuilder.driverClassName(driverClassName);

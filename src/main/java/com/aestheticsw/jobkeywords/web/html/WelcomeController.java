@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.aestheticsw.jobkeywords.web.thymeleaf;
+package com.aestheticsw.jobkeywords.web.html;
 
 import java.util.Date;
 import java.util.Map;

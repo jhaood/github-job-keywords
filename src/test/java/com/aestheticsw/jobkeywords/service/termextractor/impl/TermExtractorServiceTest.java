@@ -27,8 +27,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyRes
 import com.aestheticsw.jobkeywords.service.termextractor.impl.fivefilters.FiveFiltersClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobList;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
+import com.aestheticsw.jobkeywords.service.termextractor.repository.JobSummaryRepository;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.QueryKeyRepository;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
@@ -42,6 +41,9 @@ public class TermExtractorServiceTest {
 
     @Mock
     private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
+    
+    @Mock 
+    private JobSummaryRepository jobSummaryRepository;
 
     @Mock
     private IndeedClient indeedClient;
@@ -55,7 +57,7 @@ public class TermExtractorServiceTest {
     @Mock
     private QueryKeyRepository queryKeyRepository;
 
-    private JobListResponse jobListResponse;
+    private List<JobSummary> jobSummaryList;
 
     private String jobDetailsString;
 
@@ -82,17 +84,14 @@ public class TermExtractorServiceTest {
         */
 
         serviceUnderTest =
-            Mockito.spy(new TermExtractorServiceImpl(termFrequencyResultsDataManager, indeedClient, fiveFiltersClient));
+            Mockito.spy(new TermExtractorServiceImpl(termFrequencyResultsDataManager, jobSummaryRepository, indeedClient, fiveFiltersClient));
 
         // manually set the logger because Spring doesn't instantiate the serviceUnderTest
         serviceUnderTest.log = LoggerFactory.getLogger(serviceUnderTest.getClass());
 
-        List<JobSummary> jobSummaries = new ArrayList<JobSummary>();
-        jobSummaries.add(new JobSummary("Senior Engineer", "Aesthetic Software, Inc", "San Francisco", "CA", null,
+        List<JobSummary> jobSummaryList = new ArrayList<JobSummary>();
+        jobSummaryList.add(new JobSummary("Senior Engineer", "Aesthetic Software, Inc", "San Francisco", "CA", null,
             null, "Back end development", null, null, false));
-        JobList jobList = new JobList(jobSummaries);
-
-        jobListResponse = new JobListResponse("San Francisco", false, false, 1, 0, 1, 0, jobList);
 
         jobDetailsString = FileUtils.getClassResourceAsString("indeed-content.html", this);
 
@@ -107,7 +106,7 @@ public class TermExtractorServiceTest {
         queryKey = new QueryKey("query", Locale.US, "city");
         termFrequencyResults = new TermFrequencyResults(queryKey);
 
-        when(indeedClient.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
+        when(indeedClient.getIndeedJobSummaryList(Mockito.any(SearchParameters.class))).thenReturn(jobSummaryList);
         when(fiveFiltersClient.executeFiveFiltersPost(Mockito.any(String.class))).thenReturn(termListStringArray);
         when(fiveFiltersClient.getTermFrequencyList(Mockito.any(String.class), Mockito.any(Locale.class))).thenReturn(termFrequencyList);
 
@@ -128,7 +127,7 @@ public class TermExtractorServiceTest {
 
     @Test
     public void extractTerms() throws IOException {
-        // when(this.indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobListResponse);
+        // when(this.indeedService.getIndeedJobList(Mockito.any(SearchParameters.class))).thenReturn(jobSummaryList);
 
         QueryKey key = new QueryKey("java", Locale.US, null);
         SearchParameters params1 = new SearchParameters(key, 1, 0, 0, null);

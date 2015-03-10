@@ -1,6 +1,7 @@
 package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 
 import java.io.IOException;
+import java.util.List;
 
 import net.exacode.spring.logging.inject.Log;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
+import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 
 /**
@@ -67,7 +69,7 @@ public class IndeedClient {
      * + "&useragent=Mozilla/%2F4.0%28Firefox%29&v=2";
      * </pre>
      */
-    public JobListResponse getIndeedJobList(SearchParameters params) {
+    public List<JobSummary> getIndeedJobSummaryList(SearchParameters params) {
         StringBuilder queryUrl = new StringBuilder();
         String query = params.getQueryKey().getQuery();
 
@@ -93,19 +95,19 @@ public class IndeedClient {
         // restTemplate.setInterceptors(Collections.singletonList(new XUserAgentInterceptor()));
 
         JobListResponse jobListResponse = restTemplate.getForObject(queryUrl.toString(), JobListResponse.class);
-        log.debug("Response: " + jobListResponse);
+        log.trace("Response: " + jobListResponse);
 
         if (jobListResponse.getTotalResults() == 0) {
             throw new IllegalArgumentException("Query retrieved no results from Indeed: " + queryUrl);
         }
 
-        return jobListResponse;
+        return jobListResponse.getResults().getResults();
     }
 
     /**
      * Return the job-details sub-section of the HTML that Indeed returns. This method takes a URL
      * that Indeed
-     * returns for each JobSummary returned by getIndeedJobList() above.
+     * returns for each JobSummary returned by getIndeedJobSummaryList() above.
      * 
      * 
      * This method is dependent upon the JSoup library which can consume malformed

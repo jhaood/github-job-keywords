@@ -1,6 +1,7 @@
 package com.aestheticsw.jobkeywords.web.rest;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import net.exacode.spring.logging.inject.Log;
@@ -13,13 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
-import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse;
 import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
 
 /**
@@ -35,15 +35,11 @@ public class JobRestController {
     @Log
     private Logger log;
 
-    // FIXME TODO - don't inject the indeedClient here... expose the Indeed response through the TermExtractor service. 
-    private IndeedClient indeedClient;
-
     private TermExtractorService termExtractorService;
 
     @Autowired
-    public JobRestController(IndeedClient indeedClient, TermExtractorService termExtractorService) {
+    public JobRestController(TermExtractorService termExtractorService) {
         super();
-        this.indeedClient = indeedClient;
         this.termExtractorService = termExtractorService;
     }
 
@@ -53,7 +49,7 @@ public class JobRestController {
     // produces = {MediaType.APPLICATION_JSON_VALUE,
     // produces = {MediaType.APPLICATION_XML_VALUE })
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
-    public JobListResponse getIndeedJobList(@RequestParam(required = false, defaultValue = "Java Spring") String query,
+    public List<JobSummary> getIndeedJobSummaryList(@RequestParam(required = false, defaultValue = "Java Spring") String query,
             @RequestParam(required = false, defaultValue = "2") int jobCount, @RequestParam(
                     required = false, defaultValue = "0") int start, @RequestParam(
                     required = false, defaultValue = "US") String country, @RequestParam(required = false) String city,
@@ -69,8 +65,8 @@ public class JobRestController {
         SearchParameters params =
             new SearchParameters(new QueryKey(query, locale, city), jobCount, start, radius, sort);
 
-        JobListResponse jobListResponse = indeedClient.getIndeedJobList(params);
-        return jobListResponse;
+        List<JobSummary> jobSummaryList = termExtractorService.getIndeedJobSummaryList(params);
+        return jobSummaryList;
     }
 
     // produces = {MediaType.APPLICATION_JSON_VALUE,
