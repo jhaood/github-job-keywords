@@ -154,6 +154,15 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 
 				<configuration>
+					<!-- This global configuration breaks all the tests... 
+					<parallel>suites</parallel>
+					<threadCountSuites>1</threadCountSuites>
+					<threadCountClasses>10</threadCountClasses>
+					<threadCountMethods>10</threadCountMethods>
+					<forkCount>3</forkCount>
+					<reuseForks>false</reuseForks>
+					 -->
+
 					<groups>com.aestheticsw.jobkeywords.config.UnitTestCategory,
 						com.aestheticsw.jobkeywords.config.ServiceTestCategory,
 						com.aestheticsw.jobkeywords.config.DatabaseTestCategory</groups>
@@ -202,12 +211,12 @@
 							<excludedGroups>com.aestheticsw.jobkeywords.config.UnitTestCategory,
 								com.aestheticsw.jobkeywords.config.DatabaseTestCategory</excludedGroups>
 							<skip>false</skip>
-							
+
 							<useSystemClassLoader>false</useSystemClassLoader>
 
 							<parallel>methods</parallel>
 							<threadCount>40</threadCount>
-					
+
 							<systemPropertyVariables>
 								<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
 								<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
@@ -227,12 +236,12 @@
 							<excludedGroups>com.aestheticsw.jobkeywords.config.UnitTestCategory,
 								com.aestheticsw.jobkeywords.config.ServiceTestCategory</excludedGroups>
 							<skip>false</skip>
-							
+
 							<useSystemClassLoader>false</useSystemClassLoader>
 
 							<parallel>methods</parallel>
 							<threadCount>40</threadCount>
-					
+
 							<systemPropertyVariables>
 								<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
 								<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>

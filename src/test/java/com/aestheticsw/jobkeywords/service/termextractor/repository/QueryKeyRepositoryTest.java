@@ -6,9 +6,12 @@ import java.util.Locale;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aestheticsw.jobkeywords.config.DatabaseTestCategory;
+import com.aestheticsw.jobkeywords.config.DatabaseTestConfiguration;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 
 // TODO add DbUnitTestExecutionListener.class
@@ -16,8 +19,10 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 //@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = { ...dataaset... })
 //@DirtiesContext
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@DatabaseTestConfiguration
 @Category(DatabaseTestCategory.class)
-public class QueryKeyRepositoryTest extends DatabaseTestCategory {
+public class QueryKeyRepositoryTest {
 
     @Autowired
     QueryKeyRepository queryKeyRepository;

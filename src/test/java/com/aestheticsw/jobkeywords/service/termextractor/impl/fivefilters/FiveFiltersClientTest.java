@@ -9,14 +9,19 @@ import java.util.Locale;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aestheticsw.jobkeywords.config.ServiceTestCategory;
+import com.aestheticsw.jobkeywords.config.ServiceTestConfiguration;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ServiceTestConfiguration
 @Category(ServiceTestCategory.class)
-public class FiveFiltersClientTest extends ServiceTestCategory {
+public class FiveFiltersClientTest {
 
     @Autowired
     private FiveFiltersClient fiveFiltersClient;
