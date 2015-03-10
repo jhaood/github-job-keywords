@@ -18,10 +18,10 @@ import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ContextConfiguration(classes = { LogInjectorConfiguration.class, ServiceConfiguration.class,
-    RestClientConfiguration.class, DatabaseConfiguration.class })
-@TestExecutionListeners({ TransactionalTestExecutionListener.class, DependencyInjectionTestExecutionListener.class,
-    DirtiesContextTestExecutionListener.class })
+@ContextConfiguration(classes = { ServiceConfiguration.class,
+    RestClientConfiguration.class, DatabaseConfiguration.class, LogInjectorConfiguration.class })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class })
 public @interface ServiceTestConfiguration {
 
 }

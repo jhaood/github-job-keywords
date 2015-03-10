@@ -4,11 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
-import com.aestheticsw.jobkeywords.config.UnitTestCategory;
-
-@Category(UnitTestCategory.class)
 public class SearchUtilsTest {
 
     @Test

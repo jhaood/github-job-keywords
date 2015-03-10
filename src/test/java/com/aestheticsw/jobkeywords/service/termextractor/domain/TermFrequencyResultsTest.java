@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
-import com.aestheticsw.jobkeywords.config.UnitTestCategory;
-
-@Category(UnitTestCategory.class)
 public class TermFrequencyResultsTest {
 
     @Test
