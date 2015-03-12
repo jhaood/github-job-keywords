@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.aestheticsw.jobkeywords.config.ServiceTestConfiguration;
+import com.aestheticsw.jobkeywords.config.ServiceTestBehavior;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ServiceTestConfiguration
+@ServiceTestBehavior
 @IntegrationTest
 public class IndeedClientTest {
 

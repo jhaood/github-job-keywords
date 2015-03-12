@@ -14,6 +14,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.QueryLookupStrategy;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -67,6 +69,11 @@ public class DatabaseConfiguration {
     @Value("${datasource.jobkeywords.password}")
     private String password;
 
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new JpaTransactionManager();
+    }
+    
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();

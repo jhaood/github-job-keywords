@@ -14,18 +14,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
-import com.aestheticsw.jobkeywords.config.DatabaseTestConfiguration;
+import com.aestheticsw.jobkeywords.config.DatabaseTestBehavior;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@DatabaseTestConfiguration
+@DatabaseTestBehavior
+@TransactionConfiguration(defaultRollback = false)
 public class TermFrequencyResultsRepositoryTest {
 
     @Autowired
@@ -33,6 +36,9 @@ public class TermFrequencyResultsRepositoryTest {
 
     @Autowired
     private SearchParametersRepository searchParametersRepository;
+
+    @Autowired
+    private QueryKeyRepository queryKeyRepository;
 
     @Autowired
     PlatformTransactionManager transactionManager;
@@ -91,9 +97,10 @@ public class TermFrequencyResultsRepositoryTest {
         status = transactionManager.getTransaction(null);
 
         {
-            SearchParameters param1_2 = new SearchParameters(key, 1, 2, 0, "");
+            QueryKey dbKey = queryKeyRepository.findByCompoundKey(key);
+            SearchParameters param1_2 = new SearchParameters(dbKey, 1, 2, 0, "");
 
-            TermFrequencyResults dbTfr1 = termFrequencyResultsRepository.findByQueryKey(param1.getQueryKey());
+            TermFrequencyResults dbTfr1 = termFrequencyResultsRepository.findByQueryKey(dbKey);
 
             dbTfr1.accumulateTermFrequencyList(param1_2, list1);
 
@@ -128,11 +135,6 @@ public class TermFrequencyResultsRepositoryTest {
         QueryKey key1 = new QueryKey("query-two", Locale.US, "");
         SearchParameters param1 = new SearchParameters(key1, 1, 1, 0, "");
 
-        SearchParameters param1_2 = new SearchParameters(key1, 1, 2, 0, "");
-
-        QueryKey key3 = new QueryKey("query-three", Locale.US, "");
-        SearchParameters param2 = new SearchParameters(key3, 1, 1, 0, "");
-
         TermFrequency tf1 = new TermFrequency(new String[] { "java", "3", "1" });
         TermFrequency tf2 = new TermFrequency(new String[] { "spring", "2", "1" });
         List<TermFrequency> list1 = new ArrayList<>();
@@ -141,20 +143,17 @@ public class TermFrequencyResultsRepositoryTest {
 
         TransactionStatus status = transactionManager.getTransaction(null);
         {
-            // SearchParameters dbParam1 = searchParametersRepository.save(param1);
-            // QueryKey dbKey1 = dbParam1.getQueryKey();
-
             TermFrequencyResults tfr = new TermFrequencyResults(key1);
             tfr.accumulateTermFrequencyList(param1, list1);
             termFrequencyResultsRepository.save(tfr);
         }
-        transactionManager.rollback(status);
+        transactionManager.commit(status);
         status = transactionManager.getTransaction(null);
         {
-            // SearchParameters dbParam1_2 = searchParametersRepository.save(param1_2);
-            // QueryKey dbKey1_2 = dbParam1_2.getQueryKey();
+            QueryKey dbKey1 = queryKeyRepository.findByCompoundKey(key1);
+            SearchParameters param1_2 = new SearchParameters(dbKey1, 1, 2, 0, "");
 
-            TermFrequencyResults tfr = termFrequencyResultsRepository.findByQueryKey(param1_2.getQueryKey());
+            TermFrequencyResults tfr = termFrequencyResultsRepository.findByQueryKey(dbKey1);
             assertNotNull(tfr);
             tfr.accumulateTermFrequencyList(param1_2, list1);
             termFrequencyResultsRepository.save(tfr);
@@ -162,8 +161,8 @@ public class TermFrequencyResultsRepositoryTest {
         transactionManager.commit(status);
         status = transactionManager.getTransaction(null);
         {
-            // SearchParameters dbParam2 = searchParametersRepository.save(param2);
-            // QueryKey dbKey2 = dbParam2.getQueryKey();
+            QueryKey key2 = new QueryKey("query-three", Locale.US, "");
+            SearchParameters param2 = new SearchParameters(key2, 1, 1, 0, "");
 
             TermFrequencyResults tfr = new TermFrequencyResults(param2.getQueryKey());
             tfr.accumulateTermFrequencyList(param2, list1);
@@ -171,7 +170,10 @@ public class TermFrequencyResultsRepositoryTest {
         }
     }
 
+    // expected exception handling doesn't work correctly if @Transaction method will commit. BUG in Spring. 
     @Test(expected = DataIntegrityViolationException.class)
+    // This is required to avoid a RollbackException 
+    @Rollback(true)
     @Transactional
     public void distinctQueryKeyException() {
         QueryKey key1 = new QueryKey("query-four", Locale.US, "");
@@ -190,9 +192,6 @@ public class TermFrequencyResultsRepositoryTest {
 
         TransactionStatus status = transactionManager.getTransaction(null);
         {
-            // SearchParameters dbParam1 = searchParametersRepository.save(param1);
-            // QueryKey dbKey1 = dbParam1.getQueryKey();
-
             TermFrequencyResults tfr = new TermFrequencyResults(key1);
             tfr.accumulateTermFrequencyList(param1, list1);
             termFrequencyResultsRepository.save(tfr);

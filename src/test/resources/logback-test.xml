@@ -21,7 +21,7 @@
 
     <!-- log the property-file filenames -->
     <logger name="org.springframework.core.env.StandardEnvironment" level="debug"/>
-    <!-- log all property value resolution attempts -->
+    <!-- log all property value resolution attempts from every properties file -->
     <logger name="org.springframework.core.env" level="info"/>
 
     <logger name="org.springframework.boot" level="info"/>

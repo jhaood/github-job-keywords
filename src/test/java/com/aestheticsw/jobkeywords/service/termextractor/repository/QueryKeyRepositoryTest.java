@@ -25,23 +25,32 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestExecutionListeners.MergeMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.aestheticsw.jobkeywords.config.DatabaseTestConfiguration;
+import com.aestheticsw.jobkeywords.config.DatabaseTestBehavior;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
 // @DatabaseSetup(...dataset...)
 // @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = { ...dataaset... })
 // @DirtiesContext
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@DatabaseTestConfiguration
+@DatabaseTestBehavior
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
+    DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
+    DbUnitTestExecutionListener.class }, mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
 public class QueryKeyRepositoryTest {
 
     @Autowired
     QueryKeyRepository queryKeyRepository;
-    
-    @Autowired 
+
+    @Autowired
     DataSource dataSource;
 
     @After
@@ -61,7 +70,7 @@ public class QueryKeyRepositoryTest {
 
     @Test
     public void persist() {
-        QueryKey key = new QueryKey("query-eights", Locale.US, "city");
+        QueryKey key = new QueryKey("query-eight", Locale.US, "city");
         QueryKey dbKey = queryKeyRepository.save(key);
         assertNotNull(dbKey);
         assertNotNull(dbKey.getId());

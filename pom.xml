@@ -27,10 +27,6 @@
 		<dbunit.version>2.5.0</dbunit.version>
 		<spring-test-dbunit.version>1.2.1</spring-test-dbunit.version>
 		<m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
-
-		<!-- 
-		<spring-profiles-active>test</spring-profiles-active>
-		-->
 	</properties>
 
 	<profiles>
@@ -157,15 +153,28 @@
 					<!-- spring examples turn off the system loader to avoid wacky classpath and loading problems -->
 					<useSystemClassLoader>false</useSystemClassLoader>
 
-					<!--  run tests in parallel on the method-level -->
+					<!--  run tests in parallel -->
+					<!--  TODO "parallel = all" deadlocks... fix this later
+						parallel = all, threadCount = 16, threadCountSuites = 2, threadCountClasses = 3, threadCountMethods = 5
+					And... parallel = methods causes Spring @Autowired to fail intermittently. Surefire is crap.  
 					<parallel>methods</parallel>
 					<threadCount>40</threadCount>
+					-->
 					
 					<!-- Can't override the default value of spring.profiles.active in application.properties from the command line -->
 					<systemPropertyVariables>
 						<spring.profiles.active>${spring-profiles-active}</spring.profiles.active>
 						<spring.jpa.hibernate.ddl-auto>${spring-jpa-hibernate-ddl-auto}</spring.jpa.hibernate.ddl-auto>
 					</systemPropertyVariables>
+
+					<!-- 
+					<configuration>
+						<includes>
+							<include>src/test/java/com/aestheticsw/jobkeywords/service/termextractor/repository/*Test.java</include>
+						</includes>
+					</configuration>
+					 -->
+
 				</configuration>
 			</plugin>
 
