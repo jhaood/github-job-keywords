@@ -1,5 +1,6 @@
 package com.aestheticsw.jobkeywords.service.termextractor.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,7 +32,10 @@ public class JobSummary {
     private String state;
     private String source;
     private String date;
+    @Column(name = "snippet", length = 500)
     private String snippet;
+    // Indeed URLs are huge... 
+    @Column(name = "url", length = 500)
     private String url;
     private String jobkey;
     private Boolean sponsored;

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+	<changeSet author="jhaood" id="1426527623271-1" context="schema">
+		<createTable tableName="job_summary">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="city" type="VARCHAR(255)" />
+			<column name="company" type="VARCHAR(255)" />
+			<column name="date" type="VARCHAR(255)" />
+			<column name="job_title" type="VARCHAR(255)" />
+			<column name="jobkey" type="VARCHAR(255)" />
+			<column name="snippet" type="VARCHAR(500)" />
+			<column name="source" type="VARCHAR(255)" />
+			<column name="sponsored" type="BIT(1)" />
+			<column name="state" type="VARCHAR(255)" />
+			<column name="url" type="VARCHAR(500)" />
+			<column name="version" type="INT">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-2" context="schema">
+		<createTable tableName="query_key">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="city" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="locale" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="query" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="INT">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-3" context="schema">
+		<createTable tableName="search_parameters">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="job_count" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="radius" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="sort" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="start" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="query_key_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="term_frequency_results_id" type="BIGINT" />
+		</createTable>
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-4" context="schema">
+		<createTable tableName="term_frequency">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="frequency" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="term" type="VARCHAR(255)" />
+			<column name="term_frequency_results_id" type="BIGINT" />
+			<column name="version" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="word_count" type="INT">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-5" context="schema">
+		<createTable tableName="term_frequency_results">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="version" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="query_key_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-6" context="schema">
+		<addUniqueConstraint columnNames="query_key_id" constraintName="UK_term_frequency_results_query_key_id"
+			deferrable="false" disabled="false" initiallyDeferred="false" tableName="term_frequency_results" />
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-7" context="schema">
+		<addUniqueConstraint columnNames="query_key_id, job_count, start, radius, sort" constraintName="UK_search_parameters_query_key_id"
+			deferrable="false" disabled="false" initiallyDeferred="false" tableName="search_parameters" />
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-8" context="schema">
+		<addUniqueConstraint columnNames="query, locale, city" constraintName="UK_query_key_query_locale_city"
+			deferrable="false" disabled="false" initiallyDeferred="false" tableName="query_key" />
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-9" context="schema">
+		<addForeignKeyConstraint baseColumnNames="query_key_id" baseTableName="term_frequency_results"
+			constraintName="FK_term_frequency_results_query_key_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="query_key" />
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-10" context="schema">
+		<addForeignKeyConstraint baseColumnNames="term_frequency_results_id" baseTableName="term_frequency"
+			constraintName="FK_term_frequency_term_frequency_results_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="term_frequency_results" />
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-11" context="schema">
+		<addForeignKeyConstraint baseColumnNames="term_frequency_results_id" baseTableName="search_parameters"
+			constraintName="FK_search_parameters_term_frequency_results_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="term_frequency_results" />
+	</changeSet>
+	<changeSet author="jhaood" id="1426527623271-12" context="schema">
+		<addForeignKeyConstraint baseColumnNames="query_key_id" baseTableName="search_parameters"
+			constraintName="FK_search_parameters_query_key_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="query_key" />
+	</changeSet>
+</databaseChangeLog>

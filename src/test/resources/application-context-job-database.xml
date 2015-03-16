@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:repository="http://www.springframework.org/schema/data/repository" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository.xsd
+		">
+
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:application-mysql.properties</value>
+			</list>
+		</property>
+		<!--  TODO does the "ignore" flag have to tue ? -->
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${datasource.jobkeywords.driverClassName}" />
+		<property name="url" value="${datasource.jobkeywords.url}" />
+		<property name="username" value="${datasource.jobkeywords.username}" />
+		<property name="password" value="${datasource.jobkeywords.password}" />
+	</bean>
+
+	<!-- 
+	<jpa:repositories base-package="com.aestheticsw.jobkeywords.service.termextractor.repository"
+		entity-manager-factory-ref="entityManagerFactory">
+	</jpa:repositories>
+	-->
+
+</beans>

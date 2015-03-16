@@ -1,0 +1,180 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY INFORMATION. Copyright Sunrun, Inc. 2013. All Rights Reserved. This
+ * file may not be viewed, copied, modified or distributed in whole or in part without the prior
+ * written permission of Sunrun, Inc.
+ */
+
+package com.aestheticsw.jobkeywords.utils;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.sql.SQLException;
+
+import javax.annotation.sql.DataSourceDefinition;
+import javax.xml.parsers.ParserConfigurationException;
+
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseConnection;
+import liquibase.database.OfflineConnection;
+import liquibase.diff.DiffGeneratorFactory;
+import liquibase.diff.DiffResult;
+import liquibase.diff.compare.CompareControl;
+import liquibase.diff.output.DiffOutputControl;
+import liquibase.diff.output.changelog.DiffToChangeLog;
+import liquibase.exception.DatabaseException;
+import liquibase.exception.LiquibaseException;
+import liquibase.integration.commandline.CommandLineUtils;
+import liquibase.resource.ClassLoaderResourceAccessor;
+import liquibase.serializer.core.xml.XMLChangeLogSerializer;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+
+/**
+ * LiquibaseChangeSetHelper runs as part of the test suite. This class generates a a few files: (see
+ * method javadoc below for more info)
+ * <ol>
+ * <li>target/liquibase/fullDataSet.sql</li>
+ * <li>target/liquibase/hibernateSchemaDifferences.xml</li>
+ * <li>(disabled by default because it requires MySQL) target/sql.log</li>
+ * </ol>
+ *
+ * The SQL files have to be hand edited to remove mid-statement newlines. The following VI commands
+ * will join the appropriate lines:
+ * 
+ * <pre>
+ *     %s/, \n/,/g
+ *     %s/\n;/;/g
+ *     %s/ \n/;/g
+ *     %s/ \n/ /g
+ * </pre>
+ * 
+ * NOTE the liquibase-generated date, based on Java settings, is different than the SQL format used
+ * by both DB
+ *
+ * %s/(\d\d)\/(\d\d)\/(\d\d\d\d)\s(\d\d:\d\d:\d\d)\.\d\d\d/$3-$1-$2 $4/g
+ */
+public class LiquibaseChangeSetHelper {
+    private DataSourceDefinition hbmDataSource = JpaRule.H2.memory;
+
+    private DataSourceDefinition liquibaseDataSource = new RemoveHbm2Ddl(new EmbeddedH2("liquibaseDB"));
+
+    private File liquibaseDir = new File("target/liquibase");
+
+    @Rule
+    public JpaRule hbmDbJpaRule = new JpaRule(hbmDataSource, "test-market-pu");
+
+    @Rule
+    public JpaRule liquibaseDbJpaRule = new JpaRule(liquibaseDataSource, "liquibase-market-pu");
+
+    @Rule
+    public JpaRule mySqlJpaRule = new JpaRule(MySqlDefinitions.marketMySqlClient, "test-market-pu");
+
+    @Before
+    public void createLiquibaseDir() {
+        if (liquibaseDir.isDirectory() || liquibaseDir.mkdirs()) {
+            return;
+        }
+        throw new IllegalStateException("Can't create directory " + liquibaseDir.getAbsolutePath());
+    }
+
+    /**
+     * validates that the xml-base changeset are valid for MySQL and dump it to
+     * target/liquibase/fullMySqlDataSet.sql
+     */
+    @Test
+    public void runAllLiquibaseChangesetsAgainstMySqlOffline() throws LiquibaseException, IOException {
+        // Look-out, magic constant here!
+        DatabaseConnection conn =
+            new OfflineConnection("offline:mysql?version=5.5&changeLogFile="
+                + new File(liquibaseDir, "databasechangelog.csv"));
+        Liquibase liquibase = new Liquibase("liquibase/changelog.xml", new ClassLoaderResourceAccessor(), conn);
+        try (OutputStreamWriter output = new FileWriter(new File(liquibaseDir, "fullMySqlDataSet.sql"))) {
+            liquibase.update("", output);
+        }
+    }
+
+    @Test
+    public void recordSchemaDifferencesBetweenJavaAndLiquibase() throws SQLException, LiquibaseException, IOException,
+            ParserConfigurationException {
+        Database referenceConnection = createDatabase(liquibaseDataSource);
+        Database comparisonConnection = createDatabase(JpaRule.H2.memory);
+
+        new Liquibase("liquibase/changelog.xml", new ClassLoaderResourceAccessor(), referenceConnection).update("seed");
+
+        DiffResult result =
+            DiffGeneratorFactory.getInstance().compare(comparisonConnection, referenceConnection, new CompareControl());
+
+        // it would be good if we were able to Assert that there are no change. This isn't possible yet, however,
+        // because hibernate generates new names for all constraints.
+
+        DiffToChangeLog changeLog = new DiffToChangeLog(result, new DiffOutputControl(false, false, false));
+
+        changeLog.print(new File(liquibaseDir, "jpaMarketSchemaDifferences.xml").getAbsolutePath(),
+            new XMLChangeLogSerializer());
+        //noinspection UseOfSystemOutOrSystemErr
+        changeLog.print(System.out);
+    }
+
+    /**
+     * This method creates target/liquibase/fullDataSet.xml which contains the SQL generated by
+     * liquibase as it reads every single liquibase XML & SQL file.
+     */
+    // disabling this because we never use the full dataset any more
+    @Ignore
+    @Test
+    public void recordFullDataSet() throws SQLException, LiquibaseException, IOException, ParserConfigurationException {
+        Database liquibaseConnection = createDatabase(liquibaseDataSource);
+
+        try (OutputStreamWriter output = new FileWriter(new File(liquibaseDir, "fullDataSet.sql"))) {
+            new Liquibase("liquibase/changelog.xml", new ClassLoaderResourceAccessor(), liquibaseConnection).update("",
+                output);
+        }
+    }
+
+    /**
+     * This method creates target/log.sql which contains only the SQL for the TestDataHelper methods
+     * called below
+     */
+    // Only enable this method (or run it from IDEA) if you have MySQL running locally.
+    @Ignore
+    @Test
+    public void logMySqlForNewData() throws LiquibaseException, SQLException {
+        LiquibaseSetup.liquibaseUpdate(mySqlJpaRule, "seed");
+
+        // add calls to TestDataHelper to create new data and schema changes that are not yet in the liquibase XML or SQL files.
+        // Be sure to use the JpaRule 'mySqlLoggingJpaRule' that's defined above
+        // for example:
+        // new TestDataHelper(mySqlLoggingJpaRule).createVariablesForBb816();
+    }
+
+    /**
+     * This method updates the local MySql instance
+     *
+     * @throws LiquibaseException
+     */
+    @Ignore
+    @Test
+    public void updateMySql() throws LiquibaseException {
+        Database liquibaseConnection = createDatabase(MySqlDefinitions.marketMySqlClient);
+
+        Liquibase liquibase =
+            new Liquibase("liquibase/changelog.xml", new ClassLoaderResourceAccessor(), liquibaseConnection);
+        liquibase.dropAll();
+        liquibase.update("seed");
+    }
+
+    static Database createDatabase(DataSourceDefinition dataSourceDefinition) throws DatabaseException {
+        return CommandLineUtils.createDatabaseObject(LiquibaseChangeSetHelper.class.getClassLoader(),
+            dataSourceDefinition.getPersistenceProperties().get(DataSourceDefinition.JAVAX_PERSISTENCE_JDBC_URL),
+            dataSourceDefinition.getPersistenceProperties().get(DataSourceDefinition.JAVAX_PERSISTENCE_JDBC_USER),
+            dataSourceDefinition.getPersistenceProperties().get(DataSourceDefinition.JAVAX_PERSISTENCE_JDBC_PASSWORD),
+            dataSourceDefinition.getPersistenceProperties().get(DataSourceDefinition.JAVAX_PERSISTENCE_JDBC_DRIVER),
+            "", "", false, false, null, null, null, null);
+    }
+}

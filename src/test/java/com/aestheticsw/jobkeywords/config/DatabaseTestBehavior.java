@@ -16,14 +16,15 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.aestheticsw.jobkeywords.service.termextractor.config.DatabaseConfiguration;
+import com.aestheticsw.jobkeywords.service.termextractor.config.RepositoryConfiguration;
 import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
 
 @Inherited
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ContextConfiguration(classes = { DatabaseConfiguration.class, DatabaseTestConfiguration.class,
-    LogInjectorConfiguration.class })
+@ContextConfiguration(classes = { DatabaseConfiguration.class, RepositoryConfiguration.class,
+    DatabaseTestConfiguration.class, LogInjectorConfiguration.class })
 @TransactionConfiguration(defaultRollback = true, transactionManager = "transactionManager")
 @TestExecutionListeners(
         listeners = { DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
