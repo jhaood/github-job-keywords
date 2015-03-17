@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.utils;
+package com.aestheticsw.jobkeywords.liquibase;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Liquibase support for the job-keywords mysql database.
  * 
  * <pre>
- * Liquibase runs either from maven or from LiquibaseRunner as a unit-test. 
+ * Liquibase runs either from maven or from LiquibaseUpdateRunner as a unit-test. 
  * Dev builds should be fast - hbm2ddl recreates the DEV database every time
- * Release preparation requires LiquibaseRunner to generate differences, then upgrade live DB.    
+ * Release preparation requires LiquibaseUpdateRunner to generate differences, then upgrade live DB.    
  * Prod maven build runs hbm2ddl validation against the live DB - this will fail unless liquibase updates the schema
  * Prod runtime runs hbm2ddl validate against the live DB. But no liquibase. 
  * Prod runtime JVM parameter required to run liquibase and upgrade live db

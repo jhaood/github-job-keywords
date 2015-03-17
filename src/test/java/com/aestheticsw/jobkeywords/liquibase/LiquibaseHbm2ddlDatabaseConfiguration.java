@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.config;
+package com.aestheticsw.jobkeywords.liquibase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Configuration
-@PropertySource({ "classpath:application-hbm2ddl.properties" })
-@ImportResource({ "classpath:application-context-hbm2ddl-database.xml" })
+@PropertySource({ "classpath:liquibase/application-hbm2ddl.properties" })
+@ImportResource({ "classpath:liquibase/application-context-hbm2ddl-database.xml" })
 @EntityScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.domain" })
 public class LiquibaseHbm2ddlDatabaseConfiguration {
 

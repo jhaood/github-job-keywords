@@ -1,21 +1,23 @@
 package com.aestheticsw.jobkeywords.service.termextractor.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder.Builder;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.query.QueryLookupStrategy;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * JPA repository and database configuration.
@@ -23,10 +25,17 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Configuration
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {LiquibaseAutoConfiguration.class})
 // Can't pull in properties HERE because can't override with a subsequent method-level prop-file
 // @PropertySource("classpath:application.properties")
+@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.config",
+    "com.aestheticsw.jobkeywords.service.termextractor.repository" })
 @EntityScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.domain" })
+@EnableJpaRepositories(
+        value = "com.aestheticsw.jobkeywords.service.termextractor.repository",
+        queryLookupStrategy = QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND)
+@EnableJpaAuditing
+@EnableTransactionManagement
 public class DatabaseConfiguration {
 
     /**
@@ -61,13 +70,11 @@ public class DatabaseConfiguration {
     @Value("${datasource.jobkeywords.password}")
     private String password;
 
-    /*
     @Bean
     public PlatformTransactionManager transactionManager() {
         return new JpaTransactionManager();
     }
-    */
-
+    
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
@@ -80,33 +87,10 @@ public class DatabaseConfiguration {
     }
 
     /*
-     * hibernate.hbm2ddl.auto=create-drop
-     * hibernate.transaction.jta.platform=org.hibernate.engine.transaction
-     * .jta.platform.internal.NoJtaPlatform@3d40a3b4
-     * hibernate.ejb.naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
-     */
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder entityBuilder) {
-        // .persistenceUnit("default").build();
-        Map<String, String> jpaProperties = new HashMap<>();
-        jpaProperties.put("hibernate.hbm2ddl.auto", "none");
-        jpaProperties.put("hibernate.ejb.naming_strategy",
-            "org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy");
-        Builder builder = entityBuilder.dataSource(dataSource());
-        builder.jta(false);
-        builder = builder.packages("com.aestheticsw.jobkeywords.service.termextractor.domain");
-        builder = builder.properties(jpaProperties);
-        LocalContainerEntityManagerFactoryBean factoryBean = builder.build();
-        return factoryBean;
-    }
-
-
-    /*
      * EmbeddedDatabaseBuilder doesn't work ... 
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
     }
     */
-
 }

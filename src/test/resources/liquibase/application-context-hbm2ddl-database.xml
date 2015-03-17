@@ -9,23 +9,23 @@
 	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:application-mysql.properties</value>
+				<value>classpath:liquibase/application-hbm2ddl.properties</value>
 			</list>
 		</property>
-		<!--  TODO does the "ignore" flag have to tue ? -->
+		<!--  TODO is this "ignore" flag needed ? -->
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
 
-	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${datasource.jobkeywords.driverClassName}" />
-		<property name="url" value="${datasource.jobkeywords.url}" />
-		<property name="username" value="${datasource.jobkeywords.username}" />
-		<property name="password" value="${datasource.jobkeywords.password}" />
+	<bean name="hbm2ddlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${datasource.hbm2ddl.driverClassName}" />
+		<property name="url" value="${datasource.hbm2ddl.url}" />
+		<property name="username" value="${datasource.hbm2ddl.username}" />
+		<property name="password" value="${datasource.hbm2ddl.password}" />
 	</bean>
 
 	<!-- 
 	<jpa:repositories base-package="com.aestheticsw.jobkeywords.service.termextractor.repository"
-		entity-manager-factory-ref="entityManagerFactory">
+		entity-manager-factory-ref="liquibaseEntityManagerFactory" transaction-manager-ref="transactionManager">
 	</jpa:repositories>
 	-->
 

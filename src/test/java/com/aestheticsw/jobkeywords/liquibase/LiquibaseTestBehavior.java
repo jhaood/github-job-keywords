@@ -1,4 +1,4 @@
-package com.aestheticsw.jobkeywords.config;
+package com.aestheticsw.jobkeywords.liquibase;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -20,7 +20,6 @@ import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-// TODO ??? HibernateJpaAutoConfiguration.class 
 @ContextConfiguration(classes = { LiquibaseJobDatabaseConfiguration.class, HibernateJpaAutoConfiguration.class,
     LiquibaseHbm2ddlDatabaseConfiguration.class, LogInjectorConfiguration.class })
 // @TransactionConfiguration(defaultRollback = true, transactionManager = "transactionManager")

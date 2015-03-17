@@ -13,7 +13,7 @@
 
     <logger name="org.springframework" level="info"/>
 
-    <logger name="org.springframework.beans.factory" level="debug"/>
+    <logger name="org.springframework.beans.factory" level="info"/>
     <logger name="org.springframework.beans.factory.config" level="debug"/>
     
     <logger name="org.springframework.boot" level="info"/>
@@ -22,13 +22,13 @@
     <!-- log the property-file filenames -->
     <logger name="org.springframework.core.env.StandardEnvironment" level="debug"/>
     <!-- log all property value resolution attempts from every properties file -->
-    <logger name="org.springframework.core.env" level="debug"/>
+    <logger name="org.springframework.core.env" level="info"/>
 
     <logger name="org.springframework.boot" level="info"/>
     <logger name="org.springframework.boot.autoconfiguration" level="debug"/>
     <logger name="org.springframework.boot.context.config" level="debug"/>
 
-    <logger name="org.springframework.jdbc" level="debug"/>
+    <logger name="org.springframework.jdbc" level="info"/>
     <logger name="org.springframework.jdbc.datasource" level="debug"/>
 
     <logger name="org.springframework.web.servlet" level="info"/>
