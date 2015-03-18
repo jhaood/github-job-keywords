@@ -31,6 +31,7 @@ import org.springframework.test.context.TestExecutionListeners.MergeMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.aestheticsw.jobkeywords.config.DatabaseTestBehavior;
@@ -46,10 +47,18 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
         listeners = { DirtiesContextTestExecutionListener.class, DbUnitTestExecutionListener.class,
             TransactionalTestExecutionListener.class, DependencyInjectionTestExecutionListener.class },
         mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
+// TODO didn't help run test with repositories that start transactions:
+@TransactionConfiguration(defaultRollback = false, transactionManager = "transactionManager")
 public class TermFrequencyResultsDataManagerTest {
 
     @Autowired
     private TermFrequencyResultsDataManager termFrequencyResultsDataManager;
+
+    @Autowired
+    private TermFrequencyResultsRepository termFrequencyResultsRepository;
+
+    @Autowired
+    private QueryKeyRepository queryKeyRepository;
 
     @Autowired
     DataSource dataSource;
@@ -77,6 +86,19 @@ public class TermFrequencyResultsDataManagerTest {
     @Test
     public void accumulateTermFrequencyResults() {
         QueryKey key1 = new QueryKey("query-six", Locale.US, "");
+        QueryKey dbKey1 = queryKeyRepository.findByCompoundKey(key1);
+
+        // delete any pre-existing TermFrequencyResult objects because this test leaves data in the MYSQL DB. 
+        if (dbKey1 != null && termFrequencyResultsRepository.findByQueryKey(dbKey1) != null) {
+            termFrequencyResultsRepository.deleteByQueryKey(dbKey1);
+        }
+        QueryKey key2 = new QueryKey("query-seven", Locale.US, "");
+        QueryKey dbKey2 = queryKeyRepository.findByCompoundKey(key2);
+
+        if (dbKey2 != null && termFrequencyResultsRepository.findByQueryKey(dbKey2) != null) {
+            termFrequencyResultsRepository.deleteByQueryKey(dbKey2);
+        }
+
         SearchParameters param1 = new SearchParameters(key1, 1, 1, 0, "");
 
         {
@@ -92,10 +114,8 @@ public class TermFrequencyResultsDataManagerTest {
             termFrequencyResultsDataManager.accumulateTermFrequencyResults(param1_2, list1);
         }
 
-        QueryKey key3 = new QueryKey("query-seven", Locale.US, "");
-        SearchParameters param2 = new SearchParameters(key3, 1, 1, 0, "");
+        SearchParameters param2 = new SearchParameters(key2, 1, 1, 0, "");
         {
-
             // confirm that adding an empty results-list ignores the params and list.
             termFrequencyResultsDataManager.accumulateTermFrequencyResults(param2, new ArrayList<>());
 

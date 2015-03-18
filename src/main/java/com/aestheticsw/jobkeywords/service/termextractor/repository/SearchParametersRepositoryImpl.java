@@ -17,13 +17,12 @@ public class SearchParametersRepositoryImpl implements SearchParametersRepositor
     // TODO convert to compound primary key for SearchParameters
     public SearchParameters findByCompoundKey(SearchParameters searchParameters) {
         QueryKey key = searchParameters.getQueryKey();
-        
-        // TODO convert to JOIN - but not necessary.. 
+
         TypedQuery<SearchParameters> query =
             entityManager
                 .createQuery(
-                    "select param from SearchParameters param, QueryKey key where key.query = ?0 and key.locale = ?1 and key.city = ?2 "
-                    + " and param.jobCount = ?3 and param.start = ?4 and param.radius = ?5 and param.sort = ?6 ",
+                    "select param from SearchParameters param, QueryKey key where param.queryKey = key and key.query = ?0 and key.locale = ?1 and key.city = ?2 "
+                        + " and param.jobCount = ?3 and param.start = ?4 and param.radius = ?5 and param.sort = ?6 ",
                     SearchParameters.class);
         query.setParameter(0, key.getQuery());
         query.setParameter(1, key.getLocale());
@@ -32,7 +31,7 @@ public class SearchParametersRepositoryImpl implements SearchParametersRepositor
         query.setParameter(4, searchParameters.getStart());
         query.setParameter(5, searchParameters.getRadius());
         query.setParameter(6, searchParameters.getSort());
-        
+
         // Avoid the EmptyResultDataAccessException by pulling a list and using only the single element
         List<SearchParameters> results = query.getResultList();
         if (results.size() > 1) {

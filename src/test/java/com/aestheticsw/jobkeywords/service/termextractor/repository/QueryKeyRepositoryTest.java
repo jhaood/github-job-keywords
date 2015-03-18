@@ -70,10 +70,18 @@ public class QueryKeyRepositoryTest {
 
     @Test
     public void persist() {
+        QueryKey dbKey;
         QueryKey key = new QueryKey("query-eight", Locale.US, "city");
-        QueryKey dbKey = queryKeyRepository.save(key);
-        assertNotNull(dbKey);
-        assertNotNull(dbKey.getId());
+        {
+            QueryKey retrievedKey = queryKeyRepository.findByCompoundKey(key);
+            if (retrievedKey == null) {
+                dbKey = queryKeyRepository.save(key);
+                assertNotNull(dbKey);
+                assertNotNull(dbKey.getId());
+            } else {
+                dbKey = retrievedKey;
+            }
+        }
 
         {
             QueryKey retrievedKey = queryKeyRepository.findOne(dbKey.getId());
@@ -95,10 +103,18 @@ public class QueryKeyRepositoryTest {
 
     @Test
     public void findByCompoundKey() {
+        QueryKey dbKey;
         QueryKey key = new QueryKey("query-nine", Locale.US, "city");
-        QueryKey dbKey = queryKeyRepository.save(key);
-        assertNotNull(dbKey);
-        assertNotNull(dbKey.getId());
+        {
+            QueryKey retrievedKey = queryKeyRepository.findByCompoundKey(key);
+            if (retrievedKey == null) {
+                dbKey = queryKeyRepository.save(key);
+                assertNotNull(dbKey);
+                assertNotNull(dbKey.getId());
+            } else {
+                dbKey = retrievedKey;
+            }
+        }
 
         {
             QueryKey retrievedKey = queryKeyRepository.findOne(dbKey.getId());

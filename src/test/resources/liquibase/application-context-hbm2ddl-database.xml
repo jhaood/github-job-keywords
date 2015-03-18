@@ -23,6 +23,13 @@
 		<property name="password" value="${datasource.hbm2ddl.password}" />
 	</bean>
 
+	<bean name="liquibaseDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${datasource.liquibase.driverClassName}" />
+		<property name="url" value="${datasource.liquibase.url}" />
+		<property name="username" value="${datasource.liquibase.username}" />
+		<property name="password" value="${datasource.liquibase.password}" />
+	</bean>
+
 	<!-- 
 	<jpa:repositories base-package="com.aestheticsw.jobkeywords.service.termextractor.repository"
 		entity-manager-factory-ref="liquibaseEntityManagerFactory" transaction-manager-ref="transactionManager">

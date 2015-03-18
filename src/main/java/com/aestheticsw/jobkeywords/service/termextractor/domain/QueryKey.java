@@ -115,10 +115,10 @@ public class QueryKey {
     @Override
     public String toString() {
         if (toStringCache == null) {
-            StringBuilder builder = new StringBuilder("Search-params: ");
-            builder.append(locale == null ? "" : locale + ", ");
-            builder.append(city == null ? "" : city + ", ");
-            builder.append(query == null ? "'" : query + "', ");
+            StringBuilder builder = new StringBuilder("QueryKey: '");
+            builder.append(query != null ? query + "', " : "'");
+            builder.append(locale != null ? locale + ", " : "");
+            builder.append(city != null ? city + ", " : "");
             toStringCache = builder.toString();
         }
         return toStringCache;

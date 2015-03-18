@@ -24,7 +24,7 @@ import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @ContextConfiguration(classes = { ServiceConfiguration.class, RestClientConfiguration.class,
-    DatabaseConfiguration.class, LogInjectorConfiguration.class })
+    DatabaseConfiguration.class, DatabaseTestConfiguration.class, LogInjectorConfiguration.class })
 @TestExecutionListeners(listeners = { DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
     DependencyInjectionTestExecutionListener.class }, mergeMode = MergeMode.MERGE_WITH_DEFAULTS )
 public @interface ServiceTestBehavior {

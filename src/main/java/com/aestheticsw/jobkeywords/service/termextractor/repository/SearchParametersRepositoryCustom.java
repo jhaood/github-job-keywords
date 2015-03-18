@@ -19,13 +19,15 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters
  * suspectTimeout=0; alternateUsernameAllowed=false; commitOnReturn=false; rollbackOnReturn=false;
  * useDisposableConnectionFacade=true; logValidationErrors=false; propagateInterruptState=false;
  * ignoreExceptionOnPreLoad=false; }
- * 
- *  Connection.TRANSACTION_READ_UNCOMMITTED
+ *
+ * TransactionIsolation = Connection.TRANSACTION_READ_UNCOMMITTED
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 public interface SearchParametersRepositoryCustom {
-    // READ_UNCOMMITTED = -1 
+    // TRANSACTION_READ_UNCOMMITTED = -1 
+    // TRANSACTION_READ_COMMITTED = -2
+    // TODO FIXME ? what's this about ? 
     public  Object conn = Connection.TRANSACTION_READ_UNCOMMITTED;
     
     SearchParameters findByCompoundKey(SearchParameters searchParameters);

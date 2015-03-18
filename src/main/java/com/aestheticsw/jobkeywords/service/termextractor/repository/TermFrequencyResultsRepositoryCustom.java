@@ -8,4 +8,5 @@ public interface TermFrequencyResultsRepositoryCustom {
 
     List<QueryKey> findDistinctQueryKeys();
 
+    void deleteByQueryKey(QueryKey queryKey);
 }

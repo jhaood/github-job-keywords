@@ -47,7 +47,7 @@ public class SearchParameters {
     // @Column(name = "TERM_FREQUENCY_RESULTS_ID")
     // private Long termFrequencyResultsId;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private QueryKey queryKey;
 
     private int jobCount;
@@ -114,11 +114,11 @@ public class SearchParameters {
     @Override
     public String toString() {
         if (toStringCache == null) {
-            StringBuilder builder = new StringBuilder("Search-params: ");
-            builder.append(queryKey == null ? "'" : queryKey.toString() + "', ");
+            StringBuilder builder = new StringBuilder("SearchParams: '");
+            builder.append(queryKey != null ? queryKey.toString() + "', " : "'");
             builder.append("start: " + start + ", ");
             builder.append("count: " + jobCount + ", query:'");
-            builder.append(radius == 0 ? "" : "radius: " + radius + ", ");
+            builder.append(radius != 0 ? "radius: " + radius + ", " : "");
             builder.append(StringUtils.isNotEmpty(sort) ? "sort: " + sort + ", " : "");
             toStringCache = builder.toString();
         }

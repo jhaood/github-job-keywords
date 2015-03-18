@@ -21,6 +21,6 @@ public class LiquibaseDiffRunner {
     
     @Test
     public void recordSchemaDifferencesBetweenJavaAndLiquibase() throws LiquibaseException, SQLException, IOException, ParserConfigurationException {
-        liquibaseActuator.recordSchemaDifferencesBetweenJavaAndLiquibase();
+        liquibaseActuator.recordSchemaDifferencesBetweenHbm2ddlAndLiquibase();
     }
 }

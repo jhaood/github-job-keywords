@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration(exclude = {LiquibaseAutoConfiguration.class})
-@ComponentScan(basePackages = "com.aestheticsw")
+@ComponentScan(basePackages = "com.aestheticsw.jobkeywords")
 public class JobKeywordsApplication {
 
     @Log

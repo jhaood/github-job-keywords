@@ -37,24 +37,24 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<spring-profiles-active>test</spring-profiles-active>
+				<spring-profiles-active>h2</spring-profiles-active>
 			</properties>
 		</profile>
 		<profile>
 			<id>dev</id>
 			<properties>
 				<spring-profiles-active>mysql</spring-profiles-active>
-				<spring-jpa-hibernate-ddl-auto>create</spring-jpa-hibernate-ddl-auto>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev-olddb</id>
-			<properties>
-				<spring-profiles-active>mysql</spring-profiles-active>
 				<spring-jpa-hibernate-ddl-auto>validate</spring-jpa-hibernate-ddl-auto>
 			</properties>
 		</profile>
-		<!--  TODO FIXME create prod-liquibase profile which does NOT run hbm2ddl-validate - and does run Liquibase-update -->
+		<profile>
+			<!-- HBM2DDL "create" does not touch the liquibase tables - this results in inconsistencies -->
+			<id>dev-newdb</id>
+			<properties>
+				<spring-profiles-active>mysql</spring-profiles-active>
+				<spring-jpa-hibernate-ddl-auto>create</spring-jpa-hibernate-ddl-auto>
+			</properties>
+		</profile>
 		<profile>
 			<id>prod</id>
 			<properties>
@@ -63,11 +63,14 @@
 			</properties>
 		</profile>
 		<profile>
-			<!-- TODO FIXME this profile will go away with liquibase... -->
-			<id>prod-newdb</id>
+			<!-- 
+				this only runs the liquibase-validator. To run the updater, run JVM with -Djobkeywords.liquibase.update=true 
+			-->
+			<id>prod-liquibase</id>
 			<properties>
-				<spring-profiles-active>mysql</spring-profiles-active>
-				<spring-jpa-hibernate-ddl-auto>validate</spring-jpa-hibernate-ddl-auto>
+				<spring-profiles-active>mysql,liquibase</spring-profiles-active>
+				<!-- Hbm2ddl runs before liquibase so have to disable validation -->
+				<spring-jpa-hibernate-ddl-auto>none</spring-jpa-hibernate-ddl-auto>
 			</properties>
 		</profile>
 	</profiles>
@@ -231,7 +234,7 @@
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>${liquibase.version}</version>
 				<configuration>
-					<propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+					<propertyFile>src/main/resources/liquibase/liquibase-maven.properties</propertyFile>
 					<changeLogFile>src/main/resources/liquibase/changelog-master.xml</changeLogFile>
 				</configuration>
 				<executions>

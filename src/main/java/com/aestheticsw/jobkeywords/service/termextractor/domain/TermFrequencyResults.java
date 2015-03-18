@@ -48,7 +48,7 @@ public class TermFrequencyResults {
     @GeneratedValue
     @Column(name = "ID")
     private Long id;
-    
+
     @Version
     private int version;
 
@@ -56,15 +56,15 @@ public class TermFrequencyResults {
      * The QueryKey that identifies the query-string and location for the set of results accumulated
      * into a given TermFrequencyResults instance.
      */
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private QueryKey queryKey;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+        CascadeType.DETACH })
     @JoinColumn(name = "TERM_FREQUENCY_RESULTS_ID", referencedColumnName = "ID")
     private List<SearchParameters> searchParametersList = new ArrayList<>();
 
-    // , mappedBy = "termFrequencyResultsId"
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
     @MapKey(name = "term")
     @JoinColumn(name = "TERM_FREQUENCY_RESULTS_ID", referencedColumnName = "ID")
     private Map<String, TermFrequency> termFrequencyMap = new HashMap<>();

@@ -125,6 +125,25 @@ public class TermFrequencyResultsDataManager {
         return results;
     }
 
+    public void deleteByQueryKey(SearchParameters searchParameters) {
+        QueryKey queryKey = searchParameters.getQueryKey();
+        
+        // pull existing entities from DB...
+
+        SearchParameters dbSearchParameters = searchParametersRepository.findByCompoundKey(searchParameters);
+        if (dbSearchParameters == null) {
+            return;
+        }
+        
+        TermFrequencyResults dbTermFrequencyResults;
+        synchronized (termFrequencyResultsRepository) {
+            dbTermFrequencyResults = termFrequencyResultsRepository.findByQueryKey(dbSearchParameters.getQueryKey());
+            if (dbTermFrequencyResults == null) {
+                return;
+            }
+        }
+    }
+
     public List<QueryKey> getSearchHistory() {
         // Set<QueryKey> queryKeys = termFrequencyResultsMap.keySet();
         List<QueryKey> queryKeys = termFrequencyResultsRepository.findDistinctQueryKeys();

@@ -5,16 +5,24 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
+import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
 public class TermFrequencyResultsRepositoryImpl implements TermFrequencyResultsRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private TermFrequencyResultsRepository springRepository;
+
     @Override
     public List<QueryKey> findDistinctQueryKeys() {
+        // TODO convert queries into cacheable named queries with query-params
         TypedQuery<QueryKey> query =
             entityManager.createQuery(
                 "select new com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey(key.query, key.locale, key.city) "
@@ -24,4 +32,23 @@ public class TermFrequencyResultsRepositoryImpl implements TermFrequencyResultsR
         return results;
     }
 
+    @Transactional
+    public void deleteByQueryKey(QueryKey queryKey) {
+        /* HQL doesn't honor cascade or orphanRemoval @OneToMany attributes 
+        String hql = "delete from TermFrequencyResults where queryKey = :key";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("key", queryKey);
+        int count = query.executeUpdate();
+        if (count > 1) { 
+            throw new RuntimeException("Delete found non-unique TermFrequencyResult, count=" + count + ", queryKey=" + queryKey);
+        } else if (count == 0) {
+            throw new RuntimeException("Delete didn't find any TermFrequencyResult objects, queryKey=" + queryKey);
+        }
+        */
+        TermFrequencyResults results = springRepository.findByQueryKey(queryKey);
+        if (results == null) {
+            throw new RuntimeException("Delete didn't find any TermFrequencyResult objects, queryKey=" + queryKey);
+        }
+        springRepository.delete(results);
+    }
 }

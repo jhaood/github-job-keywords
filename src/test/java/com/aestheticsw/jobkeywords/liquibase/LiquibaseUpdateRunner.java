@@ -17,8 +17,7 @@ public class LiquibaseUpdateRunner {
     @Test
     public void updateSchema() throws LiquibaseException {
         liquibaseActuator.setDropFirst(false);
-        liquibaseActuator.setShouldRun(true);
-        liquibaseActuator.afterPropertiesSet();
+        liquibaseActuator.forceUpdate();
     }
 
 }

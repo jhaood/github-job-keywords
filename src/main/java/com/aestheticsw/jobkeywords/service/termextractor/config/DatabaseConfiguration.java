@@ -12,11 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.QueryLookupStrategy;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -25,16 +22,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Configuration
-@EnableAutoConfiguration(exclude = {LiquibaseAutoConfiguration.class})
+// TODO FIXME ? move @EnableAutoConfiguration to test config classes ? 
+@EnableAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class })
 // Can't pull in properties HERE because can't override with a subsequent method-level prop-file
 // @PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.config",
-    "com.aestheticsw.jobkeywords.service.termextractor.repository" })
+// TODO add audit columns after user-authentication is added 
+// @EnableJpaAuditing
+@ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.repository" })
 @EntityScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.domain" })
+// TODO Doesn't help tests run with repositories that have transactions
+// , transactionManagerRef = "transactionManager"
 @EnableJpaRepositories(
         value = "com.aestheticsw.jobkeywords.service.termextractor.repository",
-        queryLookupStrategy = QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND)
-@EnableJpaAuditing
+        queryLookupStrategy = QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND, transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
 
@@ -70,11 +70,18 @@ public class DatabaseConfiguration {
     @Value("${datasource.jobkeywords.password}")
     private String password;
 
+    /* TODO Let spring configure the "transactionManager" bean
+    @Autowired
+    private EntityManagerFactoryBuilder entityManagerFactoryBuilder;
+
     @Bean
     public PlatformTransactionManager transactionManager() {
-        return new JpaTransactionManager();
+         return new JpaTransactionManager();
+//        return new JpaTransactionManager(entityManagerFactory(entityManagerFactoryBuilder)
+//            .getNativeEntityManagerFactory());
     }
-    
+    */
+
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
@@ -85,6 +92,26 @@ public class DatabaseConfiguration {
 
         return dataSourceBuilder.build();
     }
+
+    /*
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder entityBuilder) {
+        // .persistenceUnit("default").build();
+        Map<String, String> jpaProperties = new HashMap<>();
+        jpaProperties.put("hibernate.hbm2ddl.auto", "");
+        jpaProperties.put("hibernate.ejb.naming_strategy",
+            "org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy");
+
+        Builder builder = entityBuilder.dataSource(dataSource());
+        // builder.jta(true);
+        builder = builder.packages("com.aestheticsw.jobkeywords.service.termextractor.domain");
+        // TODO remove the PU-name
+        builder.persistenceUnit("jobkeywords");
+        builder = builder.properties(jpaProperties);
+        LocalContainerEntityManagerFactoryBean factoryBean = builder.build();
+        return factoryBean;
+    }
+    */
 
     /*
      * EmbeddedDatabaseBuilder doesn't work ... 

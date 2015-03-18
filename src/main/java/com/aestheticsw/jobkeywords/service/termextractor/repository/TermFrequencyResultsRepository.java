@@ -24,5 +24,7 @@ public interface TermFrequencyResultsRepository extends JpaRepository<TermFreque
     TermFrequencyResults findByQueryKey(QueryKey queryKey);
 
     TermFrequencyResults save(TermFrequencyResults termFrequencyResults);
+    
+    void delete(TermFrequencyResults entity);
 
 }

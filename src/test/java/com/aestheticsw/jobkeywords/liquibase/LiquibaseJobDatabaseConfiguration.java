@@ -135,7 +135,7 @@ public class LiquibaseJobDatabaseConfiguration {
     public LiquibaseActuator liquibase() {
         final LiquibaseActuator springLiquibase = new LiquibaseActuator();
         springLiquibase.setDataSource(dataSource);
-        springLiquibase.setChangeLog("liquibase/changelog-master.xml");
+        springLiquibase.setChangeLog("classpath:liquibase/changelog-master.xml");
         springLiquibase.setContexts("schema");
         springLiquibase.setDropFirst(false);
         springLiquibase.setShouldRun(false);
