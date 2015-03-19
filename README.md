@@ -3,7 +3,7 @@ This web application calculates the term frequency of keywords extracted from jo
 
 The app demonstrates an integraiton between several REST APIs with Spring Boot, Spring-4.1, Hibernate (JPA) and Liquibase. The app is running on Amazon's AWS cloud at the following URLs:
 
-Job Keywords Search Web App: http://54.148.208.180:8080/job/search
+Job Keywords Search Web App: http://54.148.208.180:8080/job/history
 
 Job Keywords JavaDoc: http://54.148.208.180:8080/javadoc/index.html
 
