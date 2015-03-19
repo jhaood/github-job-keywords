@@ -28,3 +28,19 @@ Here are a few command lines to help build and deploy the app:
 		-Djobkeywords.liquibase.update=true -jar /home/ec2-user/job-keywords-2.0-SNAPSHOT.jar"
 			=> launch the Spring Boot app and run liquibase-update (HBM2DDL does NOT run)
 
+
+Spring Boot: 
+
+Spring-Boot version "1.2.1.RELEASE" launches a web container and configures the app-context based on a ton of automatic configuration. The job-keywords application defines specific Configuration classes to override or extend the auto-generated configuration from Spring-Boot. 
+
+Testing: 
+
+The naming conventions for test classes is
+
+*UnitTest - a true unit test that may mock dependent classes. A unit test can test a cluster of classes but must not require Spring or any external resources. An external resource is something that lives outside the JVM.
+
+*Test - an integration test that requires spring to configure the class or it's dependencies. The integration test may or may not hit resources outside the JVM.
+
+*IT - An integration test that lives outside the web-app and requires a container to be launched by the failsafe plugin. The only *IT.java test is JobKeywordsApplicationIT - which itself is not a true out-of-container integration test.
+
+
