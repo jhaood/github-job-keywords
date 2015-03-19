@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Jim Alexander, Aesthetic Software, Inc. (jhaood@gmail.com) Apache Version 2
+ * license: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 
 import java.io.IOException;
@@ -18,7 +22,8 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 
 /**
- * Return either a list of JobSummary objects, or return the job-details for a specific job-ID.
+ * Processes a job search query that returns a list of job-summaries or fetch the details for a
+ * specific job-ID.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */

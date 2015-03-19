@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Jim Alexander, Aesthetic Software, Inc. (jhaood@gmail.com)
+ * Apache Version 2 license: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.aestheticsw.jobkeywords.liquibase;
 
 import java.io.File;
@@ -81,9 +85,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * TODO define 2 database schema names: Prod: job_db_prod, Dev: job_db_dev
  * 
- * @see com.aestheticsw.jobkeywords.liquibase.LiquibaseDiffRunner 
- * @see com.aestheticsw.jobkeywords.liquibase.LiquibaseUpdateRunner 
- *      
+ * @see com.aestheticsw.jobkeywords.liquibase.LiquibaseDiffRunner
+ * @see com.aestheticsw.jobkeywords.liquibase.LiquibaseUpdateRunner
+ * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 public class LiquibaseActuator extends SpringLiquibase {

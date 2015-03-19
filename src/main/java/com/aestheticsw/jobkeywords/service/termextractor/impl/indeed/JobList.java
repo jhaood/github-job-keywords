@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Jim Alexander, Aesthetic Software, Inc. (jhaood@gmail.com) Apache Version 2
+ * license: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 
 import java.util.List;
@@ -9,6 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 
+/**
+ * JobList is a JSON deserialization object that makes it easy to deserialize the array of
+ * job-summaries.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 @XmlRootElement(name = "jobSummaries")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class JobList {

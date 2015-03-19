@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Jim Alexander, Aesthetic Software, Inc. (jhaood@gmail.com)
+ * Apache Version 2 license: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.aestheticsw.jobkeywords.service.termextractor;
 
 import java.util.List;
@@ -11,7 +15,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyRes
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 
 /**
- * This is the public interface for the web controllers to hit the service. 
+ * This is the public Java API for the Spring-MVC @Controllers. 
  * 
  * @see com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager
  *

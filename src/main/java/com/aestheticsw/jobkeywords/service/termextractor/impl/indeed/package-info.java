@@ -1,9 +1,15 @@
 /**
  * The indeed rest client (
- * {@link com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient}) hits the
- * indeed.com REST API and deserializes the JSON response into domain classes. Additional classes
- * are included in this package that are required to deserialize the complete JSON response but
- * these desearialization classes are not exposed to callers of the IndeedClient.
+ * {@link com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient}) that calls
+ * the indeed.com REST API and deserializes the JSON response into domain classes.
+ * <p/>
+ * 
+ * See {@link com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse} for
+ * details about the JSON response format returned from Indeed.com.
+ * <p/>
+ * 
+ * Additional classes are included in this package that support JSON deserialization. These
+ * desearialization classes are not exposed to callers of the IndeedClient.
  * 
  * @see com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient
  * 

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Jim Alexander, Aesthetic Software, Inc. (jhaood@gmail.com) Apache Version 2
+ * license: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,8 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * JobListResponse is the root of the object graph from the Indeed REST Service API that represents
- * a list of job-summaries.
+ * JobListResponse is a JSON deserialization object that is the root of the object graph returned
+ * from Indeed.com.
  * 
  * <pre>
  * The Indeed data model is small: 

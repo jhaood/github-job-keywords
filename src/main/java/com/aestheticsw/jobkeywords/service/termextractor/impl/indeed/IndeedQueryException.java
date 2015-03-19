@@ -1,7 +1,11 @@
+/*
+ * Copyright 2015 Jim Alexander, Aesthetic Software, Inc. (jhaood@gmail.com) Apache Version 2
+ * license: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 
 /**
- * Checked exception to handle invalid query expressions differently from IOExceptions or other
+ * A checked exception to handle invalid query expressions differently from IOExceptions or other
  * severe exceptions.
  */
 public class IndeedQueryException extends Exception {

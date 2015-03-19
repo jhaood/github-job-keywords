@@ -1,5 +1,5 @@
 /**
- * Contains the services for pulling job descriptions from Indeed.com and extracting terms from
- * Five-Filters.
+ * Contains the service for extracting terms and counting the term-frequency found in job
+ * descriptions pulled from Indeed.com.
  */
 package com.aestheticsw.jobkeywords.service;
