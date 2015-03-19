@@ -35,6 +35,25 @@ import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequenc
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsRepository;
 import com.aestheticsw.jobkeywords.utils.FileUtils;
 
+/**
+ * The naming conventions for test classes is
+ * <p/>
+ * 
+ * *UnitTest - a true unit test that may mock dependent classes. A unit test can test a cluster of
+ * classes but must not require Spring or any external resources. An external resource is something
+ * that lives outside the JVM.
+ * <p/>
+ * 
+ * *Test - an integration test that requires spring to configure the class or it's dependencies. The
+ * integration test may or may not hit resources outside the JVM.
+ * <p/>
+ * 
+ * *IT - An integration test that lives outside the web-app and requires a container to be launched
+ * by the failsafe plugin. The only *IT.java test is JobKeywordsApplicationIT - which itself is not
+ * a true out-of-container integration test.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class TermExtractorServiceUnitTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();

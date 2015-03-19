@@ -4,7 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Service layer configuration.
+ * Service layer configuration which extends the RestClientConfiguration.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */

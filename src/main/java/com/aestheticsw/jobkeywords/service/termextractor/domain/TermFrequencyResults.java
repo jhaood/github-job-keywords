@@ -21,7 +21,6 @@ import javax.persistence.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -34,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * This class also holds a list of SearchParameters for the accumulated results from multiple
  * searches.
  * 
- * @see TermFrequencyResultsDataManager
+ * @see com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */

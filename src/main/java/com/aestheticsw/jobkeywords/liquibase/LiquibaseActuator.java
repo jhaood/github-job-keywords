@@ -29,48 +29,61 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * This class supports schema validation and evolution using Liquibase.
- * 
- * Liquibase may run either as part of the web container runtime, or as a pseudo unit-test or from
- * maven.
- * 
- * Maven runs the Liquibase plugin only to validate the live schema, "job_db". The maven pom.xml
- * configures the profiles which control how Liquibase behaves during testing and when the container
- * runtime is launched.
- * 
- * DEV builds are fast. The default maven profile ("dev-h2") doesn't run liquibase and creates an H2
- * embedded database which is configured by hbm2ddl. See the POM for details about the profiles.
- * 
+ * This class supports schema evolution and validation using Liquibase.
+ * <p/>
+ * Liquibase may run from several contexts:
+ * <ul>
+ * <li>from the maven plugin</li>
+ * <li>as part of the web container runtime</li>
+ * <li>as a pseudo unit-test. This was built first and makes it easy to launch Liquibase by itself
+ * from the maven command line.</li>
+ * </ul>
+ * <p/>
+ * Maven runs the Liquibase plugin only to validate the live schema (MySQL: "job_db").
+ * <p/>
+ * The maven pom.xml configures several profiles which control how Liquibase behaves when launched
+ * as a pseudo-test and when the container runtime is launched. The default maven profile ("dev-h2")
+ * doesn't run liquibase and creates an H2 embedded database which is configured by hbm2ddl. The
+ * "dev" profile attaches to the MySQL database and triggers HBM2DDL to validate the schema. The
+ * "prod-liquibase" profile runs Liquibase from the Spring Boot launcher and turns off HBM2DDL.
+ * <p/>
+ * See the maven POM for details about the build profiles.
+ * <p/>
  * The production AWS linux machines do not support Maven or any of the build tools. The
  * web-container runtime will lauch Liquibase to validate the current schema. The schema can be
  * updated from the command line: "-Djobkeywords.liquibase.update=true"
- * 
+ * <p/>
  * The web-container runtime does not allow differences to be generated. The PROD-DB must be copied
  * to a developer machine where maven and the pseudo-tests can generate the differences.
  * 
  * <pre>
+ * Development builds against a local DEV database: 
+ *      - Dev builds are launched with differnt maven profiles to configure hbm2ddl or use Liquibase 
+ *              to update the MySQL database.   
+ *      - Some tests leave test-data in the MySQL database because a few tests commit their data 
+ *              instead of rolling back.  
  * 
- * Dev Mode: 
- *      Dev builds may use hbm2ddl to generate DB - or may use Liquibase to update "job_db".  
- *      Some tests leave test-data behind.  
+ * The live schema ("job_db") is defined in the localhost MySQL database instance 
+ * (The MySQL server running on "localhost" the "job_db_instance")
  * 
- * The live mysql database - defined inside localhost (localhost is the "job_db_instance")
- * 
- * TODO define 2 database schema names: Prod: job_db_prod, Dev: job_db_dev
- *      
  * The configuration for the Liquibase pseudo-tests use 3 database schemas:
- *      job_db
- *      hbm2ddl_db
- *      liquobase_db
+ *      - job_db
+ *      - hbm2ddl_db
+ *      - liquobase_db
  * 
- * HBM2DDL-VALIDATE: always validates live DB: job_db 
- * HBM2DDL-CREATE: never create or update PROD live DB
+ * HBM2DDL-VALIDATE: always validate the MySQL DB: job_db 
+ * HBM2DDL-CREATE: never run "create" "update" against a PRODUCTION database. 
  * 
  * Liquibase diff's between 2 fresh databases. These are always created from scratch:  
  *      liquibase_db & hbm2ddl_db
  * 
  * </pre>
  * 
+ * TODO define 2 database schema names: Prod: job_db_prod, Dev: job_db_dev
+ * 
+ * @see com.aestheticsw.jobkeywords.liquibase.LiquibaseDiffRunner 
+ * @see com.aestheticsw.jobkeywords.liquibase.LiquibaseUpdateRunner 
+ *      
  * @author Jim Alexander (jhaood@gmail.com)
  */
 public class LiquibaseActuator extends SpringLiquibase {

@@ -32,7 +32,26 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyRes
  * Please see the TermFrequencyResults class for details about how searches are accumulated.
  * <p/>
  * 
- * @see TermFrequencyResults
+ * TODO move this class to the service-implementation package.
+ * <pre>
+ * The separation between transient and persistent objects:
+ *  
+ * - All domain objects outside the @Transactional Repositories and Managers are transient or detatched.  
+ * 
+ * POST / PUT: 
+ * - UI -> creates domain objects as transient objects and passes through @Transactional interfaces
+ * - @Transactional classes must lookup by column-values to pull persistent copies. 
+ * - @Transactional classes follow the "unit of work" pattern.
+ * 
+ * GET:
+ * - @Transactional classes return detatched persistent objects. 
+ * - UI displays values from detatched persistent objects 
+ * - UI never stores detatched persisent objects in Session... ! ! !
+ * - UI never passes detatched persistent objects back to @Transactional layer.
+ * </pre>
+ * 
+ * @see com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults
+ * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Component
@@ -65,22 +84,6 @@ public class TermFrequencyResultsDataManager {
      * SearchParamters may be persistent, if it is persistent then QueryKey would also be
      * persistent.
      * 
-     * <pre>
-     * 
-     * The separation between transient and persistent objects: 
-     * - All domain objects outside the @Transactional Repositories and Managers are transient or detatched.  
-     * POST / PUT: 
-     * - UI -> creates domain objects as transient objects and passes through @Transactional interfaces
-     * - @Transactional classes must lookup by column-values to pull persistent copies. 
-     * - @Transactional classes follow the "unit of work" pattern.
-     * 
-     * GET:
-     * - @Transactional classes return detatched persistent objects. 
-     * - UI displays values from detatched persistent objects 
-     * - UI never stores detatched persisent objects in Session... ! ! !
-     * - UI never passes detatched persistent objects back to @Transactional layer.   
-     * 
-     * </pre>
      */
     public void accumulateTermFrequencyResults(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         if (termFrequencyList.size() == 0) {
@@ -88,7 +91,7 @@ public class TermFrequencyResultsDataManager {
             return;
         }
         QueryKey queryKey = searchParameters.getQueryKey();
-        
+
         // pull existing entities from DB...
 
         SearchParameters dbSearchParameters = searchParametersRepository.findByCompoundKey(searchParameters);
@@ -102,7 +105,7 @@ public class TermFrequencyResultsDataManager {
                     searchParameters.getRadius(), searchParameters.getSort());
             dbSearchParameters = searchParametersRepository.save(dbSearchParameters);
         }
-        
+
         // persist new or updated entities
 
         TermFrequencyResults dbTermFrequencyResults;
@@ -127,14 +130,14 @@ public class TermFrequencyResultsDataManager {
 
     public void deleteByQueryKey(SearchParameters searchParameters) {
         QueryKey queryKey = searchParameters.getQueryKey();
-        
+
         // pull existing entities from DB...
 
         SearchParameters dbSearchParameters = searchParametersRepository.findByCompoundKey(searchParameters);
         if (dbSearchParameters == null) {
             return;
         }
-        
+
         TermFrequencyResults dbTermFrequencyResults;
         synchronized (termFrequencyResultsRepository) {
             dbTermFrequencyResults = termFrequencyResultsRepository.findByQueryKey(dbSearchParameters.getQueryKey());

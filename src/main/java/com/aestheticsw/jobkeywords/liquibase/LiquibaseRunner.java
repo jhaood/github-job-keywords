@@ -7,6 +7,15 @@ import liquibase.exception.LiquibaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+/**
+ * This Spring Bean will run liquibase immediately after Spring completes loading the app-context.
+ * <p/> 
+ * The default behavior is to run "validate" but an "update" can be run if the spring property
+ * "jobkeywords.liquibase.update=true" as defined in the application.properties or as set from the
+ * JVM command line.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class LiquibaseRunner {
     private LiquibaseActuator liquibase;
 

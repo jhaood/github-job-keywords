@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * QueryKey represents the unique parameters for a query expression and a location.
  * <p/>
  * 
- * This class is a subset of SearchParameters. This subset is needed because results from multipe
+ * This class is a subset of SearchParameters. This subset is needed because results from multiple
  * searches can be accumulated for a given query-string and location. Indeed will only return a max
  * of 25 jobs per search. So the application allows the user to search across several pages of
  * results in order to span more than 25 jobs.

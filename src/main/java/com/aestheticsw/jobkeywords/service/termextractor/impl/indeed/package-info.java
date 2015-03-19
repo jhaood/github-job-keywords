@@ -1,12 +1,11 @@
 /**
- * These domain classes are specific to the Indeed API.
- * <p/>
+ * The indeed rest client (
+ * {@link com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient}) hits the
+ * indeed.com REST API and deserializes the JSON response into domain classes. Additional classes
+ * are included in this package that are required to deserialize the complete JSON response but
+ * these desearialization classes are not exposed to callers of the IndeedClient.
  * 
- * Please see the javadoc for the JobListResponse class for more details about the data model is
- * instantiated. The framework deserializes the XML response directly into a JobListResponse object
- * graph.
- *
- * @see com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.JobListResponse
+ * @see com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */

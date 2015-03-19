@@ -12,6 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 
+/**
+ * The custom repository implementation extends Spring's auto-generated implementation. But @Transactional
+ * is required for custom methods which require read-write transactional behavior.
+ * 
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public class TermFrequencyResultsRepositoryImpl implements TermFrequencyResultsRepositoryCustom {
 
     @PersistenceContext

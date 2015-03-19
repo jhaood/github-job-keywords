@@ -18,7 +18,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
 
 /**
- * Return either a list of jobs, or return the job-details for a specifig job-ID.
+ * Return either a list of JobSummary objects, or return the job-details for a specific job-ID.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
@@ -106,12 +106,12 @@ public class IndeedClient {
 
     /**
      * Return the job-details sub-section of the HTML that Indeed returns. This method takes a URL
-     * that Indeed
-     * returns for each JobSummary returned by getIndeedJobSummaryList() above.
+     * that Indeed returns for each JobSummary returned by getIndeedJobSummaryList() above.
+     * <p/>
      * 
-     * 
-     * This method is dependent upon the JSoup library which can consume malformed
-     * HTML and XML with invalid syntax.
+     * This method is dependent upon the JSoup library which can consume malformed HTML and XML with
+     * invalid syntax.
+     * <p/>
      * 
      * JSoup can't be tested easily.
      * 

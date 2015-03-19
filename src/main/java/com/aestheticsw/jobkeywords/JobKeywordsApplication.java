@@ -11,10 +11,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * The JobKeywordsApplication is the primary configuration class for both the spring-boot
- * application runtime and for all the integration tests.
- * 
- * There is no easy way to separate the integ-test configuration from the Application config.
+ * The JobKeywordsApplication is the primary configuration class for the Spring-Boot application
+ * runtime.
+ * <p/>
+ * The application-level configuration does not load when integration tests run because the uses of @ComponentScan
+ * and @ContextConfiguration are limited and specific.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
@@ -22,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 // The @SpringBootApplication annotation is not necessary
 
 @Configuration
-@EnableAutoConfiguration(exclude = {LiquibaseAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class })
 @ComponentScan(basePackages = "com.aestheticsw.jobkeywords")
 public class JobKeywordsApplication {
 

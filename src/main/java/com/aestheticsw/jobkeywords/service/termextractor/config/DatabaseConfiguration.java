@@ -15,13 +15,27 @@ import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * JPA repository and database configuration.
+ * JPA repository and database configuration. The @ComponentScan is restricted specifically to the
+ * repository package and @EntityScan is restricted to the domain package. This class also
+ * configures the transaction manager.
+ * <p/>
+ * This configuration file can create a DataSource that binds either to an embedded H2 or MySQL
+ * server.
+ * <p/>
+ * Spring profiles (${spring.profiles.active}) are used to enable one of 2 inner configuration
+ * classes that control the property-files that are read to configure the DataSource which connects
+ * to either H2 or MySQL.
+ * <p/>
+ * Spring active-profiles don't behave correctly for unit-tests so extra effort is required here.
+ * 
+ * @see com.aestheticsw.jobkeywords.service.termextractor.repository
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 
 // Can't pull in properties at class level because can't override with a subsequent method-level @PropertySource
 // @PropertySource("classpath:application.properties")
+
 // TODO add audit columns after user-authentication is added 
 // @EnableJpaAuditing
 
@@ -87,14 +101,14 @@ public class DatabaseConfiguration {
         return dataSourceBuilder.build();
     }
 
-    /* Let spring configure the "transactionManager" bean
+    /* Let spring configure the "transactionManager" bean... 
     @Bean
     public PlatformTransactionManager transactionManager() {
          return new JpaTransactionManager();
     }
     */
 
-    /*
+    /* Let spring configure the EntityManager... 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder entityBuilder) {
         // .persistenceUnit("default").build();

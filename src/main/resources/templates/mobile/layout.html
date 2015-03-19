@@ -32,6 +32,8 @@
                         <a th:href="@{/job/accumulated}" href="/job/accumulated"> Cumulative Results </a>
                     </li>
                 </ul>
+                <a class="navbar-search small pull-right" target="javadoc" th:href="@{/javadoc/index.html}" href="@{/javadoc/index.html}"> 
+                 <span th:text="${'version: ' + @environment.getProperty('info.build.version')}">unknown version</span></a>
             </div>
         </div>
         <h1 layout:fragment="header">Layout Header (Mobile)</h1>

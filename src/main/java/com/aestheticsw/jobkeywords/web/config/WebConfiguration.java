@@ -19,7 +19,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     /**
      * <pre>
-     * @see http://stackoverflow.com/questions/27789277/how-to-handle-html-page-using-contentnegotiation-but-not-through-jsp-internal
+     * @see <a href="http://stackoverflow.com/questions/27789277/how-to-handle-html-page-using-contentnegotiation-but-not-through-jsp-internal">
+     * http://stackoverflow.com/questions/27789277/how-to-handle-html-page-using-contentnegotiation-but-not-through-jsp-internal</a>
      * </pre>
      */
     @Override

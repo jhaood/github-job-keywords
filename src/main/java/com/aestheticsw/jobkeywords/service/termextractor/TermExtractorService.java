@@ -10,6 +10,13 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyLis
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 
+/**
+ * This is the public interface for the web controllers to hit the service. 
+ * 
+ * @see com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager
+ *
+ * @author Jim Alexander (jhaood@gmail.com)
+ */
 public interface TermExtractorService {
 
     TermFrequencyList extractTerms(SearchParameters params) throws IndeedQueryException;

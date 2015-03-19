@@ -1,9 +1,9 @@
 /**
- * The term-frequency data model represents the extracted terms for a unique set of job-search
+ * The term-frequency data model represents the extracted terms for a unique set of search
  * parameters.
  * 
- * The results for multiple searches can be accumulated as long as the query-string and location are
- * the same.
+ * The results from multiple searches can be accumulated as long as the query-string and location
+ * are the same.
  * <p/>
  * 
  * The TermFrequency class is central to the data model. A given instance holds the term and the
@@ -18,9 +18,9 @@
  * <p/>
  * 
  * Since the Indeed API is limited to 25 jobs per search, this app can accumulate results from
- * multiple searches as long as the Query, Country &amp; City are the same. The QueryKey class defines
- * the subset of search parameters that makes it easy to accumulate along this reduced set of
- * parameters.
+ * multiple searches as long as the Query, Country &amp; City are the same. The QueryKey class
+ * defines the subset of search parameters that makes it easy to accumulate along this reduced set
+ * of parameters.
  * 
  * @see com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults
  * @see com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters

@@ -3,6 +3,14 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+	<!--
+	This is the Liquibase master control file. The only context defined so far is "schema"
+	The naming convention is:
+		changelog-<version>-<changelog file number>.xml
+		changelog-2.0-1.xml
+		changelog-2.0-2.xml  
+	 -->
+
 	<include file="liquibase/changelog-2.0.xml" />
 
 </databaseChangeLog>

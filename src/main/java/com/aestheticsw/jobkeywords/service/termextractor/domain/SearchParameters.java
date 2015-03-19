@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * SearchParameters is an immutable class that can be used as an index in a Map.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
- * @see QueryKey
+ * @see com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey
  */
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "query_key_id", "jobCount", "start", "radius", "sort" }))

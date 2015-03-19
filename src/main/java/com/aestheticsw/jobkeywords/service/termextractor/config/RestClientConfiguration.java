@@ -9,16 +9,16 @@ import org.springframework.xml.xpath.Jaxp13XPathTemplate;
 import org.springframework.xml.xpath.XPathOperations;
 
 /**
- * Service layer configuration. This class CAN override the default configuration from spring-boot.
+ * The service-implementation is based on 2 REST apis: indeed.com and FiveFilters.com. This
+ * configuration class allows integration tests to run the real REST-client against the live
+ * REST APIs from these 2 vendors.
  * <p/>
- * 
- * Most of the spring-boot and spring-framework automatic configuration is used reliably now.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
 @Configuration
 @ComponentScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.impl.fivefilters",
-    "com.aestheticsw.jobkeywords.service.termextractor.impl.indeed"})
+    "com.aestheticsw.jobkeywords.service.termextractor.impl.indeed" })
 public class RestClientConfiguration {
 
     /*

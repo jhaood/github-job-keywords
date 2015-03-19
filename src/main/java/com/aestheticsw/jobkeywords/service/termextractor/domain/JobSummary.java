@@ -10,7 +10,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * JobSummary is immutable.  
+ * This class holds the summary of a given job returned from the indeed.com API. This class is both
+ * a JPA @Entity as well as a REST serialization class that Jackson can marshal into and out of JSON
+ * or XML.
+ * <p/>
+ * JobSummary is immutable.
  */
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.FIELD)

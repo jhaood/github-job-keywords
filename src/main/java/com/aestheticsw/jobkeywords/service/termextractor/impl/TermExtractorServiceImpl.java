@@ -24,6 +24,10 @@ import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequenc
 /**
  * The TermExtracorService is the primary public interface that wraps both the Indeed and
  * FiveFilters services.
+ * <p/>
+ * See the
+ * {@link com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager}
+ * for a discussion of how transient and persistent objects are handled.
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
@@ -50,7 +54,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
         this.fiveFiltersClient = fiveFiltersClient;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#extractTerms(com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters)
      */
     @Override
@@ -82,7 +86,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
         return terms;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#getAccumulatedTermFrequencyResults(com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey)
      */
     @Override
@@ -90,7 +94,7 @@ public class TermExtractorServiceImpl implements TermExtractorService {
         return getTermFrequencyResultsDataManager().getAccumulatedResults(queryKey);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#getSearchHistory()
      */
     // TODO return List<QueryKey> - but would removing the intermediate object break the REST serializer ? 
@@ -99,11 +103,17 @@ public class TermExtractorServiceImpl implements TermExtractorService {
         return new QueryKeyList(getTermFrequencyResultsDataManager().getSearchHistory());
     }
 
+    /**
+     * @see com.aestheticsw.jobkeywords.service.termextractor.TermExtractorService#getIndeedJobSummaryList(SearchParameters)
+     */
     @Override
     public List<JobSummary> getIndeedJobSummaryList(SearchParameters params) {
         return indeedClient.getIndeedJobSummaryList(params);
     }
 
+    /**
+     * Always use this getter because Spring must proxy the class to manage transactions.
+     */
     private TermFrequencyResultsDataManager getTermFrequencyResultsDataManager() {
         return termFrequencyResultsDataManager;
     }
