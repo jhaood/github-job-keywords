@@ -15,8 +15,8 @@ The architecture of the job-keywords applciation is based on recent publications
 The "TermExtractorService" Micro Service provides a Java API as opposed to a REST API that most other Micro Services provide.
 
 The application is broken into two top-level components: 
-1) the "term extractor" service integrates 2 REST services (jobs from indeed.com and term-extraction from FiveFilters.com)
-2) the web client which connects to the services. 
+1) the "term extractor" service integrates 2 REST services (jobs from indeed.com and keyword-extraction from FiveFilters.com)
+2) the web client which connects to the "term extractor" service. 
 
 The service architecture leverages spring-data as the ORM that binds JPA entities to a MySQL database. Spring-web provides the RestTemplate and Jackson marshalling ObjectMapper to deserialize JSON responses pulled in by the rest-clients that hit the indeed.com and five-filters REST APIs. 
 
