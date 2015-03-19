@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.transaction.Transactional;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +50,6 @@ public class TermFrequencyResultsRepositoryTest {
     }
 
     @Test
-    // @Transactional
     public void saveAndRetrieve() {
         TermFrequency tf1 = new TermFrequency(new String[] { "java", "3", "1" });
         TermFrequency tf2 = new TermFrequency(new String[] { "spring", "2", "1" });
@@ -174,9 +171,7 @@ public class TermFrequencyResultsRepositoryTest {
         }
     }
 
-    // TODO try removing @Transactional 
     @Test
-    @Transactional
     public void distinctQueryKeys() {
 
         TransactionStatus status = transactionManager.getTransaction(null);
@@ -285,10 +280,8 @@ public class TermFrequencyResultsRepositoryTest {
 
     // expected exception handling doesn't work correctly if @Transaction method will commit. BUG in Spring. 
     @Test(expected = DataIntegrityViolationException.class)
-    // This is required to avoid a RollbackException 
+    // This is required to avoid a RollbackException after the last transaction completes
     @Rollback(true)
-    // TODO try removing @Transactional 
-    @Transactional
     public void distinctQueryKeyException() {
         QueryKey key1 = new QueryKey("query-four", Locale.US, "");
         SearchParameters param1 = new SearchParameters(key1, 1, 1, 0, "");

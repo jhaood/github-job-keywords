@@ -35,13 +35,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * maven.
  * 
  * Maven runs the Liquibase plugin only to validate the live schema, "job_db". The maven pom.xml
- * file configures the profiles which control how Liquibase behaves during testing and when the
- * container runtime is launched.
+ * configures the profiles which control how Liquibase behaves during testing and when the container
+ * runtime is launched.
  * 
  * DEV builds are fast. The default maven profile ("dev-h2") doesn't run liquibase and creates an H2
  * embedded database which is configured by hbm2ddl. See the POM for details about the profiles.
  * 
- * Releases on the production AWS environment do not support Maven or any of the build tools. The
+ * The production AWS linux machines do not support Maven or any of the build tools. The
  * web-container runtime will lauch Liquibase to validate the current schema. The schema can be
  * updated from the command line: "-Djobkeywords.liquibase.update=true"
  * 

@@ -6,17 +6,18 @@ import liquibase.exception.LiquibaseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.stereotype.Component;
 
-@Component
-@ConditionalOnClass({ LiquibaseActuator.class })
 public class LiquibaseRunner {
-    @Autowired
     private LiquibaseActuator liquibase;
-    
-    @Value("${jobkeywords.liquibase.update}")
+
     private Boolean runLiquibaseUpdate;
+
+    @Autowired
+    public LiquibaseRunner(LiquibaseActuator liquibase,
+            @Value("${jobkeywords.liquibase.update}") Boolean runLiquibaseUpdate) {
+        this.liquibase = liquibase;
+        this.runLiquibaseUpdate = runLiquibaseUpdate;
+    }
 
     @PostConstruct
     public void runLiquibase() {

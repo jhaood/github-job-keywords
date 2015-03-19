@@ -24,55 +24,6 @@ public class LiquibaseJobDatabaseConfiguration {
     @Autowired
     private DataSource dataSource;
     
-//    @Autowired
-//    private DataSource liquibaseDataSource;
-    
-//     @Autowired
-//     private EntityManagerFactoryBuilder entityManagerFactoryBuilder;
-    
-//    @Value("${datasource.jobkeywords.url}")
-//    private String datasourceUrl;
-//
-//    @Value("${datasource.jobkeywords.driverClassName}")
-//    private String driverClassName;
-//
-//    @Value("${datasource.jobkeywords.username}")
-//    private String userName;
-//
-//    @Value("${datasource.jobkeywords.password}")
-//    private String password;
-/*
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new JpaTransactionManager(entityManagerFactory(entityManagerFactoryBuilder).getNativeEntityManagerFactory());
-    }
-*/    
-    /*
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new JpaTransactionManager();
-    }
-    */
-
-    /*
-    @Bean
-    public DataSource dataSource() {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.url(datasourceUrl);
-        dataSourceBuilder.driverClassName(driverClassName);
-        dataSourceBuilder.username(userName);
-        dataSourceBuilder.password(password);
-
-        return dataSourceBuilder.build();
-    }
-    */
-
-    /*
-     * hibernate.hbm2ddl.auto=create-drop
-     * hibernate.transaction.jta.platform=org.hibernate.engine.transaction
-     * .jta.platform.internal.NoJtaPlatform@3d40a3b4
-     * hibernate.ejb.naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
-     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder entityBuilder) {
         // .persistenceUnit("default").build();
@@ -84,52 +35,11 @@ public class LiquibaseJobDatabaseConfiguration {
         Builder builder = entityBuilder.dataSource(dataSource);
         builder.jta(false);
         builder = builder.packages("com.aestheticsw.jobkeywords.service.termextractor.domain");
-        // TODO remove the PU-name
         builder.persistenceUnit("jobkeywords");
         builder = builder.properties(jpaProperties);
         LocalContainerEntityManagerFactoryBean factoryBean = builder.build();
         return factoryBean;
     }
-/*
-    @Bean
-    public LocalContainerEntityManagerFactoryBean liquibaseEntityManagerFactory(EntityManagerFactoryBuilder entityBuilder) {
-        Map<String, String> jpaProperties = new HashMap<>();
-        jpaProperties.put("hibernate.hbm2ddl.auto", "create");
-        jpaProperties.put("hibernate.ejb.naming_strategy",
-            "org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy");
-        Builder builder = entityBuilder.dataSource(liquibaseDataSource);
-        builder.jta(false);
-        builder = builder.packages("com.aestheticsw.jobkeywords.service.termextractor.domain");
-        builder.persistenceUnit("liquibase");
-        builder = builder.properties(jpaProperties);
-        LocalContainerEntityManagerFactoryBean factoryBean = builder.build();
-        return factoryBean;
-    }
-*/
-    /*
-    @Bean
-    public LocalContainerEntityManagerFactoryBean exampleEntityManagerFactory(
-            EntityManagerFactoryBuilder builder) {
-        return builder
-                .dataSource(dataSource())
-                .packages(QueryKey.class)
-                .persistenceUnit("example")
-                .build();
-    }
-    */
-
-    /*
-     * CAN"T DEFINE THIS DATASOURCE here because Spring Bean Post Processor SOMETIMES instantiates @Bean
-     * config before injecting @Value config.
-     * 
-     * @Bean public DataSource JUNKembeddedH2DataSource() { DataSourceBuilder dataSourceBuilder =
-     *       DataSourceBuilder.create(); dataSourceBuilder.url(embeddedH2DatasourceUrl);
-     *       dataSourceBuilder.driverClassName(embeddedH2DriverClassName);
-     *       dataSourceBuilder.username(embeddedH2UserName);
-     *       dataSourceBuilder.password(embeddedH2Password);
-     * 
-     *       return dataSourceBuilder.build(); }
-     */
 
     @Bean
     public LiquibaseActuator liquibase() {

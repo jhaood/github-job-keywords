@@ -4,23 +4,22 @@
 <TITLE>Job Keywords Application Overview</TITLE>
 </HEAD>
 <BODY>
-    The Job-Keywords application searches Indeed.com and passes the detailed job descriptions through a term extractor
-    that counts the most frequent terms that appear.
+    The Job-Keywords application extracts and counts keywords from job descriptions posted on Indeed.com.
     <p />
-    The application integrates two RESTful APIs and stores the results in an in-memory repository. For now, previous
-    search results will be lost after the server is restarted.
+    The application integrates two RESTful APIs and stores the results in a MySQL database. The Indeed.com API provides
+    the job search engine and returns detailed job descriptions to the app. The Five Filters API extracts terms (aka
+    keywords or key-phrases) and returns the number of occurrences of each term to the app.
     <p />
-    This application is built with Java 8, Spring 4.1.6 and spring-boot. One goal was to demonstrate the simplicity of
-    buildling an application with spring-boot. A web application can be built with about 10 lines of code - a single
-    java source file and a single HTML file.
+    This application is built with Java 8, Spring 4.1.4, Spring Boot, Hibernate, MySQL and Liquibase. One goal was to
+    demonstrate the simplicity of building an application with Spring Boot. Another goal was to integrate the latest
+    versions of open-source libraries which are popular and very powerful.
     <p />
-    The spring-boot framework automatically configures a bunch of stuff that used to be cumbersome when building Java
-    apps. While automatic configuration has many benefits, it can be tedious to figure out why manual configuration can
-    sometimes break the auto-config thus breaking the app. For example, it's difficult to manually configure Jackson's
-    JSON and XML converters and it's difficult to override the automatic configuration for View Resolvers such as
-    Thymeleaf, JSP and JSON.
+    The Spring Boot framework automatically configures a bunch of stuff that used to be cumbersome when building Java
+    Web Applications. While automatic configuration has many benefits, it can be tedious to figure out why the app
+    breaks when manually overriding the auto-config. For example, it can be difficult to manually configure the database
+    DataSources and TransactionManagers, Jackson's JSON and XML converters and the View Resolvers such as Thymeleaf, JSP
+    and JSON.
     <p />
-
 
 </BODY>
 </HTML>

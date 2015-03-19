@@ -22,8 +22,6 @@ import com.aestheticsw.jobkeywords.shared.config.LogInjectorConfiguration;
 @Retention(RetentionPolicy.RUNTIME)
 @ContextConfiguration(classes = { LiquibaseJobDatabaseConfiguration.class, HibernateJpaAutoConfiguration.class,
     LiquibaseHbm2ddlDatabaseConfiguration.class, LogInjectorConfiguration.class })
-// @TransactionConfiguration(defaultRollback = true, transactionManager = "transactionManager")
-// listeners = { DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
 @TestExecutionListeners(listeners = { DirtiesContextTestExecutionListener.class,
     DependencyInjectionTestExecutionListener.class }, mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
 public @interface LiquibaseTestBehavior {

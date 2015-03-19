@@ -68,7 +68,7 @@ public class TermFrequencyResultsDataManager {
      * <pre>
      * 
      * The separation between transient and persistent objects: 
-     * - All classes outside the @Transactional Repositories and Managers are transient. 
+     * - All domain objects outside the @Transactional Repositories and Managers are transient or detatched.  
      * POST / PUT: 
      * - UI -> creates domain objects as transient objects and passes through @Transactional interfaces
      * - @Transactional classes must lookup by column-values to pull persistent copies. 

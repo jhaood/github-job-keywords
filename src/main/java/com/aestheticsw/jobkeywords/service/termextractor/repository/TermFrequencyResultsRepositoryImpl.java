@@ -36,14 +36,6 @@ public class TermFrequencyResultsRepositoryImpl implements TermFrequencyResultsR
     public void deleteByQueryKey(QueryKey queryKey) {
         /* HQL doesn't honor cascade or orphanRemoval @OneToMany attributes 
         String hql = "delete from TermFrequencyResults where queryKey = :key";
-        Query query = entityManager.createQuery(hql);
-        query.setParameter("key", queryKey);
-        int count = query.executeUpdate();
-        if (count > 1) { 
-            throw new RuntimeException("Delete found non-unique TermFrequencyResult, count=" + count + ", queryKey=" + queryKey);
-        } else if (count == 0) {
-            throw new RuntimeException("Delete didn't find any TermFrequencyResult objects, queryKey=" + queryKey);
-        }
         */
         TermFrequencyResults results = springRepository.findByQueryKey(queryKey);
         if (results == null) {

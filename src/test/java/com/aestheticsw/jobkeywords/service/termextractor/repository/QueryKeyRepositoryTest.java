@@ -36,6 +36,7 @@ import com.aestheticsw.jobkeywords.config.DatabaseTestBehavior;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.QueryKey;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
+// TODO add dbunit sophistication to the tests
 // @DatabaseSetup(...dataset...)
 // @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = { ...dataaset... })
 // @DirtiesContext

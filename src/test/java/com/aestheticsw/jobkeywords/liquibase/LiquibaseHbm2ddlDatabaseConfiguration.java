@@ -21,27 +21,11 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 @EntityScan(basePackages = { "com.aestheticsw.jobkeywords.service.termextractor.domain" })
 public class LiquibaseHbm2ddlDatabaseConfiguration {
 
-    //    @Autowired
-    //    private DataSource dataSource;
-
     @Autowired
     private DataSource hbm2ddlDataSource;
 
     @Autowired
     private DataSource liquibaseDataSource;
-
-    //     @Autowired
-    //     private EntityManagerFactoryBuilder entityManagerFactoryBuilder;
-
-    /*
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        // return new JpaTransactionManager();
-
-        return new JpaTransactionManager(entityManagerFactory(entityManagerFactoryBuilder)
-            .getNativeEntityManagerFactory());
-    }
-    */
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder entityBuilder) {
@@ -54,23 +38,10 @@ public class LiquibaseHbm2ddlDatabaseConfiguration {
         Builder builder = entityBuilder.dataSource(hbm2ddlDataSource);
         builder.jta(false);
         builder = builder.packages("com.aestheticsw.jobkeywords.service.termextractor.domain");
-        // TODO remove this PU-name
         builder.persistenceUnit("hbm2ddl");
         builder = builder.properties(jpaProperties);
         LocalContainerEntityManagerFactoryBean factoryBean = builder.build();
         return factoryBean;
     }
-
-    /*
-    @Bean
-    public LocalContainerEntityManagerFactoryBean exampleEntityManagerFactory(
-            EntityManagerFactoryBuilder builder) {
-        return builder
-                .dataSource(dataSource())
-                .packages(QueryKey.class)
-                .persistenceUnit("example")
-                .build();
-    }
-    */
 
 }

@@ -76,9 +76,9 @@ public class JobController {
     }
 
     /**
-     * FIXME TODO - This method isn't integrated into the UI right now, but will be soon.
+     * TODO - This method isn't integrated into the UI right now, but will be soon.
      */
-    // FIXME TODO replace the discrete attributes with the Thymeleaf SearchFormBean.
+    // TODO replace the discrete attributes with the Thymeleaf SearchFormBean.
     @RequestMapping(value = "/joblist", method = RequestMethod.GET)
     public String getIndeedJobSummaryList(Map<String, Object> model, @RequestParam(
             required = false, defaultValue = "Java Spring") String query, @RequestParam(

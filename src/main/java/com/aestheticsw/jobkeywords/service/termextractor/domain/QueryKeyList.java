@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * 
  * @author Jim Alexander (jhaood@gmail.com)
  */
-// TODO ? remove this from the service-API? ? ? move this to the client package inside IMPL ? 
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class QueryKeyList {
     private List<QueryKey> queryKeyList;

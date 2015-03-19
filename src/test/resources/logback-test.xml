@@ -49,7 +49,8 @@
     <logger name="org.hibernate.loader.entity.plan.EntityLoader" level="debug"/>
     <logger name="org.hibernate.persister.entity.AbstractEntityPersister" level="debug"/>
     <logger name="org.hibernate.persister.build.spi.LoadPlanTreePrinter" level="debug"/>
-    <logger name="org.hibernate.hql.internal.ast.QueryTranslatorImpl" level="debug"/>
+    <!-- QueryTranslatorImpl shows detailed HQL-AST & SQL-AST trees -->
+    <logger name="org.hibernate.hql.internal.ast.QueryTranslatorImpl" level="info"/>
 
     <logger name="org.dbunit" level="info"/>
 

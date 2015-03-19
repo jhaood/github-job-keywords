@@ -31,7 +31,6 @@ import org.springframework.test.context.TestExecutionListeners.MergeMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.aestheticsw.jobkeywords.config.DatabaseTestBehavior;
@@ -47,8 +46,6 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
         listeners = { DirtiesContextTestExecutionListener.class, DbUnitTestExecutionListener.class,
             TransactionalTestExecutionListener.class, DependencyInjectionTestExecutionListener.class },
         mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
-// TODO didn't help run test with repositories that start transactions:
-@TransactionConfiguration(defaultRollback = false, transactionManager = "transactionManager")
 public class TermFrequencyResultsDataManagerTest {
 
     @Autowired
