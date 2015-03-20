@@ -1,8 +1,6 @@
 # Job Keywords Web Application
 This web application calculates the term frequency of keywords extracted from job descriptions pulled from indeed.com. 
 
-This was written in 2015 by Jim Alexander of Aesthetic Software, Inc. (jhaood@gmail.com). The source code and documentation are copyrighted and licensed under Apache Version 2.0. license. 
-
 The app demonstrates an integraiton between several REST APIs with Spring Boot, Spring-4.1, Hibernate (JPA) and Liquibase. The app is running on Amazon's AWS cloud at the following URLs:
 
 Job Keywords Search Web App: http://54.148.208.180:8080/job/history
@@ -10,6 +8,8 @@ Job Keywords Search Web App: http://54.148.208.180:8080/job/history
 Job Keywords JavaDoc: http://54.148.208.180:8080/javadoc/index.html
 
 Job Keywords Source Code: https://github.com/jhaood/github-public
+
+This was written in 2015 by Jim Alexander of Aesthetic Software, Inc. (jhaood@gmail.com). The source code and documentation are copyrighted and licensed under Apache Version 2.0. license. 
 
 ## Architecture:
 
