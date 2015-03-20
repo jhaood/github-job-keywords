@@ -1,5 +1,7 @@
 # Job Keywords Web Application
-This web application calculates the term frequency of keywords extracted from job descriptions posted on indeed.com. 
+This web application calculates the term frequency of keywords extracted from job descriptions pulled from indeed.com. 
+
+This was written in 2015 by Jim Alexander of Aesthetic Software, Inc. (jhaood@gmail.com). The source code and documentation is copyrighted and licensed under Apache Version 2.0. license. 
 
 The app demonstrates an integraiton between several REST APIs with Spring Boot, Spring-4.1, Hibernate (JPA) and Liquibase. The app is running on Amazon's AWS cloud at the following URLs:
 
@@ -9,7 +11,7 @@ Job Keywords JavaDoc: http://54.148.208.180:8080/javadoc/index.html
 
 Job Keywords Source Code: https://github.com/jhaood/github-public
 
-Architecture:
+## Architecture:
 
 The architecture of the this application is based on recent publications about Micro Services and the Spring-4 platform. 
 The "term extractor" Micro Service provides a Java API as opposed to a REST API that most other Micro Services provide.
@@ -27,7 +29,7 @@ deploy the service. The top-level package also contains the JPA repositories bui
 
 MySQL schema evolution is implemented with Liquibase which is integrated into the Web application runtime. The maven pom.xml file also configures the Liquibase plugin to run during a build and a unit test is provided to run Liquibase. Liquibase is necessary at runtime because the Amazon production linux environment does not support maven or any of the development tools. This implementation also allows the schemas to be compared (Liquibase "diff") and validated by by both HBM2DDL and Liquibase. Liquibase can also generate the XML "changesets" required to evolve the schema as a new release is being prepared.  
 
-Build:
+## Build:
 
 Here are a few command lines to help build and deploy the app:
 
@@ -49,11 +51,13 @@ Here are a few command lines to help build and deploy the app:
 			=> launch the Spring Boot app and run liquibase-update (HBM2DDL does NOT run)
 
 
-Spring Boot: 
+## Spring Boot: 
 
 Spring-Boot version "1.2.1.RELEASE" launches a web container and configures the app-context based on a ton of automatic configuration. The job-keywords application defines specific Configuration classes to override or extend the auto-generated configuration from Spring-Boot. 
 
-Testing: 
+## Testing: 
+
+Unit and integration tests were instrumental in designing and building this app. The emphasis is on integration tests which do not require a Web Container and the test suite runs very quickly.  Some unit-tests are written for complex classes and Mockito is used when necessary. 
 
 The naming conventions for test classes is
 
