@@ -6,14 +6,27 @@
 <script>
 	$(document).ready(function() {
 
-		$('#query-form').submit(function(event) {
-			event.preventDefault();
-			$("#is-ajax-request").val("true");
-			var formValues = $(this).serialize();
-			$.post('/job/history', formValues, function(data) {
-				$('#query-results-id').html(data);
+		  $('#submitGetAccumulated').click(function(e) {
+				event.preventDefault();
+				$("#is-ajax-request").val("true");
+				var formValues = $(this).serialize();
+				$.post('/job/history', formValues, function(data) {
+					$('#query-results-id').html(data);
+				});
+		  });
+		  $('#submitDelete').click(function(e) {
+				event.preventDefault();
+				$("#is-ajax-request").val("true");
+				var formValues = $(this).serialize();
+				$.ajax({
+				    url: '/job/history',
+				    type: 'DELETE',
+				    data: formValues,
+				    success: function(result) {
+						$('#query-results-id').html(data);
+				    }
+				});
 			});
-		});
 
 	});
 </script>
@@ -64,7 +77,10 @@
                                     <input type="hidden" th:value="${result.city}" name="city" />
 
                                     <div class="form-actions">
-                                        <input type="submit" value="Show Accumulated Terms" />
+                                        <input id="submitGetAccumulated" type="submit" value="Show Accumulated Terms" />
+                                        <!-- 
+                                        <input id="submitDelete" type="submit" value="Delete Search" />
+                                         -->
                                     </div>
                                 </form>
                             </td>

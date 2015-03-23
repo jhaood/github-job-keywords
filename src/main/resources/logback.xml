@@ -8,7 +8,9 @@
     <jmxConfigurator/>
 
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    
+
+ 	<logger name="ch.qos.logback.core" level="debug" />
+   	
    	<logger name="net.exacode.spring.logging" level="info" />
     
     <logger name="org.springframework" level="info"/>

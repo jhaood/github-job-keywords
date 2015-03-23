@@ -9,6 +9,8 @@
 		</encoder>
 	</appender>
 	
+   	<logger name="ch.qos.logback.core" level="debug" />
+
 	<logger name="net.exacode.spring.logging" level="info" />
 
     <logger name="org.springframework" level="info"/>

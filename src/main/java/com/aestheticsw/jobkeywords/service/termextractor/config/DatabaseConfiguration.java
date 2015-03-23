@@ -101,8 +101,17 @@ public class DatabaseConfiguration {
         dataSourceBuilder.driverClassName(driverClassName);
         dataSourceBuilder.username(userName);
         dataSourceBuilder.password(password);
+        
+        // dataSourceBuilder.properties;
 
-        return dataSourceBuilder.build();
+        DataSource dataSource = dataSourceBuilder.build();
+        // TODO This is a hack to bypass spring-boot's broken post-processor which doesn't set the properties 
+        if (dataSource instanceof org.apache.tomcat.jdbc.pool.DataSource) {
+            org.apache.tomcat.jdbc.pool.DataSource tomcatDataSource = (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
+            tomcatDataSource.setTestOnBorrow(true);
+            tomcatDataSource.setValidationQuery("SELECT 1");
+        }
+        return dataSource;
     }
 
     /* Let spring configure the "transactionManager" bean... 
