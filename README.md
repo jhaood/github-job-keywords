@@ -11,7 +11,7 @@ Job Keywords Source Code: https://github.com/jhaood/github-public
 
 This was written in 2015 by Jim Alexander of Aesthetic Software, Inc. (jhaood@gmail.com). The source code and documentation are copyrighted and licensed under Apache Version 2.0. license. 
 
-## Architecture:
+## Architecture :
 
 The architecture of the this application is based on recent publications about Micro Services and the Spring-4 platform. 
 The "term extractor" Micro Service provides a Java API as opposed to a REST API that most other Micro Services provide.
