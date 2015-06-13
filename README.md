@@ -11,7 +11,7 @@ Job Keywords Source Code: https://github.com/jhaood/github-public
 
 This was written in 2015 by Jim Alexander of Aesthetic Software, Inc. (jhaood@gmail.com). The source code and documentation are copyrighted and licensed under Apache Version 2.0. license. 
 
-## Architecture:
+## Architecture :
 
 The architecture of the this application is based on recent publications about Micro Services and the Spring-4 platform. 
 The "term extractor" Micro Service provides a Java API as opposed to a REST API that most other Micro Services provide.
@@ -51,7 +51,7 @@ Here are a few command lines to help build and deploy the app:
 			=> launch the Spring Boot app and run liquibase-update (HBM2DDL does NOT run)
 
 
-## Spring Boot: 
+## Spring Boot : 
 
 Spring-Boot version "1.2.1.RELEASE" launches a web container and configures the app-context based on a ton of automatic configuration. The job-keywords application defines specific Configuration classes to override or extend the auto-generated configuration from Spring-Boot. 
 
