@@ -14,7 +14,6 @@ This was written in 2015 by Jim Alexander of Aesthetic Software, Inc. (jhaood@gm
 ## Architecture:
 
 The architecture of the this application is based on recent publications about Micro Services and the Spring-4 platform. 
-The "term extractor" Micro Service provides a Java API as opposed to a REST API that most other Micro Services provide.
 
 The application is broken into two top-level components: 
 1) the "term extractor" service integrates 2 REST services (jobs from indeed.com and keyword-extraction from FiveFilters.com)
