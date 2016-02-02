@@ -4,12 +4,13 @@
  */
 package com.aestheticsw.jobkeywords.service.simple;
 
-import net.exacode.spring.logging.inject.Log;
 
 import org.slf4j.Logger;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * This is a test fixture for converting JSON into a simple domain class. This allows the
@@ -30,7 +31,9 @@ public class SimpleRestService {
 
     public PivotalJsonResponse getPage() {
         PivotalJsonResponse response =
-            restTemplate.getForObject("http://graph.facebook.com/pivotalsoftware", PivotalJsonResponse.class);
+            restTemplate.getForObject("https://graph.facebook.com/pivotalsoftware"
+                + "?access_token=CAACEdEose0cBAM4TJ3G9k10LCZAA8jUQ8xu9bLZBkcaTYsTso9ZCWy4tMdlgJ2MBXcgJWO2vhsrHZBjPkXVTrLjHZBGbw5rd8lV4ljl7uvzWNChl1ZCJKZCcmeqIqwNVFxIDZCzBekm3t7TTSiv40WEQZB5YkENUVdUPA0aANQbDpOVbjHJ3ZAFswIVsLz2icQwIwZD", 
+                PivotalJsonResponse.class);
 
         System.out.println("Name:    " + response.getName());
         System.out.println("About:   " + response.getAbout());

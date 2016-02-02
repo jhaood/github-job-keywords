@@ -4,8 +4,6 @@
  */
 package com.aestheticsw.jobkeywords;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +11,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * The JobKeywordsApplication is the primary configuration class for the Spring-Boot application

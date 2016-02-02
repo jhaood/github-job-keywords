@@ -48,11 +48,11 @@ public class IndeedClientTest {
     @Test
     public void getIndeedJobDetails() {
         QueryKey key = new QueryKey("java spring", Locale.US, null);
-        SearchParameters params = new SearchParameters(key, 1, 0, 0, null);
+        SearchParameters params = new SearchParameters(key, 10, 0, 0, null);
         List<JobSummary> jobSummaryList = indeedClient.getIndeedJobSummaryList(params);
         assertNotNull(jobSummaryList);
-        assertEquals(1, jobSummaryList.size());
-        JobSummary jobSummary = jobSummaryList.get(0);
+//        assertEquals(1, jobSummaryList.size());
+        JobSummary jobSummary = jobSummaryList.get(2);
         String jobDetailsUrl = jobSummary.getUrl();
         assertNotNull(jobDetailsUrl);
 

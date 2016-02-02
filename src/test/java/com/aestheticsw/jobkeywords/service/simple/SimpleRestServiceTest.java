@@ -6,6 +6,7 @@ package com.aestheticsw.jobkeywords.service.simple;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class SimpleRestServiceTest  {
         assertNotNull(simpleRestService);
     }
 
+    /**
+     * Have to @Ignore because facebook added authentication tokens to the API. 
+     */
+    @Ignore
     @Test
     public void getPage() {
         assertNotNull(simpleRestService.getPage());

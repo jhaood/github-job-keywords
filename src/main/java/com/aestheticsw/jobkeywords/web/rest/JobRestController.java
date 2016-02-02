@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +23,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyLis
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyResults;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * This REST controller exposes the Indeed job list or the extracted terms to a RESTful client.

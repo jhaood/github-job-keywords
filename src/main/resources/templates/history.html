@@ -6,15 +6,16 @@
 <script>
 	$(document).ready(function() {
 
-		  $('#submitGetAccumulated').click(function(e) {
+/* 		  $('#submitGetAccumulated').click(function(e) {
 				event.preventDefault();
 				$("#is-ajax-request").val("true");
 				var formValues = $(this).serialize();
-				$.post('/job/history', formValues, function(data) {
+				$.post('/job/accumulated', formValues, function(data) {
 					$('#query-results-id').html(data);
 				});
 		  });
-		  $('#submitDelete').click(function(e) {
+ */
+ 			$('#submitDelete').click(function(e) {
 				event.preventDefault();
 				$("#is-ajax-request").val("true");
 				var formValues = $(this).serialize();

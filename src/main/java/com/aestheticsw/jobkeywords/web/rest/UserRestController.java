@@ -4,14 +4,14 @@
  */
 package com.aestheticsw.jobkeywords.web.rest;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * This class experiments with the JSON serializer. It restricts the output to ONLY JSON instead of

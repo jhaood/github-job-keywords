@@ -6,8 +6,6 @@ package com.aestheticsw.jobkeywords.service.termextractor.impl;
 
 import java.util.List;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClien
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.JobSummaryRepository;
 import com.aestheticsw.jobkeywords.service.termextractor.repository.TermFrequencyResultsDataManager;
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * The TermExtracorService is the primary public interface that wraps both the Indeed and
@@ -76,6 +75,9 @@ public class TermExtractorServiceImpl implements TermExtractorService {
         StringBuilder combinedJobDetails = new StringBuilder();
         for (int index = 0; index < params.getJobCount() && index < jobSummaries.size(); index++) {
             JobSummary job = jobSummaries.get(index);
+            // add the snippet to emphasize keywords in the posting. 
+            combinedJobDetails.append(job.getSnippet() != null ? job.getSnippet() : "").append("\n ");
+            // add the job-details text. 
             String jobDetails = getIndeedClient().getIndeedJobDetails(job.getUrl());
             combinedJobDetails.append(jobDetails);
             combinedJobDetails.append("\n ");

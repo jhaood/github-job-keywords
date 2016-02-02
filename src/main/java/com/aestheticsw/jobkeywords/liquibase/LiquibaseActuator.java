@@ -13,6 +13,11 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.aestheticsw.jobkeywords.shared.config.Log;
+
 import liquibase.Liquibase;
 import liquibase.configuration.ConfigurationProperty;
 import liquibase.configuration.GlobalConfiguration;
@@ -27,10 +32,6 @@ import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.serializer.core.xml.XMLChangeLogSerializer;
-import net.exacode.spring.logging.inject.Log;
-
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class supports schema evolution and validation using Liquibase.

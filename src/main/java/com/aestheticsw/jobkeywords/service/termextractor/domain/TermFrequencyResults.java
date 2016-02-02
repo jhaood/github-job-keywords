@@ -82,7 +82,7 @@ public class TermFrequencyResults {
     }
 
     /**
-     * This method should only be called by the TermFrequencyResultsDataManager and testing code.
+     * This method should only be called by the TermFrequencyResultsDataManager.
      */
     public void accumulateTermFrequencyList(SearchParameters searchParameters, List<TermFrequency> termFrequencyList) {
         if (!queryKey.equals(searchParameters.getQueryKey())) {
