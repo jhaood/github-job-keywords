@@ -14,8 +14,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -31,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequency;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyList;
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * The FiveFiltersClient provides a single method for extracting keywords from a large piece of
@@ -169,7 +168,7 @@ public class FiveFiltersClient {
         regExMap.put(Pattern.compile("</font>"), "");
         regExMap.put(Pattern.compile("<span[^>]*>"), "");
         regExMap.put(Pattern.compile("</span>"), "");
-        regExMap.put(Pattern.compile("<ul[^>]*>"), " ");
+        regExMap.put(Pattern.compile("<ul[^>]*>"), "");
         regExMap.put(Pattern.compile("</ul>"), "");
         regExMap.put(Pattern.compile("<li[^>]*>"), " ");
         regExMap.put(Pattern.compile("</li>"), ". ");
@@ -191,6 +190,10 @@ public class FiveFiltersClient {
         regExMap.put(Pattern.compile("&[^;]*;"), " ");
         regExMap.put(Pattern.compile("- ·"), " ");
         regExMap.put(Pattern.compile("·"), " ");
+        regExMap.put(Pattern.compile("\\(s\\)"), "");
+        regExMap.put(Pattern.compile("­"), ""); // wacky character
+
+        regExMap.put(Pattern.compile("\\W"), " ");
 
         // <U+0091> and other characters that are common in the UK
 
@@ -227,7 +230,7 @@ public class FiveFiltersClient {
 
             String[][] stringArray = executeFiveFiltersPost(subContent);
             if (stringArray == null) {
-                throw new RuntimeException("Found invalid content @ index=" + len + ", text=" + subContent);
+                throw new RuntimeException("Found invalid content, text=" + subContent);
             }
         }
     }

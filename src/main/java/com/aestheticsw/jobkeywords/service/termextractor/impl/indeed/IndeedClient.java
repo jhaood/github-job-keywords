@@ -7,8 +7,6 @@ package com.aestheticsw.jobkeywords.service.termextractor.impl.indeed;
 import java.io.IOException;
 import java.util.List;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -20,6 +18,7 @@ import org.springframework.xml.xpath.XPathOperations;
 
 import com.aestheticsw.jobkeywords.service.termextractor.domain.JobSummary;
 import com.aestheticsw.jobkeywords.service.termextractor.domain.SearchParameters;
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * Processes a job search query that returns a list of job-summaries or fetch the details for a

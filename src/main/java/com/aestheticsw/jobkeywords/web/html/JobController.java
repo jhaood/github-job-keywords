@@ -13,8 +13,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import net.exacode.spring.logging.inject.Log;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +37,7 @@ import com.aestheticsw.jobkeywords.service.termextractor.domain.TermFrequencyRes
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedClient;
 import com.aestheticsw.jobkeywords.service.termextractor.impl.indeed.IndeedQueryException;
 import com.aestheticsw.jobkeywords.service.termextractor.support.SearchUtils;
+import com.aestheticsw.jobkeywords.shared.config.Log;
 
 /**
  * This Spring MVC controller is integrated into the Thymeleaf configuration to produce an HTML5 Web
