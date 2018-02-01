@@ -55,6 +55,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
+		<!-- Originally built for Spring-boot 1.2.1 in 2015 but the runtime is no longer compatible with JDK-1.8 -->
 		<version>1.2.1.RELEASE</version>
 		<relativePath />
 	</parent>
@@ -165,6 +166,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
+		        <configuration>
+		          <source>${java.version}</source>
+		          <target>${java.version}</target>
+		        </configuration>
 				<!-- The only package blocking me from using the small "compact profile" is javax.xml... 
 				<configuration>
 					<compilerArguments>
@@ -182,7 +187,7 @@
 					<dependency>
 						<groupId>org.springframework</groupId>
 						<artifactId>springloaded</artifactId>
-						<version>1.2.0.RELEASE</version>
+						<version>1.2.3.RELEASE</version>
 					</dependency>
 				</dependencies>
 				<configuration>
