@@ -47,7 +47,7 @@
 
 	<artifactId>job-keywords</artifactId>
 	<groupId>com.aestheticsw</groupId>
-	<version>2.0.2-RELEASE</version>
+	<version>2.0.3-RELEASE</version>
 	<description>keyword extraction from job listings</description>
 
 	<packaging>jar</packaging>
